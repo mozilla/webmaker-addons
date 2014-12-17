@@ -1,4 +1,4 @@
-webmaker-addon
-==============
+webmaker-addons
+===============
 
-Prototypes for add-ons. Gateways from browser to Webmaker.
+Prototypes for add-ons that serve as a gateway from browser to Webmaker.
