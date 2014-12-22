@@ -6,7 +6,7 @@ define(function(require) {
       this.props.firebaseRef.set(this.props.item + 1);
     },
     render: function() {
-      return <button onClick={this.handleClick}>{this.props.item}</button>;
+      return <button className="btn btn-default" onClick={this.handleClick}>{this.props.item}</button>;
     }
   });
 
