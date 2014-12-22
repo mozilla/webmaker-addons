@@ -1,14 +1,6 @@
 define(function(require) {
   var React = require('react');
-
-  var Item = React.createClass({
-    handleClick: function() {
-      this.props.firebaseRef.set(this.props.item + 1);
-    },
-    render: function() {
-      return <button className="btn btn-default" onClick={this.handleClick}>{this.props.item}</button>;
-    }
-  });
+  var MovableImage = require('jsx!./movable-image');
 
   var App = React.createClass({
     getInitialState: function() {
@@ -25,14 +17,26 @@ define(function(require) {
     handleFirebaseRefValue: function(snapshot) {
       this.setState({items: snapshot.val()});
     },
+    handleAddImage: function() {
+      var url = window.prompt("Gimme an image URL.");
+      if (!/^https?:\/\//.test(url)) return;
+      this.props.firebaseRef.push({
+        url: url,
+        x: 0,
+        y: 0
+      });
+    },
     render: function() {
       var items = this.state.items || {};
       var itemsRef = this.props.firebaseRef;
       return (
         <div>
+          <button className="btn btn-default" onClick={this.handleAddImage}><i className="fa fa-image"></i> </button>
+          <div style={{position: 'relative'}}>
           {Object.keys(items).map(function(key) {
-            return <Item key={key} item={items[key]} firebaseRef={itemsRef.child(key)}/>;
+            return <MovableImage key={key} item={items[key]} firebaseRef={itemsRef.child(key)}/>;
           })}
+          </div>
         </div>
       );
     }

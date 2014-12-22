@@ -1,5 +1,6 @@
 var require = {
   paths: {
+    "hammer": "vendor/hammer",
     "firebase": "vendor/firebase",
     "text": "vendor/require.text",
     "jsx": "vendor/require.jsx",
