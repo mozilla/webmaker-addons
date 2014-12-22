@@ -1,5 +1,6 @@
 var require = {
   paths: {
+    "underscore": "vendor/underscore",
     "hammer": "vendor/hammer",
     "firebase": "vendor/firebase",
     "text": "vendor/require.text",
@@ -11,6 +12,9 @@ var require = {
     fileExtension: '.jsx'
   },
   shim: {
+    "underscore": {
+      exports: "_"
+    },
     "firebase": {
       exports: "Firebase"
     }

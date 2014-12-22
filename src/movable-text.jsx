@@ -2,30 +2,30 @@ define(function(require) {
   var React = require('react');
   var Hammer = require('hammer');
 
-  var MovableImage = React.createClass({
+  var MovableText = React.createClass({
     getInitialState: function() {
       return {
-        movingImage: null
+        movingText: null
       };
     },
     componentDidMount: function() {
-      var image = this.refs.image.getDOMNode();
-      var hammer = this.hammer = new Hammer(image);
+      var text = this.refs.text.getDOMNode();
+      var hammer = this.hammer = new Hammer(text);
       hammer.on('panmove', function(e) {
         this.setState({
-          movingImage: {
+          movingText: {
             x: this.props.x + e.deltaX,
             y: this.props.y + e.deltaY
           }
         });
       }.bind(this));
       hammer.on('panend', function(e) {
-        var movingImage = this.state.movingImage;
+        var movingText = this.state.movingText;
         this.props.firebaseRef.update({
-          x: movingImage.x,
-          y: movingImage.y
+          x: movingText.x,
+          y: movingText.y
         });
-        this.setState({movingImage: null});
+        this.setState({movingText: null});
       }.bind(this));
     },
     componentWillUnmount: function() {
@@ -33,16 +33,16 @@ define(function(require) {
       this.hammer = null;
     },
     render: function() {
-      var coords = this.state.movingImage || this.props;
+      var coords = this.state.movingText || this.props;
       var style = {
         position: 'absolute',
         top: coords.y,
         left: coords.x
       };
 
-      return <img ref="image" style={style} src={this.props.url}/>;
+      return <span ref="text" style={style}>{this.props.text}</span>;
     }
   });
 
-  return MovableImage;
+  return MovableText;
 });
