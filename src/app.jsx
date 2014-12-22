@@ -26,17 +26,30 @@ define(function(require) {
         y: 0
       });
     },
-    render: function() {
+    handleExport: function() {
+      var html = React.renderToStaticMarkup(this.createItems());
+      window.open('data:text/html;base64,' + btoa(html));
+    },
+    createItems: function() {
       var items = this.state.items || {};
       var itemsRef = this.props.firebaseRef;
+
+      return (
+        <div style={{position: 'relative'}}>
+        {Object.keys(items).map(function(key) {
+          return <MovableImage key={key} item={items[key]} firebaseRef={itemsRef.child(key)}/>;
+        })}
+        </div>
+      );
+    },
+    render: function() {
       return (
         <div>
-          <button className="btn btn-default" onClick={this.handleAddImage}><i className="fa fa-image"></i> </button>
-          <div style={{position: 'relative'}}>
-          {Object.keys(items).map(function(key) {
-            return <MovableImage key={key} item={items[key]} firebaseRef={itemsRef.child(key)}/>;
-          })}
-          </div>
+          <ul className="list-inline">
+            <li><button className="btn btn-default" onClick={this.handleAddImage}><i className="fa fa-image"></i> </button></li>
+            <li><button className="btn btn-default" onClick={this.handleExport}><i className="fa fa-download"></i></button></li>
+          </ul>
+          {this.createItems()}
         </div>
       );
     }
