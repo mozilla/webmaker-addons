@@ -24,15 +24,27 @@ define(function(require) {
     },
     handleAddImage: function() {
       var url = window.prompt("Gimme an image URL.");
-      if (!/^https?:\/\//.test(url)) return;
-      this.props.firebaseRef.push({
-        type: 'image',
-        props: {
-          url: url,
-          x: 0,
-          y: 0
-        }
-      });
+      if (!url) return;
+      if (!/^https?:\/\//.test(url))
+        return window.alert("Invalid URL!");
+      var img = document.createElement('img');
+      img.onload = function() {
+        this.props.firebaseRef.push({
+          type: 'image',
+          props: {
+            url: url,
+            height: img.naturalHeight,
+            width: img.naturalWidth,
+            x: 0,
+            y: 0
+          }
+        });
+      }.bind(this);
+      img.onerror = function() {
+        window.alert("Sorry, an error occurred loading the image.");
+      };
+      img.setAttribute('src', url);
+      // TODO: Show some kind of throbber, etc.
     },
     handleAddText: function() {
       var text = window.prompt("Gimme some text.");

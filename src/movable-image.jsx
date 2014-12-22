@@ -40,7 +40,7 @@ define(function(require) {
         left: coords.x
       };
 
-      return <img ref="image" style={style} src={this.props.url}/>;
+      return <img ref="image" style={style} src={this.props.url} width={this.props.width} height={this.props.height}/>;
     }
   });
 
