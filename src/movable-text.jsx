@@ -21,6 +21,11 @@ define(function(require) {
       }.bind(this));
       hammer.on('panend', function(e) {
         var movingText = this.state.movingText;
+        if (!movingText) {
+          // Not sure how this can happen, but apparently it does...
+          console.log("state.movingText is null, how odd.");
+          return;
+        }
         this.props.firebaseRef.update({
           x: movingText.x,
           y: movingText.y
