@@ -5,11 +5,6 @@ define(function(require) {
 
   var MovableText = React.createClass({
     mixins: [Movable],
-    getInitialState: function() {
-      return {
-        movingNode: null
-      };
-    },
     render: function() {
       var style = _.extend({
         background: 'rgba(255, 255, 255, 0.5)',

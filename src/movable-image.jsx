@@ -4,11 +4,6 @@ define(function(require) {
 
   var MovableImage = React.createClass({
     mixins: [Movable],
-    getInitialState: function() {
-      return {
-        movingNode: null
-      };
-    },
     render: function() {
       return <img style={this.getMovingStyle()} src={this.props.url} width={this.props.width} height={this.props.height}/>;
     }

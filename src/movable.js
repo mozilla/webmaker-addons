@@ -8,7 +8,7 @@ define(function(require) {
       x: React.PropTypes.number.isRequired,
       y: React.PropTypes.number.isRequired,
     },
-    componentDidMount: function() {
+  componentDidMount: function() {
       var node = this.getDOMNode();
       var hammer = this.hammer = new Hammer(node);
       hammer.on('panmove', function(e) {
@@ -32,8 +32,11 @@ define(function(require) {
       this.hammer.destroy();
       this.hammer = null;
     },
+    isMoving: function() {
+      return this.state && this.state.movingNode;
+    },
     getMovingStyle: function() {
-      var coords = this.state.movingNode || this.props;
+      var coords = this.isMoving() ? this.state.movingNode : this.props;
       return {
         position: 'absolute',
         top: coords.y,
