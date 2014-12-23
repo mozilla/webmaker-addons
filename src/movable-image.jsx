@@ -5,18 +5,12 @@ define(function(require) {
   var MovableImage = React.createClass({
     getInitialState: function() {
       return {
-        menu: null,
         movingImage: null
       };
     },
     componentDidMount: function() {
       var image = this.refs.image.getDOMNode();
       var hammer = this.hammer = new Hammer(image);
-      hammer.on('tap', function(e) {
-        this.setState({
-          menu: {x: e.center.x, y: e.center.y}
-        });
-      }.bind(this));
       hammer.on('panmove', function(e) {
         this.setState({
           movingImage: {
@@ -46,14 +40,7 @@ define(function(require) {
         left: coords.x
       };
 
-      return (
-        <div>
-          {this.state.menu
-           ? <span>MENU</span>
-           : null}
-          <img ref="image" style={style} src={this.props.url} width={this.props.width} height={this.props.height}/>
-        </div>
-      );
+      return <img ref="image" style={style} src={this.props.url} width={this.props.width} height={this.props.height}/>;
     }
   });
 
