@@ -1,46 +1,20 @@
 define(function(require) {
+  var _ = require('underscore');
   var React = require('react');
-  var Hammer = require('hammer');
+  var Movable = require('./movable');
 
   var MovableText = React.createClass({
+    mixins: [Movable],
     getInitialState: function() {
       return {
-        movingText: null
+        movingNode: null
       };
-    },
-    componentDidMount: function() {
-      var text = this.refs.text.getDOMNode();
-      var hammer = this.hammer = new Hammer(text);
-      hammer.on('panmove', function(e) {
-        this.setState({
-          movingText: {
-            x: this.props.x + e.deltaX,
-            y: this.props.y + e.deltaY
-          }
-        });
-      }.bind(this));
-      hammer.on('panend', function(e) {
-        var movingText = this.state.movingText;
-        this.props.firebaseRef.update({
-          x: movingText.x,
-          y: movingText.y
-        });
-        this.setState({movingText: null});
-      }.bind(this));
-    },
-    componentWillUnmount: function() {
-      this.hammer.destroy();
-      this.hammer = null;
     },
     render: function() {
-      var coords = this.state.movingText || this.props;
-      var style = {
+      var style = _.extend({
         background: 'rgba(255, 255, 255, 0.5)',
         padding: 10,
-        position: 'absolute',
-        top: coords.y,
-        left: coords.x
-      };
+      }, this.getMovingStyle());
 
       return <span ref="text" style={style}>{this.props.text}</span>;
     }
