@@ -35,6 +35,8 @@ define(function(require) {
     render: function() {
       var coords = this.state.movingText || this.props;
       var style = {
+        background: 'rgba(255, 255, 255, 0.5)',
+        padding: 10,
         position: 'absolute',
         top: coords.y,
         left: coords.x
