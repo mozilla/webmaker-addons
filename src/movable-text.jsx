@@ -3,6 +3,28 @@ define(function(require) {
   var React = require('react');
   var Movable = require('./movable');
 
+  var AddTextButton = React.createClass({
+    handleClick: function() {
+      var text = window.prompt("Gimme some text.");
+      if (!text) return;
+      this.props.firebaseRef.push({
+        type: 'text',
+        props: {
+          text: text,
+          x: 0,
+          y: 0
+        }
+      });      
+    },
+    render: function() {
+      return (
+        <button className="btn btn-default" onClick={this.handleClick}>
+          <i className="fa fa-font"></i>
+        </button>        
+      );
+    }
+  });
+
   var MovableText = React.createClass({
     mixins: [Movable],
     render: function() {
@@ -15,5 +37,8 @@ define(function(require) {
     }
   });
 
-  return MovableText;
+  return {
+    AddButton: AddTextButton,
+    ContentItem: MovableText
+  }
 });
