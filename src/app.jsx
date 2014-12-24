@@ -8,6 +8,19 @@ define(function(require) {
     text: require('jsx!./movable-text')
   };
 
+  var RemoveButton = React.createClass({
+    handleClick: function() {
+      this.props.firebaseRef.remove();
+    },
+    render: function() {
+      return (
+        <button className="btn btn-default" onClick={this.handleClick}>
+          <i className="fa fa-trash"></i>
+        </button>
+      );
+    }
+  });
+
   var App = React.createClass({
     getInitialState: function() {
       return {
@@ -71,9 +84,6 @@ define(function(require) {
       var html = React.renderToStaticMarkup(this.createItems());
       window.open('data:text/html;base64,' + btoa(html));
     },
-    handleRemoveSelection: function() {
-      this.props.firebaseRef.child(this.state.selectedItem).remove();
-    },
     handleItemSelect: function(key, e) {
       this.setState({
         selectedItem: key,
@@ -108,25 +118,24 @@ define(function(require) {
         </div>
       );
     },
+    createSelectionToolbar: function() {
+      if (!this.state.selectedItem) return null;
+
+      var firebaseRef = this.props.firebaseRef.child(this.state.selectedItem);
+
+      return (
+        <div className="container" style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0
+        }}>
+          <ul className="list-inline">
+            <li><RemoveButton firebaseRef={firebaseRef}/></li>
+          </ul>
+        </div>
+      );
+    },
     render: function() {
-      var selectionToolbar = null;
-
-      if (this.state.selectedItem) {
-        selectionToolbar = (
-          <div className="container" style={{
-            position: 'fixed',
-            bottom: 0,
-            left: 0
-          }}>
-            <ul className="list-inline">
-              <li><button className="btn btn-default" onClick={this.handleRemoveSelection}>
-                <i className="fa fa-trash"></i>
-              </button></li>
-            </ul>
-          </div>
-        );
-      }
-
       return (
         <div>
           <ul className="list-inline">
@@ -142,7 +151,7 @@ define(function(require) {
           </ul>
           {this.createItems()}
           <SelectionFrame selection={this.state.selectedItemDOMNode}/>
-          {selectionToolbar}
+          {this.createSelectionToolbar()}
         </div>
       );
     }
