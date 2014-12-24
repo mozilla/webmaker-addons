@@ -8,7 +8,7 @@ define(function(require) {
       x: React.PropTypes.number.isRequired,
       y: React.PropTypes.number.isRequired,
     },
-  componentDidMount: function() {
+    componentDidMount: function() {
       var node = this.getDOMNode();
       var hammer = this.hammer = new Hammer(node);
       hammer.on('panstart', this.handlePanStartAndMove);
