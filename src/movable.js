@@ -14,6 +14,10 @@ define(function(require) {
       hammer.on('panstart', this.handlePanStartAndMove);
       hammer.on('panmove', this.handlePanStartAndMove);
       hammer.on('panend', this.handlePanEnd);
+      node.addEventListener('dragstart', function(e) {
+        // Fix to make image dragging work on Firefox.
+        e.preventDefault();
+      });
     },
     handlePanStartAndMove: function(e) {
       this.setState({
