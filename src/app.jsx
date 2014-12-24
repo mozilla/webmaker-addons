@@ -66,7 +66,7 @@ define(function(require) {
     handleItemSelect: function(e) {
       this.refs.selection.select(e.target);
     },
-    clearSelection: function(e) {
+    clearSelection: function() {
       this.refs.selection.select(null);
     },
     createItems: function() {
