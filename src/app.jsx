@@ -119,7 +119,9 @@ define(function(require) {
             left: 0
           }}>
             <ul className="list-inline">
-              <li><button className="btn btn-default" onClick={this.handleRemoveSelection}><i className="fa fa-trash"></i></button></li>
+              <li><button className="btn btn-default" onClick={this.handleRemoveSelection}>
+                <i className="fa fa-trash"></i>
+              </button></li>
             </ul>
           </div>
         );
@@ -128,9 +130,15 @@ define(function(require) {
       return (
         <div>
           <ul className="list-inline">
-            <li><button className="btn btn-default" onClick={this.handleAddImage}><i className="fa fa-image"></i> </button></li>
-            <li><button className="btn btn-default" onClick={this.handleAddText}><i className="fa fa-font"></i> </button></li>
-            <li><button className="btn btn-default" onClick={this.handleExport}><i className="fa fa-download"></i></button></li>
+            <li><button className="btn btn-default" onClick={this.handleAddImage}>
+              <i className="fa fa-image"></i>
+            </button></li>
+            <li><button className="btn btn-default" onClick={this.handleAddText}>
+              <i className="fa fa-font"></i>
+            </button></li>
+            <li><button className="btn btn-default" onClick={this.handleExport}>
+              <i className="fa fa-download"></i>
+            </button></li>
           </ul>
           {this.createItems()}
           <SelectionFrame selection={this.state.selectedItemDOMNode}/>
