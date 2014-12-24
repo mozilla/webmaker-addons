@@ -10,7 +10,7 @@ define(function(require) {
 
   var RemoveButton = React.createClass({
     handleClick: function() {
-      this.props.firebaseRef.remove();
+      this.props.firebaseRef.parent().remove();
     },
     render: function() {
       return (
@@ -85,7 +85,20 @@ define(function(require) {
     createSelectionToolbar: function() {
       if (!this.state.selectedItem) return null;
 
-      var firebaseRef = this.props.firebaseRef.child(this.state.selectedItem);
+      var key = this.state.selectedItem;
+      var firebaseRef = this.props.firebaseRef.child(key).child('props');
+      var item = this.state.items[key];
+      var actions = [RemoveButton]
+        .concat(TypeMap[item.type].SelectionActions || [])
+        .map(function(componentClass, i) {
+          var component = React.createElement(
+            componentClass,
+            _.extend({}, item.props, {
+              firebaseRef: firebaseRef
+            })
+          );
+          return <li key={i}>{component}</li>;
+        });
 
       return (
         <div className="container" style={{
@@ -93,9 +106,7 @@ define(function(require) {
           bottom: 0,
           left: 0
         }}>
-          <ul className="list-inline">
-            <li><RemoveButton firebaseRef={firebaseRef}/></li>
-          </ul>
+          <ul className="list-inline">{actions}</ul>
         </div>
       );
     },

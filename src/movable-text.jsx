@@ -37,8 +37,22 @@ define(function(require) {
     }
   });
 
+  var ChangeTextField = React.createClass({
+    handleChange: function(e) {
+      this.props.firebaseRef.update({
+        text: e.target.value
+      });
+    },
+    render: function() {
+      return <input type="text" className="form-control" value={this.props.text} onChange={this.handleChange} placeholder="text"/>;
+    }
+  });
+
   return {
     AddButton: AddTextButton,
-    ContentItem: MovableText
+    ContentItem: MovableText,
+    SelectionActions: [
+      ChangeTextField
+    ]
   }
 });
