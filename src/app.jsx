@@ -58,6 +58,28 @@ define(function(require) {
     }
   });
 
+  var AddTextButton = React.createClass({
+    handleClick: function() {
+      var text = window.prompt("Gimme some text.");
+      if (!text) return;
+      this.props.firebaseRef.push({
+        type: 'text',
+        props: {
+          text: text,
+          x: 0,
+          y: 0
+        }
+      });      
+    },
+    render: function() {
+      return (
+        <button className="btn btn-default" onClick={this.handleClick}>
+          <i className="fa fa-font"></i>
+        </button>        
+      );
+    }
+  });
+
   var App = React.createClass({
     getInitialState: function() {
       return {
@@ -80,18 +102,6 @@ define(function(require) {
         this.clearSelection();
 
       this.setState({items: items});
-    },
-    handleAddText: function() {
-      var text = window.prompt("Gimme some text.");
-      if (!text) return;
-      this.props.firebaseRef.push({
-        type: 'text',
-        props: {
-          text: text,
-          x: 0,
-          y: 0
-        }
-      });
     },
     handleExport: function() {
       var html = React.renderToStaticMarkup(this.createItems());
@@ -153,9 +163,7 @@ define(function(require) {
         <div>
           <ul className="list-inline">
             <li><AddImageButton firebaseRef={this.props.firebaseRef}/></li>
-            <li><button className="btn btn-default" onClick={this.handleAddText}>
-              <i className="fa fa-font"></i>
-            </button></li>
+            <li><AddTextButton firebaseRef={this.props.firebaseRef}/></li>
             <li><button className="btn btn-default" onClick={this.handleExport}>
               <i className="fa fa-download"></i>
             </button></li>
