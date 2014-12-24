@@ -21,6 +21,43 @@ define(function(require) {
     }
   });
 
+  var AddImageButton = React.createClass({
+    handleClick: function() {
+      var url = window.prompt("Gimme an image URL.");
+      if (!url) return;
+      if (!/^https?:\/\//.test(url))
+        return window.alert("Invalid URL!");
+      var img = document.createElement('img');
+      img.onload = this.handleImageLoad;
+      img.onerror = this.handleImageError;
+      img.setAttribute('src', url);
+      // TODO: Show some kind of throbber, etc.
+    },
+    handleImageLoad: function(e) {
+      var img = e.target;
+      this.props.firebaseRef.push({
+        type: 'image',
+        props: {
+          url: img.src,
+          height: img.naturalHeight,
+          width: img.naturalWidth,
+          x: 0,
+          y: 0
+        }
+      });
+    },
+    handleImageError: function() {
+      window.alert("Sorry, an error occurred loading the image.");
+    },
+    render: function() {
+      return (
+        <button className="btn btn-default" onClick={this.handleClick}>
+          <i className="fa fa-image"></i>
+        </button>
+      );
+    }
+  });
+
   var App = React.createClass({
     getInitialState: function() {
       return {
@@ -43,30 +80,6 @@ define(function(require) {
         this.clearSelection();
 
       this.setState({items: items});
-    },
-    handleAddImage: function() {
-      var url = window.prompt("Gimme an image URL.");
-      if (!url) return;
-      if (!/^https?:\/\//.test(url))
-        return window.alert("Invalid URL!");
-      var img = document.createElement('img');
-      img.onload = function() {
-        this.props.firebaseRef.push({
-          type: 'image',
-          props: {
-            url: url,
-            height: img.naturalHeight,
-            width: img.naturalWidth,
-            x: 0,
-            y: 0
-          }
-        });
-      }.bind(this);
-      img.onerror = function() {
-        window.alert("Sorry, an error occurred loading the image.");
-      };
-      img.setAttribute('src', url);
-      // TODO: Show some kind of throbber, etc.
     },
     handleAddText: function() {
       var text = window.prompt("Gimme some text.");
@@ -139,9 +152,7 @@ define(function(require) {
       return (
         <div>
           <ul className="list-inline">
-            <li><button className="btn btn-default" onClick={this.handleAddImage}>
-              <i className="fa fa-image"></i>
-            </button></li>
+            <li><AddImageButton firebaseRef={this.props.firebaseRef}/></li>
             <li><button className="btn btn-default" onClick={this.handleAddText}>
               <i className="fa fa-font"></i>
             </button></li>
