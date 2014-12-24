@@ -109,16 +109,32 @@ define(function(require) {
       );
     },
     render: function() {
+      var selectionToolbar = null;
+
+      if (this.state.selectedItem) {
+        selectionToolbar = (
+          <div className="container" style={{
+            position: 'fixed',
+            bottom: 0,
+            left: 0
+          }}>
+            <ul className="list-inline">
+              <li><button className="btn btn-default" onClick={this.handleRemoveSelection}><i className="fa fa-trash"></i></button></li>
+            </ul>
+          </div>
+        );
+      }
+
       return (
         <div>
           <ul className="list-inline">
             <li><button className="btn btn-default" onClick={this.handleAddImage}><i className="fa fa-image"></i> </button></li>
             <li><button className="btn btn-default" onClick={this.handleAddText}><i className="fa fa-font"></i> </button></li>
             <li><button className="btn btn-default" onClick={this.handleExport}><i className="fa fa-download"></i></button></li>
-            <li><button disabled={!this.state.selectedItem} className="btn btn-default" onClick={this.handleRemoveSelection}><i className="fa fa-trash"></i></button></li>
           </ul>
           {this.createItems()}
           <SelectionFrame selection={this.state.selectedItemDOMNode}/>
+          {selectionToolbar}
         </div>
       );
     }
