@@ -1,6 +1,7 @@
 define(function(require) {
   var _ = require('underscore');
   var React = require('react');
+  var SelectionFrame = require('jsx!./selection-frame');
 
   var TypeMap = {
     image: require('jsx!./movable-image'),
@@ -62,6 +63,12 @@ define(function(require) {
       var html = React.renderToStaticMarkup(this.createItems());
       window.open('data:text/html;base64,' + btoa(html));
     },
+    handleItemSelect: function(e) {
+      this.refs.selection.select(e.target);
+    },
+    clearSelection: function(e) {
+      this.refs.selection.select(null);
+    },
     createItems: function() {
       var items = this.state.items || {};
       var itemsRef = this.props.firebaseRef;
@@ -75,11 +82,12 @@ define(function(require) {
               TypeMap[item.type],
               _.extend({}, item.props, {
                 key: key,
+                onSelect: this.handleItemSelect,
                 firebaseRef: itemsRef.child(key).child('props')
               })
             );
           return <div key={key}><code>??? {key} ???</code></div>;
-        })}
+        }, this)}
         </div>
       );
     },
@@ -92,6 +100,7 @@ define(function(require) {
             <li><button className="btn btn-default" onClick={this.handleExport}><i className="fa fa-download"></i></button></li>
           </ul>
           {this.createItems()}
+          <SelectionFrame ref="selection"/>
         </div>
       );
     }

@@ -11,6 +11,7 @@ define(function(require) {
     componentDidMount: function() {
       var node = this.getDOMNode();
       var hammer = this.hammer = new Hammer(node);
+      hammer.on('tap', this.handleTap);
       hammer.on('panstart', this.handlePanStartAndMove);
       hammer.on('panmove', this.handlePanStartAndMove);
       hammer.on('panend', this.handlePanEnd);
@@ -19,7 +20,12 @@ define(function(require) {
         e.preventDefault();
       });
     },
+    handleTap: function(e) {
+      this.props.onSelect(e);
+    },
     handlePanStartAndMove: function(e) {
+      if (e.type == 'panstart')
+        this.props.onSelect(e);
       this.setState({
         movingNode: {
           x: this.props.x + e.deltaX,

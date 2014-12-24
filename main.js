@@ -16,6 +16,11 @@ require([
     document.getElementById('app')
   );
 
+  document.documentElement.onclick = function(e) {
+    if (e.target === document.documentElement)
+      app.clearSelection();
+  };
+
   // For debugging purposes only!
   window.app = app;
 });
