@@ -99,20 +99,25 @@ define(function(require) {
         </div>
       );
     },
+    createPrimaryToolbar: function() {
+      return (
+        <ul className="list-inline">
+          {Object.keys(TypeMap).map(function(type) {
+            var addButton = React.createElement(TypeMap[type].AddButton, {
+              firebaseRef: this.props.firebaseRef
+            });
+            return <li key={type}>{addButton}</li>;
+          }, this)}
+          <li><button className="btn btn-default" onClick={this.handleExport}>
+            <i className="fa fa-download"></i>
+          </button></li>
+        </ul>
+      );
+    },
     render: function() {
       return (
         <div>
-          <ul className="list-inline">
-            {Object.keys(TypeMap).map(function(type) {
-              var addButton = React.createElement(TypeMap[type].AddButton, {
-                firebaseRef: this.props.firebaseRef
-              });
-              return <li key={type}>{addButton}</li>;
-            }, this)}
-            <li><button className="btn btn-default" onClick={this.handleExport}>
-              <i className="fa fa-download"></i>
-            </button></li>
-          </ul>
+          {this.createPrimaryToolbar()}
           {this.createItems()}
           <SelectionFrame selection={this.state.selectedItemDOMNode}/>
           {this.createSelectionToolbar()}
