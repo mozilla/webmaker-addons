@@ -11,6 +11,7 @@ define(function(require) {
   var App = React.createClass({
     getInitialState: function() {
       return {
+        selectedItem: null,
         items: null
       };
     },
@@ -21,7 +22,18 @@ define(function(require) {
       this.props.firebaseRef.off("value", this.handleFirebaseRefValue);
     },
     handleFirebaseRefValue: function(snapshot) {
-      this.setState({items: snapshot.val()});
+      var items = snapshot.val();
+      var selectedItem = this.state.selectedItem;
+
+      if (selectedItem && !(selectedItem in items)) {
+        selectedItem = null;
+        this.refs.selection.select(null);        
+      }
+
+      this.setState({
+        selectedItem: selectedItem,
+        items: items
+      });
     },
     handleAddImage: function() {
       var url = window.prompt("Gimme an image URL.");
@@ -63,10 +75,15 @@ define(function(require) {
       var html = React.renderToStaticMarkup(this.createItems());
       window.open('data:text/html;base64,' + btoa(html));
     },
-    handleItemSelect: function(e) {
+    handleRemoveSelection: function() {
+      this.props.firebaseRef.child(this.state.selectedItem).remove();
+    },
+    handleItemSelect: function(key, e) {
+      this.setState({selectedItem: key});
       this.refs.selection.select(e.target);
     },
     clearSelection: function() {
+      this.setState({selectedItem: null});
       this.refs.selection.select(null);
     },
     createItems: function() {
@@ -82,7 +99,7 @@ define(function(require) {
               TypeMap[item.type],
               _.extend({}, item.props, {
                 key: key,
-                onSelect: this.handleItemSelect,
+                onSelect: this.handleItemSelect.bind(this, key),
                 firebaseRef: itemsRef.child(key).child('props')
               })
             );
@@ -98,6 +115,7 @@ define(function(require) {
             <li><button className="btn btn-default" onClick={this.handleAddImage}><i className="fa fa-image"></i> </button></li>
             <li><button className="btn btn-default" onClick={this.handleAddText}><i className="fa fa-font"></i> </button></li>
             <li><button className="btn btn-default" onClick={this.handleExport}><i className="fa fa-download"></i></button></li>
+            <li><button disabled={!this.state.selectedItem} className="btn btn-default" onClick={this.handleRemoveSelection}><i className="fa fa-trash"></i></button></li>
           </ul>
           {this.createItems()}
           <SelectionFrame ref="selection"/>
