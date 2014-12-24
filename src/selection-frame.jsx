@@ -28,8 +28,14 @@ define(function(require) {
         this.handleAnimationFrame
       );
     },
+    componentDidMount: function() {
+      this.select(this.props.selection);
+    },
     componentWillUnmount: function() {
       window.cancelAnimationFrame(this.requestID);
+    },
+    componentWillReceiveProps: function(newProps) {
+      this.select(newProps.selection);
     },
     render: function() {
       var state = this.state;

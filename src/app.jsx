@@ -12,6 +12,7 @@ define(function(require) {
     getInitialState: function() {
       return {
         selectedItem: null,
+        selectedItemDOMNode: null,
         items: null
       };
     },
@@ -25,15 +26,10 @@ define(function(require) {
       var items = snapshot.val();
       var selectedItem = this.state.selectedItem;
 
-      if (selectedItem && !(selectedItem in items)) {
-        selectedItem = null;
-        this.refs.selection.select(null);        
-      }
+      if (selectedItem && !(selectedItem in items))
+        this.clearSelection();
 
-      this.setState({
-        selectedItem: selectedItem,
-        items: items
-      });
+      this.setState({items: items});
     },
     handleAddImage: function() {
       var url = window.prompt("Gimme an image URL.");
@@ -79,12 +75,16 @@ define(function(require) {
       this.props.firebaseRef.child(this.state.selectedItem).remove();
     },
     handleItemSelect: function(key, e) {
-      this.setState({selectedItem: key});
-      this.refs.selection.select(e.target);
+      this.setState({
+        selectedItem: key,
+        selectedItemDOMNode: e.target
+      });
     },
     clearSelection: function() {
-      this.setState({selectedItem: null});
-      this.refs.selection.select(null);
+      this.setState({
+        selectedItem: null,
+        selectedItemDOMNode: null
+      });
     },
     createItems: function() {
       var items = this.state.items || {};
@@ -118,7 +118,7 @@ define(function(require) {
             <li><button disabled={!this.state.selectedItem} className="btn btn-default" onClick={this.handleRemoveSelection}><i className="fa fa-trash"></i></button></li>
           </ul>
           {this.createItems()}
-          <SelectionFrame ref="selection"/>
+          <SelectionFrame selection={this.state.selectedItemDOMNode}/>
         </div>
       );
     }
