@@ -19,6 +19,12 @@ var require = {
       exports: "Firebase"
     }
   },
+  packages: [
+    {
+      name: "src/fonts",
+      main: "index"
+    }
+  ],
   // Grrr. http://stackoverflow.com/a/8479953
   urlArgs: "bust=" + Date.now()
 };
