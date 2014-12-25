@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "",
   "dependencies": {
-    "request": "~2.51.0"
+    "request": "~2.51.0",
+    "cheerio": "^0.18.0"
   },
   "devDependencies": {},
   "scripts": {
