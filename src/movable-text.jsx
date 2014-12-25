@@ -3,6 +3,7 @@ define(function(require) {
   var React = require('react');
   var Movable = require('./movable');
   var Fonts = require('./fonts');
+  var ColorWidget = require('jsx!./colors/widget');
 
   var AddTextButton = React.createClass({
     handleClick: function() {
@@ -13,6 +14,7 @@ define(function(require) {
         props: {
           fontFamily: 'Open Sans',
           fontSize: 18,
+          color: 'black',
           text: text,
           x: 0,
           y: 0
@@ -34,6 +36,7 @@ define(function(require) {
       var style = _.extend({
         background: 'rgba(255, 255, 255, 0.5)',
         padding: 10,
+        color: this.props.color || 'black',
         fontSize: this.props.fontSize || 18,
         fontFamily: this.props.fontFamily || 'sans-serif'
       }, this.getMovingStyle());
@@ -79,13 +82,25 @@ define(function(require) {
     }
   });
 
+  var ChangeColorField = React.createClass({
+    handleChange: function(e) {
+      this.props.firebaseRef.update({
+        color: e.target.value
+      });
+    },
+    render: function() {
+      return <ColorWidget className="form-control" value={this.props.color} onChange={this.handleChange}/>
+    }
+  });
+
   return {
     AddButton: AddTextButton,
     ContentItem: MovableText,
     SelectionActions: [
       ChangeTextField,
       ChangeFontFamilyField,
-      ChangeFontSizeField
+      ChangeFontSizeField,
+      ChangeColorField
     ]
   }
 });
