@@ -12,6 +12,7 @@ define(function(require) {
         type: 'text',
         props: {
           fontFamily: 'Open Sans',
+          fontSize: 18,
           text: text,
           x: 0,
           y: 0
@@ -33,6 +34,7 @@ define(function(require) {
       var style = _.extend({
         background: 'rgba(255, 255, 255, 0.5)',
         padding: 10,
+        fontSize: this.props.fontSize || 18,
         fontFamily: this.props.fontFamily || 'sans-serif'
       }, this.getMovingStyle());
 
@@ -66,12 +68,24 @@ define(function(require) {
     }
   });
 
+  var ChangeFontSizeField = React.createClass({
+    handleChange: function(e) {
+      this.props.firebaseRef.update({
+        fontSize: parseInt(e.target.value)
+      });
+    },
+    render: function() {
+      return <input type="range" min="8" max="60" step="1" value={this.props.fontSize} onChange={this.handleChange}/>
+    }
+  });
+
   return {
     AddButton: AddTextButton,
     ContentItem: MovableText,
     SelectionActions: [
       ChangeTextField,
-      ChangeFontFamilyField
+      ChangeFontFamilyField,
+      ChangeFontSizeField
     ]
   }
 });
