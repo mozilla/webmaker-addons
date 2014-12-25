@@ -2,6 +2,7 @@ define(function(require) {
   var _ = require('underscore');
   var React = require('react');
   var Movable = require('./movable');
+  var Fonts = require('./fonts');
 
   var AddTextButton = React.createClass({
     handleClick: function() {
@@ -10,6 +11,7 @@ define(function(require) {
       this.props.firebaseRef.push({
         type: 'text',
         props: {
+          fontFamily: 'Open Sans',
           text: text,
           x: 0,
           y: 0
@@ -49,11 +51,27 @@ define(function(require) {
     }
   });
 
+  var ChangeFontFamilyField = React.createClass({
+    handleChange: function(e) {
+      this.props.firebaseRef.update({
+        fontFamily: e.target.value
+      });
+    },
+    render: function() {
+      return <select className="form-control" value={this.props.fontFamily} onChange={this.handleChange}>
+        {Fonts.getAvailable().map(function(family) {
+          return <option key={family} value={family}>{family}</option>
+        })}
+      </select>
+    }
+  });
+
   return {
     AddButton: AddTextButton,
     ContentItem: MovableText,
     SelectionActions: [
-      ChangeTextField
+      ChangeTextField,
+      ChangeFontFamilyField
     ]
   }
 });
