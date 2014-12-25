@@ -34,8 +34,6 @@ define(function(require) {
     mixins: [Movable],
     render: function() {
       var style = _.extend({
-        background: 'rgba(255, 255, 255, 0.5)',
-        padding: 10,
         color: this.props.color || 'black',
         fontSize: this.props.fontSize || 18,
         fontFamily: this.props.fontFamily || 'sans-serif'
