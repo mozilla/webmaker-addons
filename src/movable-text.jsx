@@ -31,6 +31,7 @@ define(function(require) {
       var style = _.extend({
         background: 'rgba(255, 255, 255, 0.5)',
         padding: 10,
+        fontFamily: this.props.fontFamily || 'sans-serif'
       }, this.getMovingStyle());
 
       return <span ref="text" style={style}>{this.props.text}</span>;

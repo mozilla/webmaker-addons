@@ -2,6 +2,7 @@ define(function(require) {
   var _ = require('underscore');
   var React = require('react');
   var SelectionFrame = require('jsx!./selection-frame');
+  var Fonts = require('jsx!./fonts');
 
   var TypeMap = {
     image: require('jsx!./movable-image'),
@@ -45,7 +46,16 @@ define(function(require) {
       this.setState({items: items});
     },
     handleExport: function() {
-      var html = React.renderToStaticMarkup(this.createItems());
+      var html = React.renderToStaticMarkup(
+        <html>
+          <head>
+            {Fonts.createLinkElements(this.getFontList(), 'https:')}
+          </head>
+          <body>
+            {this.createItems()}
+          </body>
+        </html>
+      );
       window.open('data:text/html;base64,' + btoa(html));
     },
     handleItemSelect: function(key, e) {
@@ -125,12 +135,20 @@ define(function(require) {
         </ul>
       );
     },
+    getFontList: function() {
+      return _.unique(_.values(this.state.items).filter(function(item) {
+        return item.props && item.props.fontFamily;
+      }).map(function(item) {
+        return item.props.fontFamily;
+      }));
+    },
     render: function() {
       return (
         <div>
           {this.createPrimaryToolbar()}
           {this.createItems()}
           <SelectionFrame selection={this.state.selectedItemDOMNode}/>
+          <Fonts fonts={this.getFontList()}/>
           {this.createSelectionToolbar()}
         </div>
       );
