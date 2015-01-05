@@ -62,6 +62,10 @@ define(function(require) {
         </html>
       );
     },
+    handleItemsFrameClick: function(e) {
+      if (e.target === e.currentTarget)
+        this.clearSelection();
+    },
     handleItemSelect: function(key, e) {
       this.setState({
         selectedItem: key,
@@ -79,7 +83,13 @@ define(function(require) {
       var itemsRef = this.props.firebaseRef;
 
       return (
-        <div style={{position: 'relative'}}>
+        <div style={{
+          position: 'relative',
+          width: 640,
+          height: 480,
+          border: '1px dotted lightgray',
+          overflow: 'hidden'}
+        } onClick={this.handleItemsFrameClick}>
         {Object.keys(items).map(function(key) {
           var item = items[key];
           if (item && item.type && item.type in TypeMap)
