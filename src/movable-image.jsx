@@ -51,7 +51,7 @@ define(function(require) {
       });
     },
     render: function() {
-      return <input type="range" min="1" max="100" step="1" value={this.props.scale} onChange={this.handleChange}/>
+      return <input title={"Image scale: " + this.props.scale + "%"} type="range" min="1" max="100" step="1" value={this.props.scale} onChange={this.handleChange}/>
     }
   });
 
