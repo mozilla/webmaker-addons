@@ -2,6 +2,7 @@ define(function(require) {
   var React = require('react');
 
   var Modal = React.createClass({
+    mixins: [React.addons.PureRenderMixin],
     componentDidMount: function() {
       this.backdrop = document.createElement('div');
       this.backdrop.setAttribute('class', 'modal-backdrop in');

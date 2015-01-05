@@ -3,6 +3,7 @@ define(function(require) {
   var Modal = require('jsx!./modal');
 
   var Export = React.createClass({
+    mixins: [React.addons.PureRenderMixin],
     // Extremely primitive "pretty printer" that just adds line breaks
     // after every HTML tag.
     prettifyHtml: function(html) {
