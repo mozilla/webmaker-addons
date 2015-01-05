@@ -10,15 +10,39 @@ define(function(require) {
     text: require('jsx!./movable-text')
   };
 
-  var RemoveButton = React.createClass({
-    handleClick: function() {
+  var GenericButtonGroup = React.createClass({
+    handleRemove: function() {
       this.props.firebaseRef.parent().remove();
+    },
+    handleBringToFront: function() {
+      var frontItem = _.max(_.values(this.props.allItems), function(item) {
+        return item.order || 0;
+      });
+      this.props.firebaseRef.parent().update({
+        order: (frontItem.order || 0) + 1
+      });
+    },
+    handleSendToBack: function() {
+      var backItem = _.min(_.values(this.props.allItems), function(item) {
+        return item.order || 0;
+      });
+      this.props.firebaseRef.parent().update({
+        order: (backItem.order || 0) - 1
+      });
     },
     render: function() {
       return (
-        <button className="btn btn-default" onClick={this.handleClick}>
-          <i className="fa fa-trash"></i>
-        </button>
+        <div className="btn-group" role="group">
+          <button className="btn btn-default" onClick={this.handleRemove} title={"Remove selected " + this.props.itemType}>
+            <i className="fa fa-trash"></i>
+          </button>
+          <button className="btn btn-default" onClick={this.handleSendToBack} title={"Send selected " + this.props.itemType + " to back"}>
+            <i className="fa fa-mail-reply"></i>
+          </button>
+          <button className="btn btn-default" onClick={this.handleBringToFront} title={"Bring selected " + this.props.itemType + " to front"}>
+            <i className="fa fa-mail-forward"></i>
+          </button>
+        </div>
       );
     }
   });
@@ -78,6 +102,17 @@ define(function(require) {
         selectedItemDOMNode: null
       });
     },
+    getOrderedKeys: function(items) {
+      var keys = Object.keys(items);
+      keys.sort(function(a, b) {
+        a = items[a].order || 0;
+        b = items[b].order || 0;
+        if (a < b) return -1;
+        if (a > b) return 1;
+        return 0;
+      });
+      return keys;
+    },
     createItems: function() {
       var items = this.state.items || {};
       var itemsRef = this.props.firebaseRef;
@@ -90,7 +125,7 @@ define(function(require) {
           border: '1px dotted lightgray',
           overflow: 'hidden'
         }} onClick={this.handleItemsFrameClick}>
-        {Object.keys(items).map(function(key) {
+        {this.getOrderedKeys(items).map(function(key) {
           var item = items[key];
           if (item && item.type && item.type in TypeMap)
             return React.createElement(
@@ -112,17 +147,20 @@ define(function(require) {
       var key = this.state.selectedItem;
       var firebaseRef = this.props.firebaseRef.child(key).child('props');
       var item = this.state.items[key];
-      var actions = [RemoveButton]
+      var actions = [GenericButtonGroup]
         .concat(TypeMap[item.type].SelectionActions || [])
         .map(function(componentClass, i) {
           var component = React.createElement(
             componentClass,
-            _.extend({}, TypeMap[item.type].DEFAULT_PROPS, item.props, {
+            _.extend({
+              itemType: item.type
+            }, TypeMap[item.type].DEFAULT_PROPS, item.props, {
+              allItems: this.state.items,
               firebaseRef: firebaseRef
             })
           );
           return <li key={i}>{component}</li>;
-        });
+        }, this);
 
       return (
         <div className="container" style={{
