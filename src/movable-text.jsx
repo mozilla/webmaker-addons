@@ -79,7 +79,7 @@ define(function(require) {
       });
     },
     render: function() {
-      return <input type="range" min="8" max="60" step="1" value={this.props.fontSize} onChange={this.handleChange}/>
+      return <input title={"Font size: " + this.props.fontSize + "px"} type="range" min="8" max="60" step="1" value={this.props.fontSize} onChange={this.handleChange}/>
     }
   });
 
