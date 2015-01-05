@@ -95,7 +95,7 @@ define(function(require) {
           if (item && item.type && item.type in TypeMap)
             return React.createElement(
               TypeMap[item.type].ContentItem,
-              _.extend({}, item.props, {
+              _.extend({}, TypeMap[item.type].DEFAULT_PROPS, item.props, {
                 key: key,
                 onSelect: this.handleItemSelect.bind(this, key),
                 firebaseRef: itemsRef.child(key).child('props')
@@ -117,7 +117,7 @@ define(function(require) {
         .map(function(componentClass, i) {
           var component = React.createElement(
             componentClass,
-            _.extend({}, item.props, {
+            _.extend({}, TypeMap[item.type].DEFAULT_PROPS, item.props, {
               firebaseRef: firebaseRef
             })
           );

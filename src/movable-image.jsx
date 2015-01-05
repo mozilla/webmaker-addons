@@ -57,7 +57,6 @@ define(function(require) {
 
   var MovableImage = React.createClass({
     mixins: [Movable],
-    getDefaultProps: function() { return DEFAULT_PROPS; },
     render: function() {
       var scale = this.props.scale / 100;
       var width = Math.floor(this.props.width * scale);
@@ -68,6 +67,7 @@ define(function(require) {
   });
 
   return {
+    DEFAULT_PROPS: DEFAULT_PROPS,
     AddButton: AddImageButton,
     ContentItem: MovableImage,
     SelectionActions: [

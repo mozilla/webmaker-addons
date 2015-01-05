@@ -35,7 +35,6 @@ define(function(require) {
 
   var MovableText = React.createClass({
     mixins: [Movable],
-    getDefaultProps: function() { return DEFAULT_PROPS; },
     render: function() {
       var style = _.extend({
         color: this.props.color,
@@ -96,6 +95,7 @@ define(function(require) {
   });
 
   return {
+    DEFAULT_PROPS: DEFAULT_PROPS,
     AddButton: AddTextButton,
     ContentItem: MovableText,
     SelectionActions: [
