@@ -5,20 +5,23 @@ define(function(require) {
   var Fonts = require('./fonts');
   var ColorWidget = require('jsx!./colors/widget');
 
+  var DEFAULT_PROPS = {
+    fontFamily: 'Open Sans',
+    fontSize: 18,
+    color: 'black'
+  };
+
   var AddTextButton = React.createClass({
     handleClick: function() {
       var text = window.prompt("Gimme some text.");
       if (!text) return;
       this.props.firebaseRef.push({
         type: 'text',
-        props: {
-          fontFamily: 'Open Sans',
-          fontSize: 18,
-          color: 'black',
+        props: _.extend({
           text: text,
           x: 0,
           y: 0
-        }
+        }, DEFAULT_PROPS)
       });      
     },
     render: function() {
@@ -32,11 +35,12 @@ define(function(require) {
 
   var MovableText = React.createClass({
     mixins: [Movable],
+    getDefaultProps: function() { return DEFAULT_PROPS; },
     render: function() {
       var style = _.extend({
-        color: this.props.color || 'black',
-        fontSize: this.props.fontSize || 18,
-        fontFamily: this.props.fontFamily || 'sans-serif'
+        color: this.props.color,
+        fontSize: this.props.fontSize,
+        fontFamily: this.props.fontFamily
       }, this.getMovingStyle());
 
       return <span ref="text" style={style}>{this.props.text}</span>;
