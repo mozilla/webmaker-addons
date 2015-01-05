@@ -88,8 +88,8 @@ define(function(require) {
           width: 640,
           height: 480,
           border: '1px dotted lightgray',
-          overflow: 'hidden'}
-        } onClick={this.handleItemsFrameClick}>
+          overflow: 'hidden'
+        }} onClick={this.handleItemsFrameClick}>
         {Object.keys(items).map(function(key) {
           var item = items[key];
           if (item && item.type && item.type in TypeMap)
