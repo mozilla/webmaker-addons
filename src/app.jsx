@@ -3,6 +3,7 @@ define(function(require) {
   var React = require('react');
   var SelectionFrame = require('jsx!./selection-frame');
   var Fonts = require('jsx!./fonts');
+  var ExportModal = require('jsx!./export-modal');
 
   var TypeMap = {
     image: require('jsx!./movable-image'),
@@ -27,6 +28,7 @@ define(function(require) {
       return {
         selectedItem: null,
         selectedItemDOMNode: null,
+        showExportModal: false,
         items: null
       };
     },
@@ -45,8 +47,11 @@ define(function(require) {
 
       this.setState({items: items});
     },
-    handleExport: function() {
-      var html = React.renderToStaticMarkup(
+    toggleExportModal: function() {
+      this.setState({showExportModal: !this.state.showExportModal});
+    },
+    getExportHtml: function() {
+      return React.renderToStaticMarkup(
         <html>
           <head>
             {Fonts.createLinkElements(this.getFontList(), 'https:')}
@@ -56,7 +61,6 @@ define(function(require) {
           </body>
         </html>
       );
-      window.open('data:text/html;base64,' + btoa(html));
     },
     handleItemSelect: function(key, e) {
       this.setState({
@@ -129,11 +133,15 @@ define(function(require) {
             });
             return <li key={type}>{addButton}</li>;
           }, this)}
-          <li><button className="btn btn-default" onClick={this.handleExport}>
+          <li><button className="btn btn-default" onClick={this.toggleExportModal}>
             <i className="fa fa-download"></i>
           </button></li>
         </ul>
       );
+    },
+    createExportModal: function() {
+      if (!this.state.showExportModal) return null;
+      return <ExportModal html={this.getExportHtml()} onClose={this.toggleExportModal}/>;
     },
     getFontList: function() {
       return _.unique(_.values(this.state.items).filter(function(item) {
@@ -150,6 +158,7 @@ define(function(require) {
           <SelectionFrame selection={this.state.selectedItemDOMNode}/>
           <Fonts fonts={this.getFontList()}/>
           {this.createSelectionToolbar()}
+          {this.createExportModal()}
         </div>
       );
     }
