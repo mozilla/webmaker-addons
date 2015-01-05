@@ -5,7 +5,7 @@ define(function(require) {
   var ColorWidget = React.createClass({
     render: function() {
       return (
-        <select value={this.props.value} onChange={this.props.onChange} className={this.props.className}>
+        <select title={this.props.title} value={this.props.value} onChange={this.props.onChange} className={this.props.className}>
           {Object.keys(COLORS).map(function(name) {
             var info = COLORS[name];
             return <option key={name} value={name} style={{
