@@ -14,6 +14,17 @@ define(function(require) {
       var backItem = _.min(_.values(items), itemOrder);
       return backItem.order || 0;
     },
+    getOrderedKeys: function(items) {
+      var keys = Object.keys(items);
+      keys.sort(function(a, b) {
+        a = items[a].order || 0;
+        b = items[b].order || 0;
+        if (a < b) return -1;
+        if (a > b) return 1;
+        return 0;
+      });
+      return keys;
+    },
     getFontList: function(items) {
       return _.unique(_.values(items).filter(function(item) {
         return item.props && item.props.fontFamily;

@@ -68,17 +68,6 @@ define(function(require) {
         selectedItemDOMNode: null
       });
     },
-    getOrderedKeys: function(items) {
-      var keys = Object.keys(items);
-      keys.sort(function(a, b) {
-        a = items[a].order || 0;
-        b = items[b].order || 0;
-        if (a < b) return -1;
-        if (a > b) return 1;
-        return 0;
-      });
-      return keys;
-    },
     createItems: function() {
       var items = this.state.items || {};
       var itemsRef = this.props.firebaseRef;
@@ -91,7 +80,7 @@ define(function(require) {
           border: '1px dotted lightgray',
           overflow: 'hidden'
         }} onClick={this.handleItemsFrameClick}>
-        {this.getOrderedKeys(items).map(function(key) {
+        {itemUtils.getOrderedKeys(items).map(function(key) {
           var item = items[key];
           if (item && item.type && item.type in TypeMap)
             return React.createElement(
