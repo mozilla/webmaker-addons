@@ -13,6 +13,13 @@ define(function(require) {
     getMinOrder: function(items) {
       var backItem = _.min(_.values(items), itemOrder);
       return backItem.order || 0;
+    },
+    getFontList: function(items) {
+      return _.unique(_.values(items).filter(function(item) {
+        return item.props && item.props.fontFamily;
+      }).map(function(item) {
+        return item.props.fontFamily;
+      }));
     }
   };
 });

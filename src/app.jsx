@@ -5,6 +5,7 @@ define(function(require) {
   var Fonts = require('jsx!./fonts');
   var ExportModal = require('jsx!./export-modal');
   var BaseSelectionActions = require('jsx!./base-selection-actions');
+  var itemUtils = require('./item-utils');
 
   var TypeMap = {
     image: require('jsx!./movable-image'),
@@ -42,7 +43,8 @@ define(function(require) {
       return React.renderToStaticMarkup(
         <html>
           <head>
-            {Fonts.createLinkElements(this.getFontList(), 'https:')}
+            {Fonts.createLinkElements(itemUtils.getFontList(this.state.items),
+                                      'https:')}
           </head>
           <body>
             {this.createItems()}
@@ -155,20 +157,13 @@ define(function(require) {
       if (!this.state.showExportModal) return null;
       return <ExportModal html={this.getExportHtml()} onClose={this.toggleExportModal}/>;
     },
-    getFontList: function() {
-      return _.unique(_.values(this.state.items).filter(function(item) {
-        return item.props && item.props.fontFamily;
-      }).map(function(item) {
-        return item.props.fontFamily;
-      }));
-    },
     render: function() {
       return (
         <div>
           {this.createPrimaryToolbar()}
           {this.createItems()}
           <SelectionFrame selection={this.state.selectedItemDOMNode}/>
-          <Fonts fonts={this.getFontList()}/>
+          <Fonts fonts={itemUtils.getFontList(this.state.items)}/>
           {this.createSelectionToolbar()}
           {this.createExportModal()}
         </div>
