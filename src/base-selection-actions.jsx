@@ -7,17 +7,13 @@ define(function(require) {
       this.props.firebaseRef.parent().remove();
     },
     handleBringToFront: function() {
-      var frontItem = _.max(_.values(this.props.allItems), function(item) {
-        return item.order || 0;
-      });
+      var frontItem = _.max(_.values(this.props.allItems), itemOrder);
       this.props.firebaseRef.parent().update({
         order: (frontItem.order || 0) + 1
       });
     },
     handleSendToBack: function() {
-      var backItem = _.min(_.values(this.props.allItems), function(item) {
-        return item.order || 0;
-      });
+      var backItem = _.min(_.values(this.props.allItems), itemOrder);
       this.props.firebaseRef.parent().update({
         order: (backItem.order || 0) - 1
       });
@@ -38,6 +34,10 @@ define(function(require) {
       );
     }
   });
+
+  function itemOrder(item) {
+    return item.order || 0;
+  }
 
   return BaseSelectionActions;
 });
