@@ -1,0 +1,15 @@
+{
+  "name": "sticker-fun",
+  "version": "0.0.1",
+  "description": "",
+  "dependencies": {
+    "request": "~2.51.0",
+    "cheerio": "^0.18.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
