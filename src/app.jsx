@@ -68,9 +68,23 @@ define(function(require) {
         selectedItemDOMNode: null
       });
     },
-    createItems: function() {
-      var items = this.state.items || {};
+    createItem: function(key) {
+      var item = this.state.items[key];
       var itemsRef = this.props.firebaseRef;
+
+      if (item && item.type && item.type in TypeMap)
+        return React.createElement(
+          TypeMap[item.type].ContentItem,
+          _.extend({}, TypeMap[item.type].DEFAULT_PROPS, item.props, {
+            key: key,
+            onSelect: this.handleItemSelect.bind(this, key),
+            firebaseRef: itemsRef.child(key).child('props')
+          })
+        );
+      return <div key={key}><code>??? {key} ???</code></div>;
+    },
+    createItems: function() {
+      var orderedKeys = itemUtils.getOrderedKeys(this.state.items || {});
 
       return (
         <div style={{
@@ -80,19 +94,7 @@ define(function(require) {
           border: '1px dotted lightgray',
           overflow: 'hidden'
         }} onClick={this.handleItemsFrameClick}>
-        {itemUtils.getOrderedKeys(items).map(function(key) {
-          var item = items[key];
-          if (item && item.type && item.type in TypeMap)
-            return React.createElement(
-              TypeMap[item.type].ContentItem,
-              _.extend({}, TypeMap[item.type].DEFAULT_PROPS, item.props, {
-                key: key,
-                onSelect: this.handleItemSelect.bind(this, key),
-                firebaseRef: itemsRef.child(key).child('props')
-              })
-            );
-          return <div key={key}><code>??? {key} ???</code></div>;
-        }, this)}
+        {orderedKeys.map(this.createItem)}
         </div>
       );
     },
