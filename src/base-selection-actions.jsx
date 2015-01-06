@@ -1,21 +1,20 @@
 define(function(require) {
   var _ = require('underscore');
   var React = require('react');
+  var itemUtils = require('./item-utils');
 
   var BaseSelectionActions = React.createClass({
     handleRemove: function() {
       this.props.firebaseRef.parent().remove();
     },
     handleBringToFront: function() {
-      var frontItem = _.max(_.values(this.props.allItems), itemOrder);
       this.props.firebaseRef.parent().update({
-        order: (frontItem.order || 0) + 1
+        order: itemUtils.getMaxOrder(this.props.allItems) + 1
       });
     },
     handleSendToBack: function() {
-      var backItem = _.min(_.values(this.props.allItems), itemOrder);
       this.props.firebaseRef.parent().update({
-        order: (backItem.order || 0) - 1
+        order: itemUtils.getMinOrder(this.props.allItems) - 1
       });
     },
     render: function() {
@@ -34,10 +33,6 @@ define(function(require) {
       );
     }
   });
-
-  function itemOrder(item) {
-    return item.order || 0;
-  }
 
   return BaseSelectionActions;
 });
