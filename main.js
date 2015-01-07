@@ -23,4 +23,9 @@ require([
 
   // For debugging purposes only!
   window.app = app;
+
+  if (bin == "offline") {
+    Firebase.goOffline();
+    firebin.set({});
+  }
 });
