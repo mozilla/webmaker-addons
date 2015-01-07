@@ -28,7 +28,7 @@ define(function(require) {
       this.props.firebaseRef.off("value", this.handleFirebaseRefValue);
     },
     handleFirebaseRefValue: function(snapshot) {
-      var items = snapshot.val();
+      var items = snapshot.val() || {};
       var selectedItem = this.state.selectedItem;
 
       if (selectedItem && !(selectedItem in items))
