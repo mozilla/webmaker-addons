@@ -1,8 +1,9 @@
-var spawn = require('child_process').spawn;
+var exec = require('child_process').exec;
 var fs = require('fs');
+var path = require('path');
 
-var PHANTOMJS = process.env.PHANTOMJS || 'phantomjs';
-var RASTERIZE = __dirname + '/phantom-rasterize.js';
+var SLIMERJS = process.env.SLIMERJS || 'slimerjs';
+var RASTERIZE = path.join(__dirname, 'slimer-rasterize.js');
 var HTML = process.argv[2];
 
 var tempBasename = 'tempshot_' + Date.now() + '_' + Math.random();
@@ -14,18 +15,24 @@ var tempHtmlFilename = tempBasename + '.html';
 
 fs.writeFileSync(tempHtmlFilename, HTML);
 
-var phantom = spawn(PHANTOMJS, [
+var cmdline = [
+  SLIMERJS,
   RASTERIZE,
 //  dataURL,
-  tempHtmlFilename,
-  tempPngFilename,
-  '640px*480px'
-]);
+  path.join(process.cwd(), tempHtmlFilename),
+  tempPngFilename
+].join(' ');
 
-phantom.on('close', function(code) {
+process.stderr.write("Executing: " + cmdline + "\n");
+
+exec(cmdline, function(error, stdout, stderr) {
+  var code = error ? error.code : 0;
   process.stderr.write("CODE " + code + "\n");
-  if (code) return process.exit(code);
-  fs.createReadStream(tempPngFilename).pipe(process.stdout);
+  if (code) {
+    process.stderr.write("STDOUT:\n" + stdout + "\nSTDERR:\n" + stderr);
+    return process.exit(code);
+  }
+  fs.createReadStream(tempPngFilename).pipe(process.stdout)
 });
 
 process.on('exit', function() {
