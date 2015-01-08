@@ -1,3 +1,5 @@
+var BASE_FIREBASE_URL = "https://sticker-fun.firebaseio.com/";
+
 var require = {
   paths: {
     "underscore": "vendor/underscore",

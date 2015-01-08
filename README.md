@@ -15,4 +15,12 @@ your URL. This will prevent the app from syncing with Firebase.
 That said, some things that require a network connection, like
 Google Fonts, won't work.
 
+## Configuration
+
+A number of configuration defaults are contained in
+`require-config.js`. If you want to change these, make a file
+alongside it called `require-config.local.js`. Any changes you make
+to configuration variables/objects in this file will take effect
+before the app initializes.
+
   [http-server]: https://www.npmjs.org/package/http-server

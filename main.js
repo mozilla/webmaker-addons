@@ -7,7 +7,7 @@ require([
 
   bin = bin ? bin[1] : "default";
 
-  var firebin = new Firebase("https://sticker-fun.firebaseio.com/" + bin);
+  var firebin = new Firebase(window.BASE_FIREBASE_URL + bin);
 
   var app = React.render(
     React.createElement(App, {
