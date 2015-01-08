@@ -1,4 +1,5 @@
 var BASE_FIREBASE_URL = "https://sticker-fun.firebaseio.com/";
+var BASE_HTMLSHOT_URL = "http://cupcakes.hivelearningnetworks.org:3000/";
 
 var require = {
   paths: {

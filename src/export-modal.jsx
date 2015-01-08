@@ -23,7 +23,7 @@ define(function(require) {
     },
     handleExportToPNG: function(e) {
       e.preventDefault();
-      window.open('http://cupcakes.hivelearningnetworks.org:3000/shot?html=' +
+      window.open(window.BASE_HTMLSHOT_URL + 'shot?html=' +
                   encodeURIComponent(this.props.html));
     },
     createDataURL: function(html) {
