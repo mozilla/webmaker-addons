@@ -35,12 +35,9 @@ Hopefully, `hello.png` now contains a screenshot of the word
 
 If that works, run `node app.js` to start the server. You can
 set a custom port via the `PORT` environment variable, but it
-defaults to 3000. Assuming you're using that port, visit the
-following URL in your browser:
-
-```
-http://localhost:3000/shot?html=%3Ch1%3Ehello%3C%2Fh1%3E
-```
+defaults to 3000. Assuming you're using that port, visit 
+http://localhost:3000/ in your browser. Put
+`<h1>hello</h1>` into the text field and submit the form.
 
 You should see the same "hello" text you saw in the earlier
 image you generated. Awesome!
