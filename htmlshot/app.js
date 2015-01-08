@@ -1,6 +1,7 @@
 var spawn = require('child_process').spawn;
 var fs = require('fs');
 var express = require('express');
+var bodyParser = require('body-parser');
 
 var app = express();
 
@@ -12,10 +13,14 @@ app.get('/', function(req, res, next) {
   fs.createReadStream(__dirname + '/index.html').pipe(res);
 });
 
-app.get('/shot', function(req, res, next) {
-  var html = (req.query.html || '').trim();
+app.post('/shot', bodyParser.urlencoded({
+  extended: false
+}), function(req, res, next) {
+  var html = (req.body.html || '').trim();
   if (!html) return res.sendStatus(204);
   res.type('image/png');
+  res.set('Content-Disposition',
+          'attachment; filename="awesome-thing.png"');
   spawn(process.execPath, [RENDER, html]).stdout.pipe(res);
 });
 

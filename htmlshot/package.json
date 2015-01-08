@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "",
   "dependencies": {
-    "express": "4.10.7"
+    "express": "4.10.7",
+    "body-parser": "^1.10.1"
   },
   "devDependencies": {},
   "scripts": {
