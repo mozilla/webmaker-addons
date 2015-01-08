@@ -43,6 +43,7 @@ define(function(require) {
       return React.renderToStaticMarkup(
         <html>
           <head>
+            <meta charSet="utf-8"/>
             {Fonts.createLinkElements(itemUtils.getFontList(this.state.items),
                                       'https:')}
           </head>
