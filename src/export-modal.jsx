@@ -23,8 +23,7 @@ define(function(require) {
     },
     handleExportToPNG: function(e) {
       e.preventDefault();
-      window.open(window.BASE_HTMLSHOT_URL + 'shot?html=' +
-                  encodeURIComponent(this.props.html));
+      this.refs.exportToPNG.getDOMNode().submit();
     },
     createDataURL: function(html) {
       return 'data:text/html;base64,' + btoa(html);
@@ -39,6 +38,9 @@ define(function(require) {
               fontFamily: 'monospace'
             }} spellCheck="false" value={html} onChange={this.handleChange}></textarea>
             <p>Alternatively, you can also download a <a href="#" onClick={this.handleExportToPNG}>PNG</a> of your awesome thing.</p>
+            <form style={{display: 'none'}} ref="exportToPNG" method="POST" action={window.BASE_HTMLSHOT_URL + 'shot'} target="_blank">
+              <textarea name="html">{this.props.html}</textarea>
+            </form>
           </div>
         </Modal>
       );
