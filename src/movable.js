@@ -50,10 +50,21 @@ define(function(require) {
     },
     getMovingStyle: function() {
       var coords = this.isMoving() ? this.state.movingNode : this.props;
+      var cursor;
+
+      if (this.props.isEditable) {
+        if (this.props.isSelected) {
+          cursor = 'move';
+        } else {
+          cursor = 'pointer';
+        }
+      }
+
       return {
         position: 'absolute',
         top: coords.y,
-        left: coords.x
+        left: coords.x,
+        cursor: cursor
       };
     }
   };

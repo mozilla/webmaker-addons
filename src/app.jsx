@@ -48,7 +48,7 @@ define(function(require) {
                                       'https:')}
           </head>
           <body>
-            {this.createItems()}
+            {this.createItems(false)}
           </body>
         </html>
       );
@@ -69,7 +69,7 @@ define(function(require) {
         selectedItemDOMNode: null
       });
     },
-    createItem: function(key) {
+    createItem: function(isEditable, key) {
       var item = this.state.items[key];
       var itemsRef = this.props.firebaseRef;
 
@@ -78,13 +78,15 @@ define(function(require) {
           TypeMap[item.type].ContentItem,
           _.extend({}, TypeMap[item.type].DEFAULT_PROPS, item.props, {
             key: key,
+            isEditable: isEditable,
+            isSelected: isEditable && this.state.selectedItem == key,
             onSelect: this.handleItemSelect.bind(this, key),
             firebaseRef: itemsRef.child(key).child('props')
           })
         );
       return <div key={key}><code>??? {key} ???</code></div>;
     },
-    createItems: function() {
+    createItems: function(isEditable) {
       var orderedKeys = itemUtils.getOrderedKeys(this.state.items || {});
 
       return (
@@ -95,7 +97,7 @@ define(function(require) {
           border: '1px dotted lightgray',
           overflow: 'hidden'
         }} onClick={this.handleItemsFrameClick}>
-        {orderedKeys.map(this.createItem)}
+        {orderedKeys.map(this.createItem.bind(this, isEditable))}
         </div>
       );
     },
@@ -153,7 +155,7 @@ define(function(require) {
       return (
         <div>
           {this.createPrimaryToolbar()}
-          {this.createItems()}
+          {this.createItems(true)}
           <SelectionFrame selection={this.state.selectedItemDOMNode}/>
           <Fonts fonts={itemUtils.getFontList(this.state.items)}/>
           {this.createSelectionToolbar()}
