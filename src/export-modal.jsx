@@ -42,7 +42,7 @@ define(function(require) {
             }} spellCheck="false" value={html} onChange={this.handleChange}></textarea>
             <p>Alternatively, you can also download a <a href="#" onClick={this.handleExportToPNG}>PNG</a> of your awesome thing.</p>
             <form style={{display: 'none'}} ref="exportToPNG" method="POST" action={window.BASE_HTMLSHOT_URL + 'shot'} target="_blank">
-              <textarea name="html">{this.props.html}</textarea>
+              <textarea name="html" value={this.props.html} readOnly></textarea>
             </form>
           </div>
         </Modal>
