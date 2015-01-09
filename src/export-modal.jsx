@@ -1,6 +1,7 @@
 define(function(require) {
   var React = require('react');
   var Modal = require('jsx!./modal');
+  var base64 = require('./base64');
 
   var Export = React.createClass({
     mixins: [React.addons.PureRenderMixin],
@@ -26,7 +27,9 @@ define(function(require) {
       this.refs.exportToPNG.getDOMNode().submit();
     },
     createDataURL: function(html) {
-      return 'data:text/html;base64,' + btoa(html);
+      var utf8 = base64.strToUTF8Arr(html);
+      return 'data:text/html;charset=utf-8;base64,' +
+             base64.base64EncArr(utf8);
     },
     render: function() {
       var html = this.prettifyHtml(this.props.html);
