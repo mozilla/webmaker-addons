@@ -45,7 +45,7 @@ define(function(require) {
         pointerEvents: 'none',
         position: 'absolute',
         border: '1px dashed yellow',
-        boxShadow: '0 0 2px black',
+        boxShadow: '0px 0px 20px rgba(255, 255, 0, 0.5)',
         zIndex: 1000,
         top: state.top,
         left: state.left,
