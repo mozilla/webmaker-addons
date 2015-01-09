@@ -19,17 +19,30 @@ define(function(require) {
       img.setAttribute('src', url);
       // TODO: Show some kind of throbber, etc.
     },
+    scaleToFit: function(width, height, maxWidth, maxHeight) {
+      if (width <= maxWidth && height <= maxHeight)
+        return 100;
+      if (width > height) {
+        return Math.floor(maxWidth / width * 100);
+      } else {
+        return Math.floor(maxHeight / height * 100);
+      }
+    },
     handleImageLoad: function(e) {
       var img = e.target;
+      var scale = this.scaleToFit(img.naturalWidth, img.naturalHeight,
+                                  640, 480);
+
       this.props.firebaseRef.push({
         type: 'image',
-        props: _.extend({
+        props: _.extend({}, DEFAULT_PROPS, {
           url: img.src,
           height: img.naturalHeight,
           width: img.naturalWidth,
+          scale: scale,
           x: 0,
           y: 0
-        }, DEFAULT_PROPS)
+        })
       });
     },
     handleImageError: function() {
