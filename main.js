@@ -1,8 +1,9 @@
 require([
   "firebase",
   "react",
+  "src/embed-api",
   "jsx!src/app"
-], function(Firebase, React, App) {
+], function(Firebase, React, EmbedAPI, App) {
   var bin = window.location.search.match(/[&?]bin=([A-Za-z0-9\-]+)/);
 
   bin = bin ? bin[1] : "default";
@@ -30,4 +31,6 @@ require([
     Firebase.goOffline();
     firebin.set({});
   }
+
+  EmbedAPI.init(app);
 });

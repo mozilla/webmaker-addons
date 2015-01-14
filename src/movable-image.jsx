@@ -9,7 +9,9 @@ define(function(require) {
 
   var AddImageButton = React.createClass({
     handleClick: function() {
-      var url = window.prompt("Gimme an image URL.");
+      this.addImage(window.prompt("Gimme an image URL."));
+    },
+    addImage: function(url) {
       if (!url) return;
       if (!/^https?:\/\//.test(url))
         return window.alert("Invalid URL!");

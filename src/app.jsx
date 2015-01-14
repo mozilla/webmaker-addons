@@ -142,6 +142,7 @@ define(function(require) {
         <ul className="list-inline">
           {Object.keys(TypeMap).map(function(type) {
             var addButton = React.createElement(TypeMap[type].AddButton, {
+              ref: 'add-' + type + '-button',
               canvasWidth: this.props.canvasWidth,
               canvasHeight: this.props.canvasHeight,
               firebaseRef: this.props.firebaseRef
