@@ -6,7 +6,7 @@ define(function(require) {
   var ColorWidget = require('jsx!./colors/widget');
 
   var DEFAULT_PROPS = {
-    fontFamily: 'Open Sans',
+    fontFamily: window.DEFAULT_FONT,
     fontSize: 18,
     color: 'black'
   };

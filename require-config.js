@@ -10,6 +10,8 @@ var FONT_WHITELIST = [
   "Prociono"
 ];
 
+var DEFAULT_FONT = 'Open Sans';
+
 var require = {
   paths: {
     "underscore": "vendor/underscore",
