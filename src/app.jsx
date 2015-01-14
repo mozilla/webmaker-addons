@@ -8,6 +8,8 @@ define(function(require) {
   var itemUtils = require('./item-utils');
   var ScaleSizerMixin = require('./scale-sizer-mixin');
 
+  var TRANSFORM_ORIGIN = '0 0';
+
   var TypeMap = {
     image: require('jsx!./movable-image'),
     text: require('jsx!./movable-text')
@@ -29,6 +31,14 @@ define(function(require) {
     },
     componentWillMount: function() {
       this.props.firebaseRef.on("value", this.handleFirebaseRefValue);
+    },
+    componentDidMount: function() {
+      // An apparent bug on iOS 7 makes it so that transforms aren't
+      // applied if the element isn't visible at the time that
+      // the transform is set. This helps us get around that bug.
+      var transform = this.refs.transform.getDOMNode();
+      transform.style.webkitTransform = this.getTransform();
+      transform.style.webkitTransformOrigin = TRANSFORM_ORIGIN;
     },
     componentWillUnmount: function() {
       this.props.firebaseRef.off("value", this.handleFirebaseRefValue);
@@ -158,15 +168,18 @@ define(function(require) {
       if (!this.state.showExportModal) return null;
       return <ExportModal html={this.getExportHtml()} onClose={this.toggleExportModal}/>;
     },
+    getTransform: function() {
+      return 'scale(' + this.state.scale + ')';
+    },
     render: function() {
-      var transform = 'scale(' + this.state.scale + ')';
+      var transform = this.getTransform();
       var scaleTransform = {
         transform: transform,
         webkitTransform: transform,
         mozTransform: transform,
-        transformOrigin: '0 0',
-        webkitTransformOrigin: '0 0',
-        mozTransformOrigin: '0 0'
+        transformOrigin: TRANSFORM_ORIGIN,
+        webkitTransformOrigin: TRANSFORM_ORIGIN,
+        mozTransformOrigin: TRANSFORM_ORIGIN
       };
 
       return (
@@ -176,7 +189,7 @@ define(function(require) {
             height: this.state.height * this.state.scale,
             overflow: 'hidden'
           }}>
-            <div style={scaleTransform}>
+            <div ref="transform" style={scaleTransform}>
               {this.createItems(true)}
             </div>
           </div>
