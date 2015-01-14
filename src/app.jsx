@@ -33,15 +33,22 @@ define(function(require) {
       this.props.firebaseRef.on("value", this.handleFirebaseRefValue);
     },
     componentDidMount: function() {
+      this.forceTransformOnIos();
+    },
+    componentDidUpdate: function() {
+      this.forceTransformOnIos();
+    },
+    componentWillUnmount: function() {
+      this.props.firebaseRef.off("value", this.handleFirebaseRefValue);
+    },
+    forceTransformOnIos: function() {
       // An apparent bug on iOS 7 makes it so that transforms aren't
       // applied if the element isn't visible at the time that
       // the transform is set. This helps us get around that bug.
       var transform = this.refs.transform.getDOMNode();
+      if (!('webkitTransform' in transform.style)) return;
       transform.style.webkitTransform = this.getTransform();
       transform.style.webkitTransformOrigin = TRANSFORM_ORIGIN;
-    },
-    componentWillUnmount: function() {
-      this.props.firebaseRef.off("value", this.handleFirebaseRefValue);
     },
     handleFirebaseRefValue: function(snapshot) {
       var items = snapshot.val() || {};
