@@ -101,7 +101,7 @@ define(function(require) {
           height: this.props.canvasHeight,
           border: '1px dotted lightgray',
           overflow: 'hidden'
-        }} onClick={this.handleItemsFrameClick}>
+        }} onClick={this.handleItemsFrameClick} onTouchStart={this.handleItemsFrameClick}>
         {orderedKeys.map(this.createItem.bind(this, isEditable))}
         </div>
       );
