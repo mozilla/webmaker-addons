@@ -28,8 +28,8 @@ define(function(require) {
         this.props.onSelect(e);
       this.setState({
         movingNode: {
-          x: this.props.x + e.deltaX,
-          y: this.props.y + e.deltaY
+          x: this.props.x + e.deltaX * this.props.pointerScale,
+          y: this.props.y + e.deltaY * this.props.pointerScale
         }
       });
     },

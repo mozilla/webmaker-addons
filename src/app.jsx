@@ -6,6 +6,7 @@ define(function(require) {
   var ExportModal = require('jsx!./export-modal');
   var BaseSelectionActions = require('jsx!./base-selection-actions');
   var itemUtils = require('./item-utils');
+  var ScaleSizerMixin = require('./scale-sizer-mixin');
 
   var TypeMap = {
     image: require('jsx!./movable-image'),
@@ -13,8 +14,13 @@ define(function(require) {
   };
 
   var App = React.createClass({
+    mixins: [ScaleSizerMixin],
     getInitialState: function() {
       return {
+        scale: 1,
+        scaleIdealWidth: window.CANVAS_WIDTH,
+        width: window.CANVAS_WIDTH,
+        height: window.CANVAS_HEIGHT,
         selectedItem: null,
         selectedItemDOMNode: null,
         showExportModal: false,
@@ -78,6 +84,7 @@ define(function(require) {
           TypeMap[item.type].ContentItem,
           _.extend({}, TypeMap[item.type].DEFAULT_PROPS, item.props, {
             key: key,
+            pointerScale: 1 / this.state.scale,
             isEditable: isEditable,
             isSelected: isEditable && this.state.selectedItem == key,
             onSelect: this.handleItemSelect.bind(this, key),
@@ -92,8 +99,8 @@ define(function(require) {
       return (
         <div style={{
           position: 'relative',
-          width: 640,
-          height: 480,
+          width: this.state.width,
+          height: this.state.height,
           border: '1px dotted lightgray',
           overflow: 'hidden'
         }} onClick={this.handleItemsFrameClick}>
@@ -152,10 +159,27 @@ define(function(require) {
       return <ExportModal html={this.getExportHtml()} onClose={this.toggleExportModal}/>;
     },
     render: function() {
+      var transform = 'scale(' + this.state.scale + ')';
+      var scaleTransform = {
+        transform: transform,
+        webkitTransform: transform,
+        mozTransform: transform,
+        transformOrigin: '0 0',
+        webkitTransformOrigin: '0 0',
+        mozTransformOrigin: '0 0'
+      };
+
       return (
         <div>
           {this.createPrimaryToolbar()}
-          {this.createItems(true)}
+          <div ref="scaleContainer" style={{
+            height: this.state.height * this.state.scale,
+            overflow: 'hidden'
+          }}>
+            <div style={scaleTransform}>
+              {this.createItems(true)}
+            </div>
+          </div>
           <SelectionFrame selection={this.state.selectedItemDOMNode}/>
           <Fonts fonts={itemUtils.getFontList(this.state.items)}/>
           {this.createSelectionToolbar()}

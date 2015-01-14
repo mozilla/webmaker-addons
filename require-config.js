@@ -11,6 +11,8 @@ var FONT_WHITELIST = [
 ];
 
 var DEFAULT_FONT = 'Open Sans';
+var CANVAS_WIDTH = 640;
+var CANVAS_HEIGHT = 480;
 
 var require = {
   paths: {
