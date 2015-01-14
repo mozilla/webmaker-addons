@@ -12,9 +12,8 @@ define(function(require) {
       var node = this.getDOMNode();
       var hammer = this.hammer = new Hammer(node);
       hammer.on('tap', this.handleTap);
-      hammer.on('panstart', this.handlePanStartAndMove);
-      hammer.on('panmove', this.handlePanStartAndMove);
-      hammer.on('panend', this.handlePanEnd);
+      hammer.on('panstart', this.handlePanStart);
+      hammer.on('panmove', this.handlePanMove);
       node.addEventListener('mousedown', function(e) {
         // Don't let text be selected, don't invoke
         // Firefox's default image dragging behavior, etc.
@@ -28,33 +27,26 @@ define(function(require) {
     handleTap: function(e) {
       this.props.onSelect(e);
     },
-    handlePanStartAndMove: function(e) {
-      if (e.type == 'panstart')
-        this.props.onSelect(e);
+    handlePanStart: function(e) {
+      this.props.onSelect(e);
       this.setState({
-        movingNode: {
-          x: Math.floor(this.props.x + e.deltaX * this.props.pointerScale),
-          y: Math.floor(this.props.y + e.deltaY * this.props.pointerScale)
-        }
+        movingStartX: this.props.x,
+        movingStartY: this.props.y
       });
     },
-    handlePanEnd: function(e) {
-      var movingNode = this.state.movingNode;
+    handlePanMove: function(e) {
       this.props.firebaseRef.update({
-        x: movingNode.x,
-        y: movingNode.y
+        x: Math.floor(this.state.movingStartX +
+                      e.deltaX * this.props.pointerScale),
+        y: Math.floor(this.state.movingStartY +
+                      e.deltaY * this.props.pointerScale)
       });
-      this.setState({movingNode: null});
     },
     componentWillUnmount: function() {
       this.hammer.destroy();
       this.hammer = null;
     },
-    isMoving: function() {
-      return this.state && this.state.movingNode;
-    },
     getMovingStyle: function() {
-      var coords = this.isMoving() ? this.state.movingNode : this.props;
       var cursor;
 
       if (this.props.isEditable) {
@@ -67,8 +59,8 @@ define(function(require) {
 
       return {
         position: 'absolute',
-        top: coords.y,
-        left: coords.x,
+        top: this.props.y,
+        left: this.props.x,
         cursor: cursor
       };
     }
