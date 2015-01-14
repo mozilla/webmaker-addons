@@ -15,12 +15,13 @@ define(function(require) {
       hammer.on('panstart', this.handlePanStartAndMove);
       hammer.on('panmove', this.handlePanStartAndMove);
       hammer.on('panend', this.handlePanEnd);
-      node.addEventListener('touchstart', function(e) {
-        // Don't let the page scroll.
+      node.addEventListener('mousedown', function(e) {
+        // Don't let text be selected, don't invoke
+        // Firefox's default image dragging behavior, etc.
         e.preventDefault();
       });
-      node.addEventListener('dragstart', function(e) {
-        // Fix to make image dragging work on Firefox.
+      node.addEventListener('touchstart', function(e) {
+        // Don't let the page scroll.
         e.preventDefault();
       });
     },
