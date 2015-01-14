@@ -31,7 +31,8 @@ define(function(require) {
     handleImageLoad: function(e) {
       var img = e.target;
       var scale = this.scaleToFit(img.naturalWidth, img.naturalHeight,
-                                  window.CANVAS_WIDTH, window.CANVAS_HEIGHT);
+                                  this.props.canvasWidth,
+                                  this.props.canvasHeight);
 
       this.props.firebaseRef.push({
         type: 'image',

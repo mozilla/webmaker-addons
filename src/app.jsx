@@ -16,8 +16,6 @@ define(function(require) {
   var App = React.createClass({
     getInitialState: function() {
       return {
-        width: window.CANVAS_WIDTH,
-        height: window.CANVAS_HEIGHT,
         selectedItem: null,
         selectedItemDOMNode: null,
         showExportModal: false,
@@ -99,8 +97,8 @@ define(function(require) {
       return (
         <div style={{
           position: 'relative',
-          width: this.state.width,
-          height: this.state.height,
+          width: this.props.canvasWidth,
+          height: this.props.canvasHeight,
           border: '1px dotted lightgray',
           overflow: 'hidden'
         }} onClick={this.handleItemsFrameClick}>
@@ -144,6 +142,8 @@ define(function(require) {
         <ul className="list-inline">
           {Object.keys(TypeMap).map(function(type) {
             var addButton = React.createElement(TypeMap[type].AddButton, {
+              canvasWidth: this.props.canvasWidth,
+              canvasHeight: this.props.canvasHeight,
               firebaseRef: this.props.firebaseRef
             });
             return <li key={type}>{addButton}</li>;
@@ -162,7 +162,7 @@ define(function(require) {
       return (
         <div>
           {this.createPrimaryToolbar()}
-          <ScaleSizer ref="scaleSizer" width={this.state.width} height={this.state.height}>
+          <ScaleSizer ref="scaleSizer" width={this.props.canvasWidth} height={this.props.canvasHeight}>
             {this.createItems(true)}
           </ScaleSizer>
           <SelectionFrame selection={this.state.selectedItemDOMNode}/>

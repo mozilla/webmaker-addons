@@ -11,7 +11,9 @@ require([
 
   var app = React.render(
     React.createElement(App, {
-      firebaseRef: firebin
+      firebaseRef: firebin,
+      canvasWidth: window.CANVAS_WIDTH,
+      canvasHeight: window.CANVAS_HEIGHT
     }),
     document.getElementById('app')
   );
