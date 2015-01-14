@@ -2,6 +2,9 @@ define(function(require) {
   var React = require('react');
   var FONTS = Object.freeze(JSON.parse(require('text!./font-list.json')));
 
+  if (window.FONT_WHITELIST)
+    FONTS = window.FONT_WHITELIST;
+
   var Fonts = React.createClass({
     statics: {
       getAvailable: function() {

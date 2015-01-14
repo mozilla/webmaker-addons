@@ -1,6 +1,15 @@
 var BASE_FIREBASE_URL = "https://sticker-fun.firebaseio.com/";
 var BASE_HTMLSHOT_URL = "http://cupcakes.hivelearningnetworks.org:3000/";
 
+// Set this to null to make *all* fonts available.
+var FONT_WHITELIST = [
+  "Knewave",
+  "Londrina Sketch",
+  "Open Sans",
+  "Pacifico",
+  "Prociono"
+];
+
 var require = {
   paths: {
     "underscore": "vendor/underscore",
