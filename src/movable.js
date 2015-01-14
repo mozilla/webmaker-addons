@@ -37,9 +37,9 @@ define(function(require) {
     handlePanMove: function(e) {
       this.props.firebaseRef.update({
         x: Math.floor(this.state.movingStartX +
-                      e.deltaX * this.props.pointerScale),
+                      e.deltaX * this.props.getPointerScale()),
         y: Math.floor(this.state.movingStartY +
-                      e.deltaY * this.props.pointerScale)
+                      e.deltaY * this.props.getPointerScale())
       });
     },
     componentWillUnmount: function() {

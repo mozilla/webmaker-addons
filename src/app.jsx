@@ -6,9 +6,7 @@ define(function(require) {
   var ExportModal = require('jsx!./export-modal');
   var BaseSelectionActions = require('jsx!./base-selection-actions');
   var itemUtils = require('./item-utils');
-  var ScaleSizerMixin = require('./scale-sizer-mixin');
-
-  var TRANSFORM_ORIGIN = '0 0';
+  var ScaleSizer = require('jsx!./scale-sizer');
 
   var TypeMap = {
     image: require('jsx!./movable-image'),
@@ -16,11 +14,8 @@ define(function(require) {
   };
 
   var App = React.createClass({
-    mixins: [ScaleSizerMixin],
     getInitialState: function() {
       return {
-        scale: 1,
-        scaleIdealWidth: window.CANVAS_WIDTH,
         width: window.CANVAS_WIDTH,
         height: window.CANVAS_HEIGHT,
         selectedItem: null,
@@ -32,23 +27,8 @@ define(function(require) {
     componentWillMount: function() {
       this.props.firebaseRef.on("value", this.handleFirebaseRefValue);
     },
-    componentDidMount: function() {
-      this.forceTransformOnIos();
-    },
-    componentDidUpdate: function() {
-      this.forceTransformOnIos();
-    },
     componentWillUnmount: function() {
       this.props.firebaseRef.off("value", this.handleFirebaseRefValue);
-    },
-    forceTransformOnIos: function() {
-      // An apparent bug on iOS 7 makes it so that transforms aren't
-      // applied if the element isn't visible at the time that
-      // the transform is set. This helps us get around that bug.
-      var transform = this.refs.transform.getDOMNode();
-      if (!('webkitTransform' in transform.style)) return;
-      transform.style.webkitTransform = this.getTransform();
-      transform.style.webkitTransformOrigin = TRANSFORM_ORIGIN;
     },
     handleFirebaseRefValue: function(snapshot) {
       var items = snapshot.val() || {};
@@ -92,6 +72,9 @@ define(function(require) {
         selectedItemDOMNode: null
       });
     },
+    getPointerScale: function() {
+      return this.refs.scaleSizer.getPointerScale();
+    },
     createItem: function(isEditable, key) {
       var item = this.state.items[key];
       var itemsRef = this.props.firebaseRef;
@@ -101,7 +84,7 @@ define(function(require) {
           TypeMap[item.type].ContentItem,
           _.extend({}, TypeMap[item.type].DEFAULT_PROPS, item.props, {
             key: key,
-            pointerScale: 1 / this.state.scale,
+            getPointerScale: this.getPointerScale,
             isEditable: isEditable,
             isSelected: isEditable && this.state.selectedItem == key,
             onSelect: this.handleItemSelect.bind(this, key),
@@ -175,31 +158,13 @@ define(function(require) {
       if (!this.state.showExportModal) return null;
       return <ExportModal html={this.getExportHtml()} onClose={this.toggleExportModal}/>;
     },
-    getTransform: function() {
-      return 'scale(' + this.state.scale + ')';
-    },
     render: function() {
-      var transform = this.getTransform();
-      var scaleTransform = {
-        transform: transform,
-        webkitTransform: transform,
-        mozTransform: transform,
-        transformOrigin: TRANSFORM_ORIGIN,
-        webkitTransformOrigin: TRANSFORM_ORIGIN,
-        mozTransformOrigin: TRANSFORM_ORIGIN
-      };
-
       return (
         <div>
           {this.createPrimaryToolbar()}
-          <div ref="scaleContainer" style={{
-            height: this.state.height * this.state.scale,
-            overflow: 'hidden'
-          }}>
-            <div ref="transform" style={scaleTransform}>
-              {this.createItems(true)}
-            </div>
-          </div>
+          <ScaleSizer ref="scaleSizer" width={this.state.width} height={this.state.height}>
+            {this.createItems(true)}
+          </ScaleSizer>
           <SelectionFrame selection={this.state.selectedItemDOMNode}/>
           <Fonts fonts={itemUtils.getFontList(this.state.items)}/>
           {this.createSelectionToolbar()}
