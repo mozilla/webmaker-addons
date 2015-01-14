@@ -33,8 +33,8 @@ define(function(require) {
         this.props.onSelect(e);
       this.setState({
         movingNode: {
-          x: this.props.x + e.deltaX * this.props.pointerScale,
-          y: this.props.y + e.deltaY * this.props.pointerScale
+          x: Math.floor(this.props.x + e.deltaX * this.props.pointerScale),
+          y: Math.floor(this.props.y + e.deltaY * this.props.pointerScale)
         }
       });
     },
