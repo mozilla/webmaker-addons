@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Maker</title>
+    
+    <style>
+        section, div { position:relative; }        
+        .hidden { display:none; }
+        
+        button { color:white; display:inline-block; font-size:1em; border:0; background:none; }
+        button:hover { background:rgba(255,255,255,0.2); }  
+
+        nav button, #textAdd button { height:4em; width:4em; vertical-align: middle; } 
+        #colors button { height:4em; width:4em; margin:0 .25em; border-radius:50%; }
+        #fonts button { display:block; width:100%; height:20%; /* height = 100% / fonts.length */  }
+        
+    </style>
+    
+</head>
+<body>
+
+    <div id="sidebar" style="position:absolute; top:0; right:0; width:378px; height:100%; background:#666;">
+        <header>
+            <nav style="height:64px; background:#000;">
+                <button style="">x</button>
+                <section style="float:right;"><button>Add Text</button>
+                    <button>Share</button>
+                </section>
+            </nav>
+        </header>
+    
+        <section style="height:270px; margin:2em 0; padding:.5em 0; background:#333;">
+            <div style="height:100%; border:1px dashed #fff; margin:0 .5em;"></div>            
+            <div id="fonts" style="position:absolute; top:0; left:50%; width:200px; margin-left:-100px; height:100%; background:rgba(0,0,0,0.5);  ">
+                <button>Knewave</button>
+                <button>Londrina Sketch</button>
+                <button>Open Sans</button>
+                <button>Pacifico</button>
+                <button>Prociono</button>
+            </div>
+            <div id="colors" style="font-size:.5em; text-align:center; margin-top:-1em;">
+                <button style="background:#fff;"></button>
+                <button style="background:#000;"></button>
+                <button style="background:rgb(213,37,213);"></button>
+                <button style="background:rgb(38,163,213);"></button>
+                <button style="background:rgb(145,210,79);"></button>
+                <button style="background:rgb(234,220,41);"></button>
+                <button style="background:rgb(242,162,32);"></button>
+                <button style="background:rgb(232,74,27);"></button>
+            </div>
+            <div id="textAdd" style="position:absolute; top:40%; width:100%; padding:1em 0; text-align:center; background:rgba(0,0,0,0.5);">
+                <button style="float:left">x</button>
+                <button style="float:right">ok</button>
+                <div style="font-size:2em; height:1.5em; line-height:1.5em; margin:.25em 2em; background:rgba(255,255,255,0.95);" contenteditable="true">gladys</div>
+            </div>
+        </section>
+    
+        <section>
+            <nav style="text-align:center; background:#999;">
+                <button style="">Color</button>
+                <button style="">Font</button>
+            </nav>
+        </section>
+        
+        <footer style="position:absolute; bottom:0; width:100%;">
+            <nav style="text-align:center;">
+                <button style="">Trash</button>
+            </nav>        
+        </footer>
+        
+    </div>
+</body>
+</html>
