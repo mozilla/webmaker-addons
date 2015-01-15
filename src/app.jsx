@@ -66,21 +66,38 @@ define(function(require) {
     getPointerScale: function() {
       return this.refs.scaleSizer.getPointerScale();
     },
-    createExportModal: function() {
-      if (!this.state.showExportModal) return null;
-      return <ExportModal html={this.getExportHtml()} onClose={this.toggleExportModal}/>;
-    },
     render: function() {
       return (
         <div>
-          <PrimaryToolbar ref="primaryToolbar" canvasWidth={this.props.canvasWidth} canvasHeight={this.props.canvasHeight} firebaseRef={this.props.firebaseRef} onExport={this.toggleExportModal}/>
-          <ScaleSizer ref="scaleSizer" width={this.props.canvasWidth} height={this.props.canvasHeight}>
-            <Canvas isEditable items={this.state.items} selectedItem={this.state.selectedItem} canvasWidth={this.props.canvasWidth} canvasHeight={this.props.canvasHeight} firebaseRef={this.props.firebaseRef} onClearSelection={this.clearSelection} onItemSelect={this.handleItemSelect} getPointerScale={this.getPointerScale}/>
+          <PrimaryToolbar ref="primaryToolbar"
+           canvasWidth={this.props.canvasWidth}
+           canvasHeight={this.props.canvasHeight}
+           firebaseRef={this.props.firebaseRef}
+           onExport={this.toggleExportModal}/>
+          <ScaleSizer ref="scaleSizer"
+           width={this.props.canvasWidth}
+           height={this.props.canvasHeight}>
+            <Canvas isEditable
+             items={this.state.items}
+             selectedItem={this.state.selectedItem}
+             canvasWidth={this.props.canvasWidth}
+             canvasHeight={this.props.canvasHeight}
+             firebaseRef={this.props.firebaseRef}
+             onClearSelection={this.clearSelection}
+             onItemSelect={this.handleItemSelect}
+             getPointerScale={this.getPointerScale}/>
           </ScaleSizer>
           <SelectionFrame selection={this.state.selectedItemDOMNode}/>
           <Fonts fonts={itemUtils.getFontList(this.state.items)}/>
-          <SelectionToolbar selectedItem={this.state.selectedItem} items={this.state.items} firebaseRef={this.props.firebaseRef}/>
-          {this.createExportModal()}
+          <SelectionToolbar
+           selectedItem={this.state.selectedItem}
+           items={this.state.items}
+           firebaseRef={this.props.firebaseRef}/>
+          {this.state.showExportModal
+           ? <ExportModal
+              html={this.getExportHtml()}
+              onClose={this.toggleExportModal}/>
+           : null}
         </div>
       );
     }
