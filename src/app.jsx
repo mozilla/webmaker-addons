@@ -28,9 +28,20 @@ define(function(require) {
     },
     handleKeypress: function(code) {
       if (!this.state.selectedItem) return;
+
+      var selectedItem = this.getSelectedItem();
+
       if (code == this.KEY_BACKSPACE) {
         this.refs.selectionToolbar.refs.baseSelectionActions
           .handleRemove();
+      } else if (code == this.KEY_ARROW_UP) {
+        selectedItem.nudgeUp();
+      } else if (code == this.KEY_ARROW_DOWN) {
+        selectedItem.nudgeDown();
+      } else if (code == this.KEY_ARROW_LEFT) {
+        selectedItem.nudgeLeft();
+      } else if (code == this.KEY_ARROW_RIGHT) {
+        selectedItem.nudgeRight();
       }
     },
     handleFirebaseRefValue: function(snapshot) {
