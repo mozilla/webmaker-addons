@@ -53,7 +53,12 @@ define(function(require) {
       });
     },
     render: function() {
-      return <input title="Text to display" type="text" value={this.props.text} onChange={this.handleChange} placeholder="text"/>;
+      return (
+        <div className="input-group">
+          <label>Text</label>
+          <input title="Text to display" type="text" value={this.props.text} onChange={this.handleChange} placeholder="text"/>
+        </div>
+      );
     }
   });
 
@@ -64,11 +69,16 @@ define(function(require) {
       });
     },
     render: function() {
-      return <select title="Font family" value={this.props.fontFamily} onChange={this.handleChange}>
-        {Fonts.getAvailable().map(function(family) {
-          return <option key={family} value={family}>{family}</option>
-        })}
-      </select>
+      return (
+        <div className="input-group">
+          <label>Font</label>
+          <select title="Font family" value={this.props.fontFamily} onChange={this.handleChange}>
+            {Fonts.getAvailable().map(function(family) {
+              return <option key={family} value={family}>{family}</option>
+            })}
+          </select>
+        </div>
+      );
     }
   });
 
@@ -80,7 +90,7 @@ define(function(require) {
     },
     render: function() {
       return (
-        <div className="range-slider">
+        <div className="input-group">
           <label>Font Size</label>
           <input title={"Font size: " + this.props.fontSize + "px"} type="range" min="8" max="100" step="1" value={this.props.fontSize} onChange={this.handleChange}/>
           <span className="text">{this.props.fontSize + "px"}</span>
