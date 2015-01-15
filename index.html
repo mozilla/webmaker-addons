@@ -90,21 +90,27 @@ nav button {
   bottom: 0;
   left: 0;
   width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .selection-toolbar button {
-  height: 3em;
-  width: 3em;
+  height: 48px;
+  width: 48px;
   vertical-align: middle;
 }
 
 .selection-toolbar input,
 .selection-toolbar select {
-  height: 3em;
+  height: 48px;
+  padding: 4px;
   vertical-align: middle;
   font-family: inherit;
   background: #f0f0f0;
-  margin: 0 5px;
+  margin: 4px;
+  flex-grow: 1;
 }
 </style>
 <title>Image Maker</title>
