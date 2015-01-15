@@ -79,7 +79,13 @@ define(function(require) {
       });
     },
     render: function() {
-      return <input title={"Font size: " + this.props.fontSize + "px"} type="range" min="8" max="100" step="1" value={this.props.fontSize} onChange={this.handleChange}/>
+      return (
+        <div className="range-slider">
+          <label>Font Size</label>
+          <input title={"Font size: " + this.props.fontSize + "px"} type="range" min="8" max="100" step="1" value={this.props.fontSize} onChange={this.handleChange}/>
+          <span className="text">{this.props.fontSize + "px"}</span>
+        </div>
+      );
     }
   });
 
