@@ -6,9 +6,9 @@ define(function(require) {
   var ExportModal = require('jsx!./export-modal');
   var itemUtils = require('./item-utils');
   var ScaleSizer = require('jsx!./scale-sizer');
-  var TypeMap = require('./type-map');
   var PrimaryToolbar = require('jsx!./primary-toolbar');
   var SelectionToolbar = require('jsx!./selection-toolbar');
+  var Canvas = require('jsx!./canvas');
 
   var App = React.createClass({
     getInitialState: function() {
@@ -46,14 +46,10 @@ define(function(require) {
                                       'https:')}
           </head>
           <body>
-            {this.createItems(false)}
+            <Canvas items={this.state.items} canvasWidth={this.props.canvasWidth} canvasHeight={this.props.canvasHeight}/>
           </body>
         </html>
       );
-    },
-    handleItemsFrameClick: function(e) {
-      if (e.target === e.currentTarget)
-        this.clearSelection();
     },
     handleItemSelect: function(key, e) {
       this.setState({
@@ -70,39 +66,6 @@ define(function(require) {
     getPointerScale: function() {
       return this.refs.scaleSizer.getPointerScale();
     },
-    createItem: function(isEditable, key) {
-      var item = this.state.items[key];
-      var itemsRef = this.props.firebaseRef;
-
-      if (item && item.type && item.type in TypeMap)
-        return React.createElement(
-          TypeMap[item.type].ContentItem,
-          _.extend({}, TypeMap[item.type].DEFAULT_PROPS, item.props, {
-            key: key,
-            getPointerScale: this.getPointerScale,
-            isEditable: isEditable,
-            isSelected: isEditable && this.state.selectedItem == key,
-            onSelect: this.handleItemSelect.bind(this, key),
-            firebaseRef: itemsRef.child(key).child('props')
-          })
-        );
-      return <div key={key}><code>??? {key} ???</code></div>;
-    },
-    createItems: function(isEditable) {
-      var orderedKeys = itemUtils.getOrderedKeys(this.state.items || {});
-
-      return (
-        <div style={{
-          position: 'relative',
-          width: this.props.canvasWidth,
-          height: this.props.canvasHeight,
-          border: '1px dotted lightgray',
-          overflow: 'hidden'
-        }} onClick={this.handleItemsFrameClick} onTouchStart={this.handleItemsFrameClick}>
-        {orderedKeys.map(this.createItem.bind(this, isEditable))}
-        </div>
-      );
-    },
     createExportModal: function() {
       if (!this.state.showExportModal) return null;
       return <ExportModal html={this.getExportHtml()} onClose={this.toggleExportModal}/>;
@@ -112,7 +75,7 @@ define(function(require) {
         <div>
           <PrimaryToolbar ref="primaryToolbar" canvasWidth={this.props.canvasWidth} canvasHeight={this.props.canvasHeight} firebaseRef={this.props.firebaseRef} onExport={this.toggleExportModal}/>
           <ScaleSizer ref="scaleSizer" width={this.props.canvasWidth} height={this.props.canvasHeight}>
-            {this.createItems(true)}
+            <Canvas isEditable items={this.state.items} selectedItem={this.state.selectedItem} canvasWidth={this.props.canvasWidth} canvasHeight={this.props.canvasHeight} firebaseRef={this.props.firebaseRef} onClearSelection={this.clearSelection} onItemSelect={this.handleItemSelect} getPointerScale={this.getPointerScale}/>
           </ScaleSizer>
           <SelectionFrame selection={this.state.selectedItemDOMNode}/>
           <Fonts fonts={itemUtils.getFontList(this.state.items)}/>

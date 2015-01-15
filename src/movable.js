@@ -4,7 +4,6 @@ define(function(require) {
 
   var Movable = {
     propTypes: {
-      firebaseRef: React.PropTypes.object.isRequired,
       x: React.PropTypes.number.isRequired,
       y: React.PropTypes.number.isRequired,
     },
