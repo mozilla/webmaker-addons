@@ -7,11 +7,8 @@ define(function(require) {
   var BaseSelectionActions = require('jsx!./base-selection-actions');
   var itemUtils = require('./item-utils');
   var ScaleSizer = require('jsx!./scale-sizer');
-
-  var TypeMap = {
-    image: require('jsx!./movable-image'),
-    text: require('jsx!./movable-text')
-  };
+  var TypeMap = require('./type-map');
+  var PrimaryToolbar = require('jsx!./primary-toolbar');
 
   var App = React.createClass({
     getInitialState: function() {
@@ -137,24 +134,6 @@ define(function(require) {
         </div>
       );
     },
-    createPrimaryToolbar: function() {
-      return (
-        <ul className="list-inline">
-          {Object.keys(TypeMap).map(function(type) {
-            var addButton = React.createElement(TypeMap[type].AddButton, {
-              ref: 'add-' + type + '-button',
-              canvasWidth: this.props.canvasWidth,
-              canvasHeight: this.props.canvasHeight,
-              firebaseRef: this.props.firebaseRef
-            });
-            return <li key={type}>{addButton}</li>;
-          }, this)}
-          <li><button className="btn btn-default" onClick={this.toggleExportModal}>
-            <i className="fa fa-download"></i>
-          </button></li>
-        </ul>
-      );
-    },
     createExportModal: function() {
       if (!this.state.showExportModal) return null;
       return <ExportModal html={this.getExportHtml()} onClose={this.toggleExportModal}/>;
@@ -162,7 +141,7 @@ define(function(require) {
     render: function() {
       return (
         <div>
-          {this.createPrimaryToolbar()}
+          <PrimaryToolbar ref="primaryToolbar" canvasWidth={this.props.canvasWidth} canvasHeight={this.props.canvasHeight} firebaseRef={this.props.firebaseRef} onExport={this.toggleExportModal}/>
           <ScaleSizer ref="scaleSizer" width={this.props.canvasWidth} height={this.props.canvasHeight}>
             {this.createItems(true)}
           </ScaleSizer>

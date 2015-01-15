@@ -3,7 +3,8 @@ define(function(require) {
     init: function init(app) {
       if (window.embedAPI) return;
 
-      var addImageButton = app.refs['add-image-button'];
+      var addImageButton = app.refs.primaryToolbar
+        .refs['add-image-button'];
 
       var embedAPI = {
         getImagePlacement: function(width, height) {
