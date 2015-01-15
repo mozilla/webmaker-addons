@@ -19,6 +19,10 @@ var CANVAS_HEIGHT = 480;
 // related to selections.
 var DEBUG_AUTOSELECT_FIRST_ITEM = false;
 
+// Changing this to true will automatically show the export
+// modal on page load, which is useful for debugging it.
+var DEBUG_AUTOSHOW_EXPORT_MODAL = false;
+
 var require = {
   paths: {
     "underscore": "vendor/underscore",

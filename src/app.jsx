@@ -16,7 +16,7 @@ define(function(require) {
     getInitialState: function() {
       return {
         selectedItem: null,
-        showExportModal: false,
+        showExportModal: window.DEBUG_AUTOSHOW_EXPORT_MODAL,
         items: null
       };
     },
