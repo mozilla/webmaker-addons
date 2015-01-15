@@ -21,7 +21,10 @@ define(function(require) {
       img.setAttribute('src', url);
       // TODO: Show some kind of throbber, etc.
     },
-    scaleToFit: function(width, height, maxWidth, maxHeight) {
+    scaleToFit: function(width, height) {
+      var maxWidth = this.props.canvasWidth;
+      var maxHeight = this.props.canvasHeight;
+
       if (width <= maxWidth && height <= maxHeight)
         return 100;
       if (width > height) {
@@ -32,9 +35,7 @@ define(function(require) {
     },
     handleImageLoad: function(e) {
       var img = e.target;
-      var scale = this.scaleToFit(img.naturalWidth, img.naturalHeight,
-                                  this.props.canvasWidth,
-                                  this.props.canvasHeight);
+      var scale = this.scaleToFit(img.naturalWidth, img.naturalHeight);
 
       this.props.firebaseRef.push({
         type: 'image',

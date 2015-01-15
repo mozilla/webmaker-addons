@@ -8,6 +8,7 @@ html, body {
   margin: 0;
   padding: 0;
   font-size: 0;
+  overflow: hidden;
 }
 
 #content {
@@ -61,12 +62,20 @@ html, body {
   color: yellow;
   background: black;
 }
+
+.importing {
+  position: absolute;
+  transition: all 1s;
+  -webkit-transition: all 1s;
+  -moz-transition: all 1s;
+}
 </style>
 <div id="content">
   <h1>Page With Embedded Image Maker</h1>
   <p>Click the little &ldquo;+&rdquo; icon on any of the images below to add them to the image maker in the sidebar on the right.</p>
   <img class="importable" src="http://guycodeblog.mtv.com//wp-content/uploads/clutch/2012/09/tumblr_m8qtfucGiD1r31dt0o4_400.gif">
   <img class="importable" src="https://media.giphy.com/media/vm1H76ewlicLK/giphy.gif">
+  <img class="importable" src="http://cdn.wonderfulengineering.com/wp-content/uploads/2014/10/firefox-wallpaper-2.png" width="500">
 </div>
 <div id="widget"></div>
 <script>
@@ -78,7 +87,37 @@ function onEmbedAPIReady(embedAPI) {
 
 function importImage(e) {
   var img = e.target.parentNode.querySelector('img');
-  embedAPI.addImage(img.src);
+  var srcRect = img.getBoundingClientRect();
+  var baseDestRect = iframe.getBoundingClientRect();
+  var destRect = embedAPI.getImagePlacement(img.naturalWidth,
+                                            img.naturalHeight);
+
+  img = img.cloneNode();
+  img.style.top = srcRect.top + 'px';
+  img.style.left = srcRect.left + 'px';
+  img.style.width = srcRect.width + 'px';
+  img.style.height = srcRect.height + 'px';
+  img.classList.add('importing');
+  document.body.appendChild(img);
+
+  /* Force reflow, so the browser knows bust a CSS transition.
+   * For more information, see http://stackoverflow.com/a/21665117. */
+  img.offsetHeight;
+
+  img.style.top = baseDestRect.top + destRect.top + 'px';
+  img.style.left = baseDestRect.left + destRect.left + 'px';
+  img.style.width = destRect.width + 'px';
+  img.style.height = destRect.height + 'px';
+
+  /* Wait for the CSS transition to end. */
+  setTimeout(function() {
+    embedAPI.addImage(img.src);
+
+    /* Give the editor img time to load, preventing flicker. */
+    setTimeout(function() {
+      document.body.removeChild(img);
+    }, 250);
+  }, 1000);
 }
 
 function wrapImage(img) {
