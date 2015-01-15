@@ -94,11 +94,15 @@ define(function(require) {
     render: function() {
       return (
         <div>
-          <PrimaryToolbar ref="primaryToolbar"
-           canvasWidth={this.props.canvasWidth}
-           canvasHeight={this.props.canvasHeight}
-           firebaseRef={this.props.firebaseRef}
-           onExport={this.toggleExportModal}/>
+          <header>
+            <nav style={{height: 64, background: 'black'}}>
+              <PrimaryToolbar ref="primaryToolbar"
+               canvasWidth={this.props.canvasWidth}
+               canvasHeight={this.props.canvasHeight}
+               firebaseRef={this.props.firebaseRef}
+               onExport={this.toggleExportModal}/>
+            </nav>
+          </header>
           <ScaleSizer ref="scaleSizer"
            width={this.props.canvasWidth}
            height={this.props.canvasHeight}>

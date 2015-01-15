@@ -1,13 +1,37 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
-<link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.css">
 <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.css">
+<style>
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+section {
+  position: relative;
+}
+
+button {
+  color: white;
+  display: inline-block;
+  font-size: 1em;
+  border: 0;
+  background: none;
+}
+
+button:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+nav button {
+  height: 4em;
+  width: 4em;
+  vertical-align: middle;
+}
+</style>
 <title>Image Maker</title>
-<div class="container">
-  <br>
-  <div id="app"></div>
-</div>
+<div id="app"></div>
 <script src="require-config.js"></script>
 <script src="require-config.local.js"></script>
 <script data-main="main" src="vendor/require.js"></script>

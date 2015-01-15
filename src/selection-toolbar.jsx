@@ -5,13 +5,14 @@ define(function(require) {
   var BaseSelectionActions = require('jsx!./base-selection-actions');
 
   var SelectionToolbar = React.createClass({
-    createAction: function(actionClass) {
+    createAction: function(actionClass, key) {
       var selectedItem = this.getSelectedItem();
       var selectedItemFirebaseRef = this.props.firebaseRef
         .child(this.props.selectedItem).child('props');
       return React.createElement(
         actionClass,
         _.extend({
+          key: key,
           ref: actionClass.refName,
           itemType: selectedItem.type
         }, TypeMap[selectedItem.type].DEFAULT_PROPS, selectedItem.props, {
@@ -29,16 +30,15 @@ define(function(require) {
     },
     render: function() {
       return (
-        <div className="container" style={{
+        <div style={{
           position: 'fixed',
+          backgroundColor: '#999999',
           bottom: 0,
           left: 0
         }}>
-          <ul className="list-inline">
-            {this.getActionClasses().map(function(actionClass, i) {
-               return <li key={i}>{this.createAction(actionClass)}</li>;
-            }, this)}
-          </ul>
+          {this.getActionClasses().map(function(actionClass, i) {
+             return this.createAction(actionClass, i);
+          }, this)}
         </div>
       );
     }

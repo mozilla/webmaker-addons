@@ -54,7 +54,7 @@ define(function(require) {
     },
     render: function() {
       return (
-        <button className="btn btn-default" onClick={this.handleClick}>
+        <button onClick={this.handleClick}>
           <i className="fa fa-image"></i>
         </button>
       );
