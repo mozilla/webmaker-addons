@@ -8,6 +8,12 @@ html, body {
   margin: 0;
 }
 
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
 section {
   position: relative;
 }
@@ -28,6 +34,52 @@ nav button {
   height: 4em;
   width: 4em;
   vertical-align: middle;
+}
+
+.modal-backdrop {
+  z-index: 100;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.75);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.modal {
+  z-index: 101;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-dialog {
+  background: white;
+  border: 1px solid black;
+}
+
+.modal-header {
+  background: black;
+  padding: 10px;
+}
+
+.modal-header .close {
+  float: right;
+}
+
+.modal-title {
+  color: white;
+  margin: 0;
+}
+
+.modal-body {
+  margin: 10px;
 }
 </style>
 <title>Image Maker</title>
