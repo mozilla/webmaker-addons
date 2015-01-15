@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="33px" height="33px" viewBox="0 0 33 33" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.2.2 (9983) - http://www.bohemiancoding.com/sketch -->
+    <title>FontIcon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="FontIcon" sketch:type="MSArtboardGroup" transform="translate(0.624000, 0.748000)" fill="#FFFFFF">
+            <path d="M16.188,7.124 L17.112,3.848 L5.716,3.848 L3,23.252 L7.508,23.252 L8.6,15.552 L14.2,15.552 L14.648,12.276 L9.048,12.276 L9.776,7.124 L16.188,7.124 Z M25.596,5.276 C26.24,5.276 27.08,5.388 27.836,5.892 L29.376,3.232 C28.368,2.56 27.024,2 25.232,2 C21.62,2 19.52,4.156 19.128,7.012 L18.932,8.384 L16.72,8.384 L16.3,11.464 L18.512,11.464 L17.056,21.796 C16.692,24.512 15.516,25.464 13.416,26.276 L14.508,29.468 C18.092,28.18 20.752,26.472 21.424,21.628 L22.852,11.464 L25.848,11.464 L26.744,8.384 L23.3,8.384 L23.44,7.292 C23.636,5.864 24.308,5.276 25.596,5.276 L25.596,5.276 Z" id="Ff" sketch:type="MSShapeGroup"></path>
+        </g>
+    </g>
+</svg>

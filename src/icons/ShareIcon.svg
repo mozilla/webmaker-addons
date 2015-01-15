@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.2.2 (9983) - http://www.bohemiancoding.com/sketch -->
+    <title>ShareIcon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="ShareIcon" sketch:type="MSArtboardGroup" fill="#FFFFFF">
+            <g id="Share" sketch:type="MSLayerGroup" transform="translate(3.000000, 3.200000)">
+                <g id="Group" sketch:type="MSShapeGroup">
+                    <path d="M7.30884338,14.5356557 L3.17756246,7.24842679 L2.14623529,11.1744617 L0.0371470588,7.45435294 L1.85561765,0.542245989 L8.64111765,2.39431729 L10.7502059,6.11442602 L6.89484419,5.06179894 L11.0310422,12.3577012 C9.57723506,12.6915883 8.28902778,13.4663478 7.30884338,14.5356557 Z" id="Fill-24"></path>
+                    <path d="M14.2630755,12.3577012 L18.3993989,5.06157765 L14.5439118,6.11442602 L16.653,2.39431729 L23.4385,0.542245989 L25.2569706,7.45435294 L23.1478824,11.1744617 L22.1160873,7.24925208 L17.9852743,14.5356557 C17.0050899,13.4663478 15.7168826,12.6915883 14.2630755,12.3577012 Z" id="Fill-26"></path>
+                    <path d="M17.6000004,19.6000004 C17.6000004,22.361283 15.361283,24.6000004 12.6000004,24.6000004 C9.83871772,24.6000004 7.60000038,22.361283 7.60000038,19.6000004 C7.60000038,16.8387177 9.83871772,14.6000004 12.6000004,14.6000004 C15.361283,14.6000004 17.6000004,16.8387177 17.6000004,19.6000004 L17.6000004,19.6000004 Z" id="Fill-28"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

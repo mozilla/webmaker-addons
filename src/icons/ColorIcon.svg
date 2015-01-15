@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.2.2 (9983) - http://www.bohemiancoding.com/sketch -->
+    <title>ColorIcon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="ColorIcon" sketch:type="MSArtboardGroup" fill="#FFFFFF">
+            <g id="Color" sketch:type="MSLayerGroup" transform="translate(5.000000, 4.000000)">
+                <path d="M0,11.5 C0,5.14872538 5.14732891,0 11.5,0 C17.8512746,0 23,5.14732891 23,11.5 C23,17.8512746 17.8526711,23 11.5,23 C5.14872538,23 0,17.8526711 0,11.5 Z M18.2177307,4.78226927 C19.9367655,6.50126986 21,8.87618069 21,11.5 C21,16.7467051 16.7478587,21 11.5,21 C8.87653741,21 6.50144822,19.9368755 4.78226927,18.2177307 L18.2177307,4.78226927 L18.2177307,4.78226927 Z" id="Rectangle-165" sketch:type="MSShapeGroup"></path>
+            </g>
+        </g>
+    </g>
+</svg>
