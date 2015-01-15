@@ -4,20 +4,18 @@ define(function(require) {
   var SelectionFrame = require('jsx!./selection-frame');
   var Fonts = require('jsx!./fonts');
   var ExportModal = require('jsx!./export-modal');
-  var BaseSelectionActions = require('jsx!./base-selection-actions');
   var itemUtils = require('./item-utils');
   var ScaleSizer = require('jsx!./scale-sizer');
-
-  var TypeMap = {
-    image: require('jsx!./movable-image'),
-    text: require('jsx!./movable-text')
-  };
+  var PrimaryToolbar = require('jsx!./primary-toolbar');
+  var SelectionToolbar = require('jsx!./selection-toolbar');
+  var Canvas = require('jsx!./canvas');
+  var KeypressMixin = require('./keypress-mixin');
 
   var App = React.createClass({
+    mixins: [KeypressMixin],
     getInitialState: function() {
       return {
         selectedItem: null,
-        selectedItemDOMNode: null,
         showExportModal: false,
         items: null
       };
@@ -27,6 +25,24 @@ define(function(require) {
     },
     componentWillUnmount: function() {
       this.props.firebaseRef.off("value", this.handleFirebaseRefValue);
+    },
+    handleKeypress: function(code) {
+      if (!this.state.selectedItem) return;
+
+      var selectedItem = this.getSelectedItem();
+
+      if (code == this.KEY_BACKSPACE) {
+        this.refs.selectionToolbar.refs.baseSelectionActions
+          .handleRemove();
+      } else if (code == this.KEY_ARROW_UP) {
+        selectedItem.nudgeUp();
+      } else if (code == this.KEY_ARROW_DOWN) {
+        selectedItem.nudgeDown();
+      } else if (code == this.KEY_ARROW_LEFT) {
+        selectedItem.nudgeLeft();
+      } else if (code == this.KEY_ARROW_RIGHT) {
+        selectedItem.nudgeRight();
+      }
     },
     handleFirebaseRefValue: function(snapshot) {
       var items = snapshot.val() || {};
@@ -49,127 +65,68 @@ define(function(require) {
                                       'https:')}
           </head>
           <body>
-            {this.createItems(false)}
+            <Canvas items={this.state.items} canvasWidth={this.props.canvasWidth} canvasHeight={this.props.canvasHeight}/>
           </body>
         </html>
       );
     },
-    handleItemsFrameClick: function(e) {
-      if (e.target === e.currentTarget)
-        this.clearSelection();
-    },
     handleItemSelect: function(key, e) {
       this.setState({
-        selectedItem: key,
-        selectedItemDOMNode: e.target
+        selectedItem: key
       });
+      if (document.activeElement)
+        document.activeElement.blur();
+
+      // This is useful if we're in an iframe.
+      window.focus();
     },
     clearSelection: function() {
       this.setState({
-        selectedItem: null,
-        selectedItemDOMNode: null
+        selectedItem: null
       });
+    },
+    getSelectedItem: function() {
+      return this.refs.canvas.refs.selectedItem;
     },
     getPointerScale: function() {
       return this.refs.scaleSizer.getPointerScale();
     },
-    createItem: function(isEditable, key) {
-      var item = this.state.items[key];
-      var itemsRef = this.props.firebaseRef;
-
-      if (item && item.type && item.type in TypeMap)
-        return React.createElement(
-          TypeMap[item.type].ContentItem,
-          _.extend({}, TypeMap[item.type].DEFAULT_PROPS, item.props, {
-            key: key,
-            getPointerScale: this.getPointerScale,
-            isEditable: isEditable,
-            isSelected: isEditable && this.state.selectedItem == key,
-            onSelect: this.handleItemSelect.bind(this, key),
-            firebaseRef: itemsRef.child(key).child('props')
-          })
-        );
-      return <div key={key}><code>??? {key} ???</code></div>;
-    },
-    createItems: function(isEditable) {
-      var orderedKeys = itemUtils.getOrderedKeys(this.state.items || {});
-
-      return (
-        <div style={{
-          position: 'relative',
-          width: this.props.canvasWidth,
-          height: this.props.canvasHeight,
-          border: '1px dotted lightgray',
-          overflow: 'hidden'
-        }} onClick={this.handleItemsFrameClick} onTouchStart={this.handleItemsFrameClick}>
-        {orderedKeys.map(this.createItem.bind(this, isEditable))}
-        </div>
-      );
-    },
-    createSelectionToolbar: function() {
-      if (!this.state.selectedItem) return null;
-
-      var key = this.state.selectedItem;
-      var firebaseRef = this.props.firebaseRef.child(key).child('props');
-      var item = this.state.items[key];
-      var actions = [BaseSelectionActions]
-        .concat(TypeMap[item.type].SelectionActions || [])
-        .map(function(componentClass, i) {
-          var component = React.createElement(
-            componentClass,
-            _.extend({
-              itemType: item.type
-            }, TypeMap[item.type].DEFAULT_PROPS, item.props, {
-              allItems: this.state.items,
-              firebaseRef: firebaseRef
-            })
-          );
-          return <li key={i}>{component}</li>;
-        }, this);
-
-      return (
-        <div className="container" style={{
-          position: 'fixed',
-          bottom: 0,
-          left: 0
-        }}>
-          <ul className="list-inline">{actions}</ul>
-        </div>
-      );
-    },
-    createPrimaryToolbar: function() {
-      return (
-        <ul className="list-inline">
-          {Object.keys(TypeMap).map(function(type) {
-            var addButton = React.createElement(TypeMap[type].AddButton, {
-              ref: 'add-' + type + '-button',
-              canvasWidth: this.props.canvasWidth,
-              canvasHeight: this.props.canvasHeight,
-              firebaseRef: this.props.firebaseRef
-            });
-            return <li key={type}>{addButton}</li>;
-          }, this)}
-          <li><button className="btn btn-default" onClick={this.toggleExportModal}>
-            <i className="fa fa-download"></i>
-          </button></li>
-        </ul>
-      );
-    },
-    createExportModal: function() {
-      if (!this.state.showExportModal) return null;
-      return <ExportModal html={this.getExportHtml()} onClose={this.toggleExportModal}/>;
-    },
     render: function() {
       return (
         <div>
-          {this.createPrimaryToolbar()}
-          <ScaleSizer ref="scaleSizer" width={this.props.canvasWidth} height={this.props.canvasHeight}>
-            {this.createItems(true)}
+          <PrimaryToolbar ref="primaryToolbar"
+           canvasWidth={this.props.canvasWidth}
+           canvasHeight={this.props.canvasHeight}
+           firebaseRef={this.props.firebaseRef}
+           onExport={this.toggleExportModal}/>
+          <ScaleSizer ref="scaleSizer"
+           width={this.props.canvasWidth}
+           height={this.props.canvasHeight}>
+            <Canvas ref="canvas" isEditable
+             items={this.state.items}
+             selectedItem={this.state.selectedItem}
+             canvasWidth={this.props.canvasWidth}
+             canvasHeight={this.props.canvasHeight}
+             firebaseRef={this.props.firebaseRef}
+             onClearSelection={this.clearSelection}
+             onItemSelect={this.handleItemSelect}
+             getPointerScale={this.getPointerScale}/>
           </ScaleSizer>
-          <SelectionFrame selection={this.state.selectedItemDOMNode}/>
           <Fonts fonts={itemUtils.getFontList(this.state.items)}/>
-          {this.createSelectionToolbar()}
-          {this.createExportModal()}
+          {this.state.selectedItem
+           ? <div>
+               <SelectionFrame getSelectedItem={this.getSelectedItem}/>
+               <SelectionToolbar ref="selectionToolbar"
+                selectedItem={this.state.selectedItem}
+                items={this.state.items}
+                firebaseRef={this.props.firebaseRef}/>
+             </div>
+           : null}
+          {this.state.showExportModal
+           ? <ExportModal
+              html={this.getExportHtml()}
+              onClose={this.toggleExportModal}/>
+           : null}
         </div>
       );
     }

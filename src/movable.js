@@ -4,9 +4,20 @@ define(function(require) {
 
   var Movable = {
     propTypes: {
-      firebaseRef: React.PropTypes.object.isRequired,
       x: React.PropTypes.number.isRequired,
       y: React.PropTypes.number.isRequired,
+    },
+    nudgeUp: function() {
+      this.props.firebaseRef.update({y: this.props.y - 1});
+    },
+    nudgeDown: function() {
+      this.props.firebaseRef.update({y: this.props.y + 1});
+    },
+    nudgeLeft: function() {
+      this.props.firebaseRef.update({x: this.props.x - 1});
+    },
+    nudgeRight: function() {
+      this.props.firebaseRef.update({x: this.props.x + 1});
     },
     componentDidMount: function() {
       var node = this.getDOMNode();

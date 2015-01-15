@@ -5,19 +5,9 @@ define(function(require) {
     getInitialState: function() {
       return {top: 0, left: 0, width: 0, height: 0};
     },
-    select: function(node) {
-      this.selectedNode = node;
-      window.cancelAnimationFrame(this.requestID);
-      if (node) {
-        this.requestID = window.requestAnimationFrame(
-          this.handleAnimationFrame
-        );
-      } else {
-        this.setState(this.getInitialState());
-      }
-    },
     handleAnimationFrame: function() {
-      var rect = this.selectedNode.getBoundingClientRect();
+      var selectedNode = this.props.getSelectedItem().getDOMNode();
+      var rect = selectedNode.getBoundingClientRect();
       this.setState({
         top: rect.top + window.scrollY,
         left: rect.left + window.scrollX,
@@ -29,13 +19,10 @@ define(function(require) {
       );
     },
     componentDidMount: function() {
-      this.select(this.props.selection);
+      this.handleAnimationFrame();
     },
     componentWillUnmount: function() {
       window.cancelAnimationFrame(this.requestID);
-    },
-    componentWillReceiveProps: function(newProps) {
-      this.select(newProps.selection);
     },
     render: function() {
       var state = this.state;
