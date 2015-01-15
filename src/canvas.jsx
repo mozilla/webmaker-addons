@@ -6,14 +6,16 @@ define(function(require) {
   var Canvas = React.createClass({
     createItem: function(key) {
       var isEditable = this.props.isEditable;
+      var isSelected = isEditable && this.props.selectedItem == key;
       var item = this.props.items[key];
       var editableOptions;
 
       if (item && item.type && item.type in TypeMap) {
         if (isEditable)
           editableOptions = {
+            ref: isSelected ? 'selectedItem' : undefined,
             isEditable: true,
-            isSelected: this.props.selectedItem == key,
+            isSelected: isSelected,
             getPointerScale: this.props.getPointerScale,
             onSelect: this.props.onItemSelect.bind(null, key),
             firebaseRef: this.props.firebaseRef.child(key).child('props')

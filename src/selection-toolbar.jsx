@@ -28,8 +28,6 @@ define(function(require) {
       return this.props.items[this.props.selectedItem];
     },
     render: function() {
-      if (!this.props.selectedItem) return null;
-
       return (
         <div className="container" style={{
           position: 'fixed',

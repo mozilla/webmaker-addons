@@ -16,7 +16,6 @@ define(function(require) {
     getInitialState: function() {
       return {
         selectedItem: null,
-        selectedItemDOMNode: null,
         showExportModal: false,
         items: null
       };
@@ -62,17 +61,18 @@ define(function(require) {
     },
     handleItemSelect: function(key, e) {
       this.setState({
-        selectedItem: key,
-        selectedItemDOMNode: e.target
+        selectedItem: key
       });
       if (document.activeElement)
         document.activeElement.blur();
     },
     clearSelection: function() {
       this.setState({
-        selectedItem: null,
-        selectedItemDOMNode: null
+        selectedItem: null
       });
+    },
+    getSelectedItem: function() {
+      return this.refs.canvas.refs.selectedItem;
     },
     getPointerScale: function() {
       return this.refs.scaleSizer.getPointerScale();
@@ -88,7 +88,7 @@ define(function(require) {
           <ScaleSizer ref="scaleSizer"
            width={this.props.canvasWidth}
            height={this.props.canvasHeight}>
-            <Canvas isEditable
+            <Canvas ref="canvas" isEditable
              items={this.state.items}
              selectedItem={this.state.selectedItem}
              canvasWidth={this.props.canvasWidth}
@@ -98,12 +98,16 @@ define(function(require) {
              onItemSelect={this.handleItemSelect}
              getPointerScale={this.getPointerScale}/>
           </ScaleSizer>
-          <SelectionFrame selection={this.state.selectedItemDOMNode}/>
           <Fonts fonts={itemUtils.getFontList(this.state.items)}/>
-          <SelectionToolbar ref="selectionToolbar"
-           selectedItem={this.state.selectedItem}
-           items={this.state.items}
-           firebaseRef={this.props.firebaseRef}/>
+          {this.state.selectedItem
+           ? <div>
+               <SelectionFrame getSelectedItem={this.getSelectedItem}/>
+               <SelectionToolbar ref="selectionToolbar"
+                selectedItem={this.state.selectedItem}
+                items={this.state.items}
+                firebaseRef={this.props.firebaseRef}/>
+             </div>
+           : null}
           {this.state.showExportModal
            ? <ExportModal
               html={this.getExportHtml()}
