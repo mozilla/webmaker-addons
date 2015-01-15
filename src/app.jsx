@@ -9,8 +9,10 @@ define(function(require) {
   var PrimaryToolbar = require('jsx!./primary-toolbar');
   var SelectionToolbar = require('jsx!./selection-toolbar');
   var Canvas = require('jsx!./canvas');
+  var KeypressMixin = require('./keypress-mixin');
 
   var App = React.createClass({
+    mixins: [KeypressMixin],
     getInitialState: function() {
       return {
         selectedItem: null,
@@ -24,6 +26,13 @@ define(function(require) {
     },
     componentWillUnmount: function() {
       this.props.firebaseRef.off("value", this.handleFirebaseRefValue);
+    },
+    handleKeypress: function(code) {
+      if (!this.state.selectedItem) return;
+      if (code == this.KEY_BACKSPACE) {
+        this.refs.selectionToolbar.refs.baseSelectionActions
+          .handleRemove();
+      }
     },
     handleFirebaseRefValue: function(snapshot) {
       var items = snapshot.val() || {};
@@ -56,6 +65,8 @@ define(function(require) {
         selectedItem: key,
         selectedItemDOMNode: e.target
       });
+      if (document.activeElement)
+        document.activeElement.blur();
     },
     clearSelection: function() {
       this.setState({
@@ -89,7 +100,7 @@ define(function(require) {
           </ScaleSizer>
           <SelectionFrame selection={this.state.selectedItemDOMNode}/>
           <Fonts fonts={itemUtils.getFontList(this.state.items)}/>
-          <SelectionToolbar
+          <SelectionToolbar ref="selectionToolbar"
            selectedItem={this.state.selectedItem}
            items={this.state.items}
            firebaseRef={this.props.firebaseRef}/>

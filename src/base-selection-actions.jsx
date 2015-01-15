@@ -4,6 +4,9 @@ define(function(require) {
   var itemUtils = require('./item-utils');
 
   var BaseSelectionActions = React.createClass({
+    statics: {
+      refName: 'baseSelectionActions'
+    },
     handleRemove: function() {
       this.props.firebaseRef.parent().remove();
     },

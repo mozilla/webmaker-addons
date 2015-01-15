@@ -12,6 +12,7 @@ define(function(require) {
       return React.createElement(
         actionClass,
         _.extend({
+          ref: actionClass.refName,
           itemType: selectedItem.type
         }, TypeMap[selectedItem.type].DEFAULT_PROPS, selectedItem.props, {
           allItems: this.props.items,
