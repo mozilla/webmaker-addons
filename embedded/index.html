@@ -136,7 +136,7 @@ var bin = window.location.search.match(/[&?]bin=([A-Za-z0-9\-]+)/);
 var widget = document.getElementById('widget');
 var iframe = document.createElement('iframe');
 
-bin = bin ? bin[1] : "embedded";
+bin = bin ? bin[1] : "default";
 
 iframe.setAttribute('src', '../index.html?bin=' + bin +
                     '&bust=' + Date.now());
