@@ -2,23 +2,30 @@
 <html>
 <head>
     <title>Image Maker</title>
-    
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.css">
+
     <style>
         section, div { position:relative; }        
         .hidden { display:none; }
         
+        #sidebar,
+        #sidebar button { font-family:'Fira Sans', 'Open Sans', sans-serif; color:white; }
+                
         button { color:white; display:inline-block; font-size:1em; border:0; background:none; }
         button:hover { background:rgba(255,255,255,0.2); }  
-
-        nav button, #textAdd button { height:4em; width:4em; vertical-align: middle; } 
-        #colors button { height:4em; width:4em; margin:0 .25em; border-radius:50%; }
-        #fonts button { display:block; width:100%; height:20%; /* height = 100% / fonts.length */  }
         
+        nav button, 
+        #textAdd button, 
+        #colors button, 
+        #share button { height:4em; width:4em; vertical-align: middle; } 
+
+        #share button i { font-size:2em; }
+        #colors button { margin:0 .25em; border-radius:50%; }
+        #fonts button { display:block; width:100%; height:20%; /* height = 100% / fonts.length */  }        
     </style>
     
 </head>
 <body>
-
     <div id="sidebar" style="position:absolute; top:0; right:0; width:378px; height:100%; background:#666;">
         <header>
             <nav style="height:64px; background:#000;">
@@ -62,6 +69,16 @@
             </nav>
         </section>
         
+        <section id="share" style="position:absolute; top:5em; left:50%; width:200px; margin-left:-100px; padding:0 0 1.5em; background:rgba(0,0,0,.8); text-align:center;  ">
+            <h2 style="font-size:1.25em;">Share as Image</h2>
+            <button><i class="fa fa-facebook-square"></i></button>
+            <button><i class="fa fa-tumblr-square"></i></button>
+            <button><i class="fa fa-pinterest-square"></i></button>
+            <button><i class="fa fa-envelope-square"></i></button>
+            <h2 style="font-size:1.25em;">Share as Page</h2>
+            <button>WM</button>
+        </section>
+
         <footer style="position:absolute; bottom:0; width:100%;">
             <nav style="text-align:center;">
                 <button style="">Trash</button>
