@@ -30,12 +30,7 @@ define(function(require) {
     },
     render: function() {
       return (
-        <div style={{
-          position: 'fixed',
-          backgroundColor: '#999999',
-          bottom: 0,
-          left: 0
-        }}>
+        <div className="selection-toolbar">
           {this.getActionClasses().map(function(actionClass, i) {
              return this.createAction(actionClass, i);
           }, this)}
