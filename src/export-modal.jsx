@@ -37,7 +37,9 @@ define(function(require) {
         <Modal title="Export" onClose={this.props.onClose}>
           <div className="modal-body">
             <p>Here is the HTML for your awesome thing. You can copy and paste it into an editor like <a href="https://thimble.webmaker.org" target="_blank">Thimble</a>, or open it in a <a href={this.createDataURL(html)} target="_blank">new tab</a>.</p>
-            <textarea className="form-control" rows="10" style={{
+            <textarea rows="10" style={{
+              width: '100%',
+              resize: 'none',
               fontFamily: 'monospace'
             }} spellCheck="false" value={html} onChange={this.handleChange}></textarea>
             <p>Alternatively, you can also download a <a href="#" onClick={this.handleExportToPNG}>PNG</a> of your awesome thing.</p>

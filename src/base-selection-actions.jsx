@@ -22,14 +22,14 @@ define(function(require) {
     },
     render: function() {
       return (
-        <div className="btn-group" role="group">
-          <button className="btn btn-default" onClick={this.handleRemove} title={"Remove selected " + this.props.itemType}>
+        <div style={{display: 'inline-block'}}>
+          <button onClick={this.handleRemove} title={"Remove selected " + this.props.itemType}>
             <i className="fa fa-trash"></i>
           </button>
-          <button className="btn btn-default" onClick={this.handleSendToBack} title={"Send selected " + this.props.itemType + " to back"}>
+          <button onClick={this.handleSendToBack} title={"Send selected " + this.props.itemType + " to back"}>
             <i className="fa fa-mail-reply"></i>
           </button>
-          <button className="btn btn-default" onClick={this.handleBringToFront} title={"Bring selected " + this.props.itemType + " to front"}>
+          <button onClick={this.handleBringToFront} title={"Bring selected " + this.props.itemType + " to front"}>
             <i className="fa fa-mail-forward"></i>
           </button>
         </div>

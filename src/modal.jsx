@@ -5,7 +5,7 @@ define(function(require) {
     mixins: [React.addons.PureRenderMixin],
     componentDidMount: function() {
       this.backdrop = document.createElement('div');
-      this.backdrop.setAttribute('class', 'modal-backdrop in');
+      this.backdrop.setAttribute('class', 'modal-backdrop');
       document.body.appendChild(this.backdrop);
     },
     componentWillUnmount: function() {
@@ -18,15 +18,13 @@ define(function(require) {
     },
     render: function() {
       return (
-        <div className="modal" style={{display: 'block'}} onClick={this.handleClick}>
+        <div className="modal" onClick={this.handleClick}>
           <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <button onClick={this.props.onClose} type="button" className="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 className="modal-title">{this.props.title}</h4>
-              </div>
-              {this.props.children}
+            <div className="modal-header">
+              <button onClick={this.props.onClose} type="button" className="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 className="modal-title">{this.props.title}</h4>
             </div>
+            {this.props.children}
           </div>
         </div>
       );

@@ -61,6 +61,9 @@ define(function() {
       return (
         <div style={{
           height: this.props.height * this.state.scale,
+          margin: 10,
+          display: 'flex',
+          justifyContent: 'center',
           overflow: 'hidden'
         }}>
           <div ref="transform" style={scaleTransform}>

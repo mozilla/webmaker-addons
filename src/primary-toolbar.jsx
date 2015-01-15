@@ -6,6 +6,7 @@ define(function(require) {
     makeAddButton: function(type) {
       return React.createElement(TypeMap[type].AddButton, {
         ref: 'add-' + type + '-button',
+        key: type,
         canvasWidth: this.props.canvasWidth,
         canvasHeight: this.props.canvasHeight,
         firebaseRef: this.props.firebaseRef
@@ -13,15 +14,14 @@ define(function(require) {
     },
     render: function() {
       return (
-        <ul className="list-inline">
+        <section style={{float: 'right'}}>
           {Object.keys(TypeMap).map(function(type) {
-            var addButton = this.makeAddButton(type);
-            return <li key={type}>{addButton}</li>;
+            return this.makeAddButton(type);
           }, this)}
-          <li><button className="btn btn-default" onClick={this.props.onExport}>
+          <button onClick={this.props.onExport}>
             <i className="fa fa-download"></i>
-          </button></li>
-        </ul>
+          </button>
+        </section>
       );
     }
   });

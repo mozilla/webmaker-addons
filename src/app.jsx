@@ -52,6 +52,12 @@ define(function(require) {
         this.clearSelection();
 
       this.setState({items: items});
+
+      if (window.DEBUG_AUTOSELECT_FIRST_ITEM) {
+        var keys = Object.keys(items);
+        if (keys.length && !this.state.selectedItem)
+          this.handleItemSelect(keys[0]);
+      }
     },
     toggleExportModal: function() {
       this.setState({showExportModal: !this.state.showExportModal});
@@ -94,11 +100,15 @@ define(function(require) {
     render: function() {
       return (
         <div>
-          <PrimaryToolbar ref="primaryToolbar"
-           canvasWidth={this.props.canvasWidth}
-           canvasHeight={this.props.canvasHeight}
-           firebaseRef={this.props.firebaseRef}
-           onExport={this.toggleExportModal}/>
+          <header>
+            <nav style={{height: 64, background: 'black'}}>
+              <PrimaryToolbar ref="primaryToolbar"
+               canvasWidth={this.props.canvasWidth}
+               canvasHeight={this.props.canvasHeight}
+               firebaseRef={this.props.firebaseRef}
+               onExport={this.toggleExportModal}/>
+            </nav>
+          </header>
           <ScaleSizer ref="scaleSizer"
            width={this.props.canvasWidth}
            height={this.props.canvasHeight}>

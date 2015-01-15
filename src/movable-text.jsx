@@ -26,7 +26,7 @@ define(function(require) {
     },
     render: function() {
       return (
-        <button className="btn btn-default" onClick={this.handleClick}>
+        <button onClick={this.handleClick}>
           <i className="fa fa-font"></i>
         </button>        
       );
@@ -53,7 +53,7 @@ define(function(require) {
       });
     },
     render: function() {
-      return <input title="Text to display" type="text" className="form-control" value={this.props.text} onChange={this.handleChange} placeholder="text"/>;
+      return <input title="Text to display" type="text" value={this.props.text} onChange={this.handleChange} placeholder="text"/>;
     }
   });
 
@@ -64,7 +64,7 @@ define(function(require) {
       });
     },
     render: function() {
-      return <select title="Font family" className="form-control" value={this.props.fontFamily} onChange={this.handleChange}>
+      return <select title="Font family" value={this.props.fontFamily} onChange={this.handleChange}>
         {Fonts.getAvailable().map(function(family) {
           return <option key={family} value={family}>{family}</option>
         })}
@@ -90,7 +90,7 @@ define(function(require) {
       });
     },
     render: function() {
-      return <ColorWidget title="Text color" className="form-control" value={this.props.color} onChange={this.handleChange}/>
+      return <ColorWidget title="Text color" value={this.props.color} onChange={this.handleChange}/>
     }
   });
 
