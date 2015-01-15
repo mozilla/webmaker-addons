@@ -76,6 +76,9 @@ define(function(require) {
       });
       if (document.activeElement)
         document.activeElement.blur();
+
+      // This is useful if we're in an iframe.
+      window.focus();
     },
     clearSelection: function() {
       this.setState({
