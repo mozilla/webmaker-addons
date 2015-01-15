@@ -55,7 +55,8 @@ define(function(require) {
 
       if (window.DEBUG_AUTOSELECT_FIRST_ITEM) {
         var keys = Object.keys(items);
-        if (keys.length) this.handleItemSelect(keys[0]);
+        if (keys.length && !this.state.selectedItem)
+          this.handleItemSelect(keys[0]);
       }
     },
     toggleExportModal: function() {
