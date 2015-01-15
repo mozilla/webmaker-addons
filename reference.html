@@ -13,7 +13,8 @@
         #sidebar button { font-family:'Fira Sans', 'Open Sans', sans-serif; color:white; }
                 
         button { color:white; display:inline-block; font-size:1em; border:0; background:none; padding:0; }
-        button:hover { background:rgba(255,255,255,0.2); }  
+        button:hover,
+        .active { background:rgba(255,255,255,0.2); outline:0; }  
         
         nav button, 
         #textAdd button, 
@@ -30,22 +31,23 @@
         <header>
             <nav style="height:64px; background:#000;">
                 <button><i class="fa fa-times-circle"></i></button>
-                <section style="float:right;"><button><i style="display:block; height:64px; width:64px; background:transparent url(src/icons/TextIcon.svg) center center no-repeat"></i></button>
-                    <button><i style="display:block; height:64px; width:64px; background:transparent url(src/icons/ShareIcon.svg) center center no-repeat"></i></button>
+                <section style="float:right;">
+                    <button data-target="#textAdd"><i style="display:block; height:64px; width:64px; background:transparent url(src/icons/TextIcon.svg) center center no-repeat"></i></button>
+                    <button data-target="#share"><i style="display:block; height:64px; width:64px; background:transparent url(src/icons/ShareIcon.svg) center center no-repeat"></i></button>
                 </section>
             </nav>
         </header>
     
         <section style="height:270px; margin:2em 0; padding:.5em 0; background:#333;">
             <div style="height:100%; border:1px dashed #fff; margin:0 .5em;"></div>            
-            <div id="fonts" style="position:absolute; top:0; left:50%; width:200px; margin-left:-100px; height:100%; background:rgba(0,0,0,0.5);  ">
+            <div id="fonts" class="hidden" style="position:absolute; top:0; left:50%; width:200px; margin-left:-100px; height:100%; background:rgba(0,0,0,0.5);  ">
                 <button>Knewave</button>
                 <button>Londrina Sketch</button>
                 <button>Open Sans</button>
                 <button>Pacifico</button>
                 <button>Prociono</button>
             </div>
-            <div id="colors" style="font-size:.5em; text-align:center; margin-top:-1em;">
+            <div id="colors" class="active" style="font-size:.5em; text-align:center; margin-top:-1em;">
                 <button style="background:#fff;"></button>
                 <button style="background:#000;"></button>
                 <button style="background:rgb(213,37,213);"></button>
@@ -55,7 +57,7 @@
                 <button style="background:rgb(242,162,32);"></button>
                 <button style="background:rgb(232,74,27);"></button>
             </div>
-            <div id="textAdd" style="position:absolute; top:40%; width:100%; padding:1em 0; text-align:center; background:rgba(0,0,0,0.5);">
+            <div id="textAdd" class="hidden" style="position:absolute; top:40%; width:100%; padding:1em 0; text-align:center; background:rgba(0,0,0,0.5);">
                 <button style="float:left"><i class="fa fa-times-circle"></i></button>
                 <button style="float:right"><i class="fa fa-check-circle"></i></button>
                 <div style="font-size:2em; height:1.5em; line-height:1.5em; margin:.25em 2em; background:rgba(255,255,255,0.95);" contenteditable="true">gladys</div>
@@ -64,12 +66,12 @@
     
         <section>
             <nav style="text-align:center; background:#999;">
-                <button style=""><i style="display:block; height:64px; width:64px; background:transparent url(src/icons/ColorIcon.svg) center center no-repeat"></i></button>
-                <button style=""><i style="display:block; height:64px; width:64px; background:transparent url(src/icons/FontIcon.svg) center center no-repeat"></i></button>
+                <button data-target="#colors""><i style="display:block; height:64px; width:64px; background:transparent url(src/icons/ColorIcon.svg) center center no-repeat"></i></button>
+                <button data-target="#fonts""><i style="display:block; height:64px; width:64px; background:transparent url(src/icons/FontIcon.svg) center center no-repeat"></i></button>
             </nav>
         </section>
         
-        <section id="share" style="position:absolute; top:5em; left:50%; width:200px; margin-left:-100px; padding:0 0 1.5em; background:rgba(0,0,0,.8); text-align:center;  ">
+        <section id="share" class="hidden" style="position:absolute; top:5em; left:50%; width:200px; margin-left:-100px; padding:0 0 1.5em; background:rgba(0,0,0,.8); text-align:center;  ">
             <h2 style="font-size:1.25em;">Share as Image</h2>
             <button><i class="fa fa-facebook-square"></i></button>
             <button><i class="fa fa-tumblr-square"></i></button>
@@ -86,5 +88,25 @@
         </footer>
         
     </div>
+    <script>
+        function toggleItem() {
+            var trigger = event.target.parentElement;
+            var target = trigger.dataset.target;
+            
+            if ( target ) {
+                
+                trigger.classList.toggle('active');
+              var item = document.querySelector(target);
+              item.classList.toggle('hidden');
+            }
+        };
+        
+        var buttons = document.querySelectorAll('button');
+
+        for (var i = 0, len = buttons.length; i < len; i++) {
+            buttons[i].addEventListener("click", toggleItem, false);
+        };
+        
+    </script>
 </body>
 </html>
