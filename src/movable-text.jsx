@@ -27,7 +27,7 @@ define(function(require) {
     render: function() {
       return (
         <button onClick={this.handleClick}>
-          <i className="fa fa-font"></i>
+          <i style={{display:'block', height:'64px', width:'64px', background:'transparent url(src/icons/TextIcon.svg) center center no-repeat'}}></i>
         </button>        
       );
     }

@@ -19,7 +19,7 @@ define(function(require) {
             return this.makeAddButton(type);
           }, this)}
           <button onClick={this.props.onExport}>
-            <i className="fa fa-download"></i>
+            <i style={{display:'block', height:'64px', width:'64px', background:'transparent url(src/icons/ShareIcon.svg) center center no-repeat'}}></i>
           </button>
         </section>
       );
