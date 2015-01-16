@@ -77,6 +77,11 @@ define(function(require) {
       );
     },
     handleItemSelect: function(key, e) {
+      var newOrder = itemUtils.getBringToFrontOrder(this.state.items, key);
+      if (newOrder !== null)
+        this.props.firebaseRef.child(key).update({
+          order: newOrder
+        });
       this.setState({
         selectedItem: key
       });
