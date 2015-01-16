@@ -62,7 +62,10 @@ define(function() {
         <div style={{
           height: this.props.height * this.state.scale,
           margin: 10,
-          display: 'flex',
+          // Firefox does weird things when scaling flex-boxed
+          // elements, so just set the display to block if we're
+          // scaling.
+          display: this.state.scale == 1 ? 'flex' : 'block',
           justifyContent: 'center',
           overflow: 'hidden'
         }}>
