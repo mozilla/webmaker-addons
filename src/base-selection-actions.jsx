@@ -22,7 +22,7 @@ define(function(require) {
     },
     render: function() {
       return (
-        <div style={{display: 'inline-block'}}>
+        <div className="button-group">
           <button onClick={this.handleRemove} title={"Remove selected " + this.props.itemType}>
             <i className="fa fa-trash"></i>
           </button>
