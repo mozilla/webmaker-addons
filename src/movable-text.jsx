@@ -27,7 +27,7 @@ define(function(require) {
     render: function() {
       return (
         <button onClick={this.handleClick}>
-          <i style={{display:'block', height:'64px', width:'64px', background:'transparent url(src/icons/TextIcon.svg) center center no-repeat'}}></i>
+          <img src="src/icons/TextIcon.svg"/>
         </button>        
       );
     }
