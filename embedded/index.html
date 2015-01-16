@@ -132,14 +132,12 @@ function wrapImage(img) {
   btn.onclick = importImage;
 }
 
-var bin = window.location.search.match(/[&?]bin=([A-Za-z0-9\-]+)/);
 var widget = document.getElementById('widget');
 var iframe = document.createElement('iframe');
+var search = window.location.search.slice(1);
 
-bin = bin ? bin[1] : "default";
-
-iframe.setAttribute('src', '../index.html?bin=' + bin +
-                    '&bust=' + Date.now());
+if (search) search = '&' + search;
+iframe.setAttribute('src', '../index.html?bust=' + Date.now() + search);
 
 iframe.onload = function() {
   if (iframe.contentWindow.embedAPI)
