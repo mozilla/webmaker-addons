@@ -89,9 +89,20 @@
         
     </div>
     <script>
-        function toggleItem() {
-            var trigger = event.target.parentElement;
-            var target = trigger.dataset.target;
+        function toggleItem(event) {
+
+            var trigger, target; 
+
+            if ( event.target.dataset.target ) {
+                trigger = event.target;
+                target = trigger.dataset.target;    
+            } else {
+                console.log('asdf');
+                trigger = event.target.parentElement;
+                target = trigger.dataset.target;    
+            }
+            
+            console.log(trigger,trigger.dataset);
             
             if ( target ) {
                 
