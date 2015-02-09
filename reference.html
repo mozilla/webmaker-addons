@@ -6,7 +6,8 @@
 
     <style>
         section, div { position:relative; }        
-        .hidden { display:none; }
+        .modal { display:none; }
+        .modal.active { display:block; }
         .fa { font-size:2em; }
         
         #sidebar,
@@ -14,15 +15,15 @@
                 
         button { color:white; display:inline-block; font-size:1em; border:0; background:none; padding:0; }
         button:hover,
-        .active { background:rgba(255,255,255,0.2); outline:0; }  
+        button.active { background:rgba(255,255,255,0.2); outline:0; }  
         
         nav button, 
         #textAdd button, 
         #colors button, 
         #share button { height:4em; width:4em; vertical-align: middle; } 
 
-        #colors button { margin:0 .25em; border-radius:50%; }
-        #fonts button { display:block; width:100%; height:20%; /* height = 100% / fonts.length */  }        
+        #colors button { margin:0 .25em; border-radius:50%; height:3em; width:3em; }
+        #fonts button { display:block; width:100%; height:16.666666%; /* height = 100% / fonts.length */  }        
     </style>
     
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Opens+Sans&text=OpenSans">
@@ -34,6 +35,12 @@
 
 
 <body>
+
+    <div id="webpage" style="padding:50px;">
+        <!-- <img style="height:200px; width:300px; background:#eee;" draggable="true" ondragstart="drag(event)" src="http://placekitten.com/g/300/200" > -->
+        <img style="height:200px; width:400px; background:#eee;" draggable="true" ondragstart="drag(event)" src="http://placekitten.com/g/400/200" >
+    </div>
+
     <div id="sidebar" style="position:absolute; top:0; right:0; width:378px; height:100%; background:#666;">
         <header>
             <nav style="height:64px; background:#000;">
@@ -46,15 +53,16 @@
         </header>
     
         <section style="height:270px; margin:2em 0; padding:.5em 0; background:#333;">
-            <div style="height:100%; border:1px dashed #fff; margin:0 .5em;"></div>            
-            <div id="fonts" class="hidden" style="position:absolute; top:0; left:50%; width:200px; margin-left:-100px; height:100%; font-size:1.5em; background:rgba(0,0,0,0.5);  ">
+            <div id="whiteboard" style="height:100%; border:1px dashed #fff; margin:0 .5em; overflow:hidden;" ondrop="drop(event)" ondragover="allowDrop(event)"></div>            
+            <div id="fonts" class="modal" style="position:absolute; top:0; left:50%; width:200px; margin-left:-100px; height:100%; font-size:1.5em; background:rgba(0,0,0,0.5);  ">
                 <button style="font-family:'Knewave';">Knewave</button>
                 <button style="font-family:'Londrina Sketch';">Londrina Sketch</button>
                 <button style="font-family:'Open Sans';">Open Sans</button>
                 <button style="font-family:'Pacifico';">Pacifico</button>
                 <button style="font-family:'Prociono';">Prociono</button>
+                <button style=""><i class="fa fa-eyedropper" style="font-size:1em; color:white;"></i></button>
             </div>
-            <div id="colors" class="visible" style="font-size:.5em; text-align:center; margin-top:-1em;">
+            <div id="colors" class="modal" style="font-size:.5em; text-align:center; margin-top:-1em;">
                 <button style="background:#fff;"></button>
                 <button style="background:#000;"></button>
                 <button style="background:rgb(213,37,213);"></button>
@@ -63,8 +71,9 @@
                 <button style="background:rgb(234,220,41);"></button>
                 <button style="background:rgb(242,162,32);"></button>
                 <button style="background:rgb(232,74,27);"></button>
+                <button style="background:black;"><i class="fa fa-eyedropper" style="color:white;"></i></button>
             </div>
-            <div id="textAdd" class="hidden" style="position:absolute; top:40%; width:100%; padding:1em 0; text-align:center; background:rgba(0,0,0,0.5);">
+            <div id="textAdd" class="modal" style="position:absolute; top:40%; width:100%; padding:1em 0; text-align:center; background:rgba(0,0,0,0.5);">
                 <button style="float:left"><i class="fa fa-times-circle"></i></button>
                 <button style="float:right"><i class="fa fa-check-circle"></i></button>
                 <div style="font-size:2em; height:1.5em; line-height:1.5em; margin:.25em 2em; color:black; background:rgba(255,255,255,0.95);" contenteditable="true">gladys</div>
@@ -73,12 +82,12 @@
     
         <section>
             <nav style="text-align:center; background:#999;">
-                <button data-target="#colors" class="active"><i style="display:block; height:64px; width:64px; background:transparent url(src/icons/ColorIcon.svg) center center no-repeat"></i></button>
+                <button data-target="#colors"><i style="display:block; height:64px; width:64px; background:transparent url(src/icons/ColorIcon.svg) center center no-repeat"></i></button>
                 <button data-target="#fonts"><i style="display:block; height:64px; width:64px; background:transparent url(src/icons/FontIcon.svg) center center no-repeat"></i></button>
             </nav>
         </section>
         
-        <section id="share" class="hidden" style="position:absolute; top:5em; left:50%; width:200px; margin-left:-100px; padding:0 0 1.5em; background:rgba(0,0,0,.8); text-align:center;  ">
+        <section id="share" class="modal" style="position:absolute; top:5em; left:50%; width:200px; margin-left:-100px; padding:0 0 1.5em; background:rgba(0,0,0,.8); text-align:center;  ">
             <h2 style="font-size:1.25em;">Share as Image</h2>
             <button><i class="fa fa-facebook-square"></i></button>
             <button><i class="fa fa-tumblr-square"></i></button>
@@ -90,7 +99,7 @@
 
         <footer style="position:absolute; bottom:0; width:100%;">
             <nav style="text-align:center;">
-                <button style=""><i style="display:block; height:64px; width:64px; background:transparent url(src/icons/TrashIcon.svg) center center no-repeat"></i></button>
+                <button style="" onclick="trash()"><i style="display:block; height:64px; width:64px; background:transparent url(src/icons/TrashIcon.svg) center center no-repeat"></i></button>
             </nav>        
         </footer>
         
@@ -98,7 +107,7 @@
     <script>
         function toggleItem(event) {
 
-            var trigger, target;
+            var trigger, target, open, active;
 
             if ( event.target.dataset.target ) {
                 trigger = event.target;
@@ -108,16 +117,23 @@
                 target = trigger.dataset.target;    
             }
             
-
             if ( target ) {
-                trigger.classList.toggle('active');
-                var open = document.querySelector('.visible');
-                open.classList.toggle('hidden');
-                open.classList.toggle('visible');
-
-                var target = document.querySelector(target);
-                target.classList.toggle('hidden');
-                target.classList.toggle('visible');
+                target = document.querySelector(target);
+                console.log(target.id);
+                active = document.querySelectorAll('.active')
+                if ( active ) {
+                    for (var i = 0, len = active.length; i < len; i++) {
+                        active[i].classList.remove('active');
+                        if ( active[i] == trigger ) { trigger = false; }
+                        if ( active[i] == target ) { target = false; }
+                    }
+                }
+                if ( trigger) {
+                    trigger.classList.add('active');
+                }
+                if ( target) {
+                    target.classList.add('active');
+                }
             }                  
         };
         
@@ -127,6 +143,37 @@
             buttons[i].addEventListener("click", toggleItem, false);
         };
         
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        var itemID = 1; 
+
+        function drag(ev) {
+            if ( !ev.target.id ) {
+                            ev.target.id = 'img' + itemID;
+                            itemID++;
+
+            } else {
+                console.log('id', ev.target.id);
+            }
+
+            ev.dataTransfer.setData("Text", ev.target.id);
+        }
+
+        function drop(ev) {
+            console.log(ev.target);
+            var data = ev.dataTransfer.getData("Text");
+            ev.target.appendChild(document.getElementById(data));
+            ev.preventDefault();
+        }
+
+        function trash () {
+            var whiteboard = document.querySelector('#whiteboard');
+            whiteboard.innerHTML = '';
+        }
+
     </script>
 </body>
 </html>
