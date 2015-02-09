@@ -14,6 +14,7 @@
         #sidebar button { font-family:'Fira Sans', 'Open Sans', sans-serif; color:white; }
                 
         button { color:white; display:inline-block; font-size:1em; border:0; background:none; padding:0; }
+        button:hover { cursor:pointer;}
         button:hover,
         button.active { background:rgba(255,255,255,0.2); outline:0; }  
         
@@ -22,7 +23,8 @@
         #colors button, 
         #share button { height:4em; width:4em; vertical-align: middle; } 
 
-        #colors button { margin:0 .25em; border-radius:50%; height:3em; width:3em; }
+        #colors button { margin:0 .25em; border-radius:50%; height:3.6em; width:3.6em; opacity:.9; }
+        #colors button:hover { opacity:1; }
         #fonts button { display:block; width:100%; height:16.666666%; /* height = 100% / fonts.length */  }        
     </style>
     
@@ -71,7 +73,7 @@
                 <button style="background:rgb(234,220,41);"></button>
                 <button style="background:rgb(242,162,32);"></button>
                 <button style="background:rgb(232,74,27);"></button>
-                <button style="background:black;"><i class="fa fa-eyedropper" style="color:white;"></i></button>
+                <button style="background:rgba(0,0,0,0.5);"><i class="fa fa-eyedropper" style="color:white;"></i></button>
             </div>
             <div id="textAdd" class="modal" style="position:absolute; top:40%; width:100%; padding:1em 0; text-align:center; background:rgba(0,0,0,0.5);">
                 <button style="float:left"><i class="fa fa-times-circle"></i></button>
