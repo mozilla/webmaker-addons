@@ -13,19 +13,41 @@ html, body, iframe {
 <body>
 <script>
 var iframe;
+var iframeIsReady = false;
+var iframeMessageQueue = [];
+
+function emitMessageToIframe(data) {
+  if (iframeIsReady) {
+    iframe.contentWindow.postMessage(JSON.stringify(data), '*');
+  } else {
+    iframeMessageQueue.push(JSON.stringify(data));
+  }
+}
 
 function init(options) {
   iframe = document.createElement('iframe');
   iframe.setAttribute('src', options.url);
+  window.addEventListener('message', function(e) {
+    if (e.data == 'ready') {
+      iframeIsReady = true;
+      iframeMessageQueue.splice(0).forEach(function(message) {
+        iframe.contentWindow.postMessage(message, '*');
+      });
+    }
+  });
   document.body.appendChild(iframe);
 }
 
 if (typeof(addon) == 'undefined') {
+  emitMessageToIframe({type: 'log', message: 'this is a test message.'});
   window.onload = init.bind(null, {
     url: '../../index.html?bust=' + Date.now()
   });
 } else {
   addon.port.on('init', init);
+  addon.port.on('image', function(url) {
+    emitMessageToIframe({type: 'image', url: url});
+  });
 }
 </script>
 </body>

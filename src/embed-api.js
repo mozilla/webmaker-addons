@@ -31,6 +31,16 @@ define(function(require) {
 
       if (window.onembedapiready)
         window.onembedapiready(embedAPI);
+
+      window.addEventListener('message', function(e) {
+        if (e.source !== window.parent) return;
+        var data = JSON.parse(e.data);
+        if (data.type == 'log')
+          console.log('log message from parent: ' + data.message);
+        else if (data.type == 'image')
+          embedAPI.addImage(data.url);
+      });
+      window.parent.postMessage('ready', '*');
     }
   }
 });
