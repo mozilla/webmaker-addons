@@ -74,10 +74,27 @@ function handleIconTargetMouseOut(e) {
   removeIcon();
 }
 
+function unquote(str) {
+  var first = str[0];
+  var last = str[str.length - 1];
+  if (first != last) return str;
+  if (first == "'" || first == '"')
+  return str.slice(1, -1);
+}
+
+function processCssBackgroundImage(target) {
+  var style = window.getComputedStyle(target);
+  var match = style.backgroundImage.match(/url\(([^)]+)\)/);
+
+  if (!match) return;
+  showIcon(target, unquote(match[1]));
+}
+
 window.addEventListener('mouseover', function(e) {
   var target = e.target;
 
   if (target === icon || target === iconTarget) return;
   if (target.nodeName == 'IMG')
-    showIcon(target, target.src);
+    return showIcon(target, target.src);
+  return processCssBackgroundImage(target);
 }, true);
