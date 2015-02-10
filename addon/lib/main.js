@@ -6,6 +6,7 @@ var prefs = require('sdk/preferences/service');
 var env = require('./env');
 var md5 = require('./md5');
 
+var DEFAULT_IFRAME_URL = 'https://xmatthewx.github.io/webmaker-addons/';
 var IFRAME_URL = env.get("WEBMAKER_ADDON_IFRAME_URL");
 var DEBUG = !!IFRAME_URL;
 
@@ -22,7 +23,7 @@ var sidebar = Sidebar({
       // TODO: hash prefs.get('services.sync.account') or
       // require('util/uuid') to determine a unique bin for
       // the user.
-      url: IFRAME_URL
+      url: IFRAME_URL || DEFAULT_IFRAME_URL
     });
     sidebarMessageQueue.splice(0).forEach(function(args) {
       worker.port.emit.apply(worker.port, args);
