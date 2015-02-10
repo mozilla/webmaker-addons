@@ -1,5 +1,13 @@
 var md5 = require('./md5');
 var env = require('./env');
+var uuid = require('./uuid');
+
+exports["test uuid"] = function(assert) {
+  var u = uuid();
+  if (!/^[0-9A-F\-]+$/i.test(u))
+    throw new Error(u + ' is not a uuid');
+  assert.ok(true);
+};
 
 exports["test md5"] = function(assert) {
   assert.equal(md5("hi"), "49f68a5c8493ec2c0bf489821c21fc3b");
