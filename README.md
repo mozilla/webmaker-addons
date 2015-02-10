@@ -23,6 +23,12 @@ alongside it called `require-config.local.js`. Any changes you make
 to configuration variables/objects in this file will take effect
 before the app initializes.
 
+## HTML Screenshot Service
+
+An HTML screenshot service used to render a user's creation to a PNG
+is located in the `htmlshot` directory. See [htmlshot/README.md][] for
+more details.
+
 ## Firefox Add-on
 
 An experimental Firefox addon that embeds this tool in a sidebar is
@@ -44,3 +50,4 @@ You can also run the add-on's test suite with `cfx test`.
 
   [http-server]: https://www.npmjs.org/package/http-server
   [Add-on SDK]: https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Installation
+  [htmlshot/README.md]: https://github.com/xmatthewx/webmaker-addons/tree/gh-pages/htmlshot#readme
