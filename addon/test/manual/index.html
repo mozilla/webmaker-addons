@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+.bgimage {
+  background-image: url(../../../src/icons/ShareIcon.svg);
+  background-repeat: no-repeat;
+  width: 64px;
+  height: 64px;
+}
+</style>
+<title>Manual Test for Webmaker Sidebar</title>
+<h1>Manual Test for Webmaker Sidebar</h1>
+<h2>Content Script Tests</h2>
+<p>Hovering over each of the following images should show a plus icon.</p>
+<p>Clicking on the plus icon should show a window alert with a URL.</p>
+<p><code>&lt;img&gt;</code> element (SVG)</p>
+<div style="background: black">
+  <img src="../../../src/icons/FontIcon.svg">
+</div>
+<p><code>background-image</code> CSS (SVG)</p>
+<div style="background: black">
+  <div class="bgimage"></div>
+</div>
+<script src="../../data/content-script.js"></script>

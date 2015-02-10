@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+html, body, iframe {
+  margin: 0;
+  border: none;
+  width: 100%;
+  height: 100%;
+  font-size: 0;
+}
+</style>
+<title>Webmaker Addon Sidebar</title>
+<body>
+<script>
+var iframe;
+
+function init(options) {
+  iframe = document.createElement('iframe');
+  iframe.setAttribute('src', options.url);
+  document.body.appendChild(iframe);
+}
+
+if (typeof(addon) == 'undefined') {
+  window.onload = init.bind(null, {
+    url: '../../index.html?bust=' + Date.now()
+  });
+} else {
+  addon.port.on('init', init);
+}
+</script>
+</body>

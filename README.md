@@ -23,4 +23,24 @@ alongside it called `require-config.local.js`. Any changes you make
 to configuration variables/objects in this file will take effect
 before the app initializes.
 
+## Firefox Add-on
+
+An experimental Firefox addon that embeds this tool in a sidebar is
+located in the `addon` directory.
+
+To use it, install the [Add-on SDK][], activate it, and run the following
+from the root directory of this repository:
+
+```
+export WEBMAKER_ADDON_IFRAME_URL=http://localhost:8080/
+cd addon
+cfx run
+```
+
+The above assumes your static web server is running on port 8080. If it's
+not, change `WEBMAKER_ADDON_IFRAME_URL` accordingly.
+
+You can also run the add-on's test suite with `cfx test`.
+
   [http-server]: https://www.npmjs.org/package/http-server
+  [Add-on SDK]: https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Installation
