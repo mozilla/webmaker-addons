@@ -2,6 +2,6 @@
 
 cfx xpi \
   --update-link \
-  https://github.com/xmatthewx/webmaker-addons/addon/webmaker-addon.xpi \
+  https://xmatthewx.github.io/webmaker-addons/addon/webmaker-addon.xpi \
   --update-url \
-  https://github.com/xmatthewx/webmaker-addons/addon/webmaker-addon.update.rdf
+  https://xmatthewx.github.io/webmaker-addons/addon/webmaker-addon.update.rdf
