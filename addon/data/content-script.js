@@ -45,7 +45,7 @@ function showIcon(target, imageURL) {
     position: 'absolute',
     padding: 4,
     margin: 0,
-    zIndex: 10000000,
+    zIndex: '10000000',
     fontSize: 10,
     cursor: 'pointer',
     color: 'black',
