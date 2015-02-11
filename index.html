@@ -15,6 +15,12 @@ html, body, #app, .app-content {
   -webkit-box-sizing: border-box;
 }
 
+/* TODO: Remember to define focus styles!
+ * http://outlinenone.com/ */
+:focus {
+  outline: 0;
+}
+
 section {
   position: relative;
 }
@@ -153,6 +159,34 @@ nav button img {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-grow: 1;
+}
+
+.text-modal {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.text-modal form {
+  display: flex;
+  align-items: center;
+}
+
+.text-modal form button {
+  font-size: 32px;
+  height: 64px;
+  width: 64px;
+}
+
+.text-modal form input {
+  font-family: inherit;
+  font-size: 32px;
+  text-align: center;
+  margin: 16px 0 16px 0;
+  background-color: rgba(255, 255, 255, 0.95);
   flex-grow: 1;
 }
 </style>

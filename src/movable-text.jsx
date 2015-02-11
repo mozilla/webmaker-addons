@@ -133,11 +133,16 @@ define(function(require) {
     },
     render: function() {
       return (
-        <div style={{position: 'absolute', bottom: 0, left: 0, color: 'pink', fontSize: 24}}>
+        <div className="text-modal">
           <form onSubmit={this.handleSubmit}>
-            <input type="text" ref="text" value={this.props.text} onChange={this.handleChange}/>
-            <button type="submit">ok</button>
-            <button onClick={this.handleCancel}>cancel</button>
+            <button style={{order: 3}} type="submit">
+              <i className="fa fa-check-circle"/>
+            </button>
+            <input style={{order: 2}} type="text" ref="text"
+             value={this.props.text} onChange={this.handleChange}/>
+            <button style={{order: 1}} onClick={this.handleCancel}>
+              <i className="fa fa-times-circle"/>
+            </button>
           </form>
         </div>
       );
