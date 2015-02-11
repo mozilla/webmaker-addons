@@ -73,18 +73,14 @@ define(function(require) {
         </html>
       );
     },
-    handleSelectItem: function(key, options) {
-      options = options || {};
-      this.setState({
-        selectedItem: key,
-        selectionModalClass: options.modalClass || null
-      });
-    },
     handleClick: function(e) {
       if (e.target.hasAttribute('data-clear-selection-on-click'))
         this.clearSelection();
     },
-    handleItemSelect: function(key, e) {
+    handleItemSelect: function(options, e) {
+      if (typeof(options) == 'string')
+        options = {key: options};
+      var key = options.key;
       var newOrder = itemUtils.getBringToFrontOrder(this.state.items, key);
       if (newOrder !== null)
         this.props.firebaseRef.child(key).update({
@@ -92,7 +88,7 @@ define(function(require) {
         });
       this.setState({
         selectedItem: key,
-        selectionModalClass: null
+        selectionModalClass: options.modalClass || null
       });
       if (document.activeElement)
         document.activeElement.blur();
@@ -134,7 +130,7 @@ define(function(require) {
               <PrimaryToolbar ref="primaryToolbar"
                canvasWidth={this.props.canvasWidth}
                canvasHeight={this.props.canvasHeight}
-               selectItem={this.handleSelectItem}
+               selectItem={this.handleItemSelect}
                firebaseRef={this.props.firebaseRef}
                onExport={this.toggleExportModal}/>
             </nav>

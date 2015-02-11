@@ -21,7 +21,8 @@ define(function(require) {
           y: 0
         }, DEFAULT_PROPS)
       });
-      this.props.selectItem(newRef.key(), {
+      this.props.selectItem({
+        key: newRef.key(),
         modalClass: TextModal
       });
       this.getDOMNode().blur();
