@@ -48,6 +48,7 @@ define(function() {
       return 'scale(' + this.state.scale + ')';
     },
     render: function() {
+      var PADDING = 10;
       var transform = this.getTransform();
       var scaleTransform = {
         transform: transform,
@@ -60,16 +61,21 @@ define(function() {
 
       return (
         <div style={{
-          height: this.props.height * this.state.scale,
-          margin: 10,
+          height: this.props.height * this.state.scale + (PADDING * 2),
+          margin: PADDING,
+          paddingTop: PADDING,
+          paddingBottom: PADDING,
           // Firefox does weird things when scaling flex-boxed
           // elements, so just set the display to block if we're
           // scaling.
           display: this.state.scale == 1 ? 'flex' : 'block',
-          justifyContent: 'center',
-          overflow: 'hidden'
+          justifyContent: 'center'
         }}>
-          <div style={{border: '1px dashed white'}}>
+          <div style={{
+            border: '1px dashed white',
+            height: '100%',
+            overflow: 'hidden'
+          }}>
           <div ref="transform" style={scaleTransform}>
             {this.props.children}
           </div>

@@ -104,7 +104,7 @@ define(function(require) {
     },
     render: function() {
       return (
-        <div>
+        <div className="app-content" style={{backgroundColor: '#666666'}}>
           <header>
             <nav style={{height: 64, background: 'black'}}>
               <PrimaryToolbar ref="primaryToolbar"
@@ -114,9 +114,7 @@ define(function(require) {
                onExport={this.toggleExportModal}/>
             </nav>
           </header>
-          <div style={{
-            backgroundColor: '#333333',
-          }}>
+          <div style={{backgroundColor: '#333333'}}>
           <ScaleSizer ref="scaleSizer"
            width={this.props.canvasWidth}
            height={this.props.canvasHeight}>
