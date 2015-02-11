@@ -66,6 +66,7 @@ define(function() {
           // elements, so just set the display to block if we're
           // scaling.
           display: this.state.scale == 1 ? 'flex' : 'block',
+          border: '1px dashed black',
           justifyContent: 'center',
           overflow: 'hidden'
         }}>

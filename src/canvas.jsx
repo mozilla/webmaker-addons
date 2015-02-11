@@ -42,7 +42,6 @@ define(function(require) {
           position: 'relative',
           width: this.props.canvasWidth,
           height: this.props.canvasHeight,
-          border: '1px dotted lightgray',
           overflow: 'hidden'
         }} onClick={this.handleClick} onTouchStart={this.handleClick}>
         {orderedKeys.map(this.createItem)}
