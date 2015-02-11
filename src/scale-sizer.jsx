@@ -62,7 +62,8 @@ define(function() {
       return (
         <div style={{
           height: this.props.height * this.state.scale + (PADDING * 2),
-          margin: PADDING,
+          marginLeft: PADDING,
+          marginRight: PADDING,
           paddingTop: PADDING,
           paddingBottom: PADDING,
           // Firefox does weird things when scaling flex-boxed

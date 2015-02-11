@@ -114,6 +114,7 @@ define(function(require) {
                onExport={this.toggleExportModal}/>
             </nav>
           </header>
+          <div style={{paddingTop: 32, paddingBottom: 32}}>
           <div style={{backgroundColor: '#333333'}}>
           <ScaleSizer ref="scaleSizer"
            width={this.props.canvasWidth}
@@ -128,6 +129,7 @@ define(function(require) {
              onItemSelect={this.handleItemSelect}
              getPointerScale={this.getPointerScale}/>
           </ScaleSizer>
+          </div>
           </div>
           <Fonts fonts={itemUtils.getFontList(this.state.items)}/>
           {this.state.selectedItem
