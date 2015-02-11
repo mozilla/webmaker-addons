@@ -29,6 +29,7 @@ define(function(require) {
 
       window.embedAPI = embedAPI;
 
+      if (!window.EMBEDDED_MODE) return;
       if (window.onembedapiready)
         window.onembedapiready(embedAPI);
 
