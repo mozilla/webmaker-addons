@@ -82,6 +82,43 @@ define(function(require) {
     }
   });
 
+  var SimpleChangeFontFamilyField = React.createClass({
+    render: function() {
+      return (
+        <button>
+          <img src="src/icons/FontIcon.svg"/>
+        </button>
+      );
+    }
+  });
+
+  var SimpleChangeColorField = React.createClass({
+    render: function() {
+      return (
+        <button>
+          <img src="src/icons/ColorIcon.svg"/>
+        </button>
+      );
+    }
+  });
+
+  var SimpleChangeTextField = React.createClass({
+    handleClick: function(e) {
+      var text = window.prompt("Gimme some text.", this.props.text);
+      if (!text) return;
+      this.props.firebaseRef.update({
+        text: text
+      });
+    },
+    render: function() {
+      return (
+        <button onClick={this.handleClick}>
+          <img src="src/icons/TextIcon.svg"/>
+        </button>
+      );
+    }
+  });
+
   var ChangeFontSizeField = React.createClass({
     handleChange: function(e) {
       this.props.firebaseRef.update({
@@ -115,8 +152,9 @@ define(function(require) {
     AddButton: AddTextButton,
     ContentItem: MovableText,
     SelectionActions: window.SIMPLE_MODE ? [
-      ChangeFontFamilyField,
-      ChangeColorField
+      SimpleChangeColorField,
+      SimpleChangeFontFamilyField,
+      SimpleChangeTextField
     ] : [
       ChangeTextField,
       ChangeFontFamilyField,
