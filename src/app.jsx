@@ -55,12 +55,6 @@ define(function(require) {
         this.clearSelection();
 
       this.setState({items: items});
-
-      if (window.DEBUG_AUTOSELECT_FIRST_ITEM) {
-        var keys = Object.keys(items);
-        if (keys.length && !this.state.selectedItem)
-          this.handleItemSelect(keys[0]);
-      }
     },
     toggleExportModal: function() {
       this.setState({showExportModal: !this.state.showExportModal});

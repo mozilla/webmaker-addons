@@ -17,10 +17,13 @@ var DEFAULT_FONT = 'Open Sans';
 var CANVAS_WIDTH = 640;
 var CANVAS_HEIGHT = 480;
 
-// Changing this to true will auto-select the first item in the
-// canvas on page load, which is useful for debugging anything
-// related to selections.
-var DEBUG_AUTOSELECT_FIRST_ITEM = false;
+// Set this to "offline" to force the app into offline
+// mode with a blank canvas.
+var DEBUG_FORCE_BIN_NAME = '';
+
+// Changing this to a function will call it when the app
+// is initialized, with the App instance as its first arg.
+var DEBUG_ONREADY_HOOK = null;
 
 // Changing this to true will automatically show the export
 // modal on page load, which is useful for debugging it.
