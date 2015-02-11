@@ -9,6 +9,7 @@ define(function(require) {
         key: type,
         canvasWidth: this.props.canvasWidth,
         canvasHeight: this.props.canvasHeight,
+        selectItem: this.props.selectItem,
         firebaseRef: this.props.firebaseRef
       });
     },

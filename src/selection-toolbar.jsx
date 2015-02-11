@@ -13,6 +13,7 @@ define(function(require) {
         _.extend({
           key: key,
           ref: actionClass.refName,
+          showModal: this.props.showModal,
           itemType: selectedItem.type
         }, TypeMap[selectedItem.type].DEFAULT_PROPS, selectedItem.props, {
           allItems: this.props.items,

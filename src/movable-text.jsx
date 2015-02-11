@@ -13,16 +13,18 @@ define(function(require) {
 
   var AddTextButton = React.createClass({
     handleClick: function() {
-      var text = window.prompt("Gimme some text.");
-      if (!text) return;
-      this.props.firebaseRef.push({
+      var newRef = this.props.firebaseRef.push({
         type: 'text',
         props: _.extend({
-          text: text,
+          text: "Change me!",
           x: 0,
           y: 0
         }, DEFAULT_PROPS)
-      });      
+      });
+      this.props.selectItem(newRef.key(), {
+        modalClass: TextModal
+      });
+      this.getDOMNode().blur();
     },
     render: function() {
       return (
@@ -102,13 +104,49 @@ define(function(require) {
     }
   });
 
+  var TextModal = React.createClass({
+    getInitialState: function() {
+      return {
+        initialText: this.props.text
+      };
+    },
+    componentDidMount: function() {
+      this.refs.text.getDOMNode().select();
+    },
+    handleSubmit: function(e) {
+      e.preventDefault();
+      if (!this.props.text)
+        return this.props.firebaseRef.parent().remove();
+      this.props.dismissModal();
+    },
+    handleChange: function(e) {
+      this.props.firebaseRef.update({
+        text: e.target.value
+      });
+    },
+    handleCancel: function(e) {
+      e.preventDefault();
+      this.props.firebaseRef.update({
+        text: this.state.initialText
+      });
+      this.props.dismissModal();
+    },
+    render: function() {
+      return (
+        <div style={{position: 'absolute', bottom: 0, left: 0, color: 'pink', fontSize: 24}}>
+          <form onSubmit={this.handleSubmit}>
+            <input type="text" ref="text" value={this.props.text} onChange={this.handleChange}/>
+            <button type="submit">ok</button>
+            <button onClick={this.handleCancel}>cancel</button>
+          </form>
+        </div>
+      );
+    }
+  });
+
   var SimpleChangeTextField = React.createClass({
     handleClick: function(e) {
-      var text = window.prompt("Gimme some text.", this.props.text);
-      if (!text) return;
-      this.props.firebaseRef.update({
-        text: text
-      });
+      return this.props.showModal(TextModal);
     },
     render: function() {
       return (

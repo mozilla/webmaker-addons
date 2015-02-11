@@ -4,6 +4,7 @@ define(function(require) {
   var SelectionFrame = require('jsx!./selection-frame');
   var Fonts = require('jsx!./fonts');
   var ExportModal = require('jsx!./export-modal');
+  var SelectionModal = require('jsx!./selection-modal');
   var itemUtils = require('./item-utils');
   var ScaleSizer = require('jsx!./scale-sizer');
   var PrimaryToolbar = require('jsx!./primary-toolbar');
@@ -17,6 +18,7 @@ define(function(require) {
     getInitialState: function() {
       return {
         selectedItem: null,
+        selectionModalClass: null,
         showExportModal: window.DEBUG_AUTOSHOW_EXPORT_MODAL,
         items: null
       };
@@ -77,6 +79,13 @@ define(function(require) {
         </html>
       );
     },
+    handleSelectItem: function(key, options) {
+      options = options || {};
+      this.setState({
+        selectedItem: key,
+        selectionModalClass: options.modalClass || null
+      });
+    },
     handleClick: function(e) {
       if (e.target.hasAttribute('data-clear-selection-on-click'))
         this.clearSelection();
@@ -88,7 +97,8 @@ define(function(require) {
           order: newOrder
         });
       this.setState({
-        selectedItem: key
+        selectedItem: key,
+        selectionModalClass: null
       });
       if (document.activeElement)
         document.activeElement.blur();
@@ -96,9 +106,20 @@ define(function(require) {
       // This is useful if we're in an iframe.
       window.focus();
     },
+    handleShowModal: function(modalClass) {
+      this.setState({
+        selectionModalClass: modalClass
+      });
+    },
+    handleDismissModal: function() {
+      this.setState({
+        selectionModalClass: null
+      });
+    },
     clearSelection: function() {
       this.setState({
-        selectedItem: null
+        selectedItem: null,
+        selectionModalClass: null
       });
     },
     getSelectedItem: function() {
@@ -119,12 +140,16 @@ define(function(require) {
               <PrimaryToolbar ref="primaryToolbar"
                canvasWidth={this.props.canvasWidth}
                canvasHeight={this.props.canvasHeight}
+               selectItem={this.handleSelectItem}
                firebaseRef={this.props.firebaseRef}
                onExport={this.toggleExportModal}/>
             </nav>
           </header>
-          <div style={{paddingTop: 32, paddingBottom: 32}}
-           data-clear-selection-on-click>
+          <div style={{
+            paddingTop: 32,
+            paddingBottom: 32,
+            position: 'relative'
+          }} data-clear-selection-on-click>
             <div style={{backgroundColor: '#333333'}}>
               <ScaleSizer ref="scaleSizer"
                width={this.props.canvasWidth}
@@ -140,6 +165,14 @@ define(function(require) {
                  getPointerScale={this.getPointerScale}/>
               </ScaleSizer>
             </div>
+            {this.state.selectionModalClass
+             ? <SelectionModal
+                modalClass={this.state.selectionModalClass}
+                dismissModal={this.handleDismissModal}
+                selectedItem={this.state.selectedItem}
+                items={this.state.items}
+                firebaseRef={this.props.firebaseRef}/>
+             : null}
           </div>
           <Fonts fonts={itemUtils.getFontList(this.state.items)}/>
           {this.state.selectedItem
@@ -150,7 +183,8 @@ define(function(require) {
                <SelectionToolbar
                 selectedItem={this.state.selectedItem}
                 items={this.state.items}
-                firebaseRef={this.props.firebaseRef}/>
+                firebaseRef={this.props.firebaseRef}
+                showModal={this.handleShowModal}/>
                <SelectionToolbar ref="globalSelectionToolbar"
                 className="global-selection-toolbar"
                 actionClasses={[GlobalSelectionActions]}
