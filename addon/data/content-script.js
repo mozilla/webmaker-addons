@@ -83,10 +83,13 @@ function unquote(str) {
 }
 
 function processCssBackgroundImage(target) {
+  if (!target || target === window.document) return;
+
   var style = window.getComputedStyle(target);
   var match = style.backgroundImage.match(/url\(([^)]+)\)/);
 
-  if (!match) return;
+  if (!match)
+    return processCssBackgroundImage(target.parentNode);
   showIcon(target, unquote(match[1]));
 }
 
