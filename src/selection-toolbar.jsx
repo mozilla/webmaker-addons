@@ -2,7 +2,6 @@ define(function(require) {
   var _ = require('underscore');
   var React = require('react');
   var TypeMap = require('./type-map');
-  var BaseSelectionActions = require('jsx!./base-selection-actions');
 
   var SelectionToolbar = React.createClass({
     createAction: function(actionClass, key) {
@@ -21,17 +20,16 @@ define(function(require) {
         })
       );
     },
-    getActionClasses: function() {
-      return [BaseSelectionActions]
-        .concat(TypeMap[this.getSelectedItem().type].SelectionActions || []);
-    },
     getSelectedItem: function() {
       return this.props.items[this.props.selectedItem];
     },
     render: function() {
+      var actionClasses = this.props.actionClasses ||
+        TypeMap[this.getSelectedItem().type].SelectionActions || [];
+
       return (
-        <div className="selection-toolbar">
-          {this.getActionClasses().map(function(actionClass, i) {
+        <div className={"selection-toolbar " + (this.props.className || '')}>
+          {actionClasses.map(function(actionClass, i) {
              return this.createAction(actionClass, i);
           }, this)}
         </div>

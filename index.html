@@ -89,16 +89,29 @@ nav button img {
   margin: 10px;
 }
 
-.selection-toolbar {
+.selection-toolbar.global-selection-toolbar {
   position: fixed;
-  background-color: #999999;
+  background-color: transparent;
   bottom: 0;
   left: 0;
   width: 100%;
   display: flex;
+}
+
+.selection-toolbar.global-selection-toolbar button {
+  font-size: 1.5em;
+}
+
+.selection-toolbar.global-selection-toolbar button:hover {
+  background-color: transparent;
+  color: yellow;
+}
+
+.selection-toolbar {
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  background-color: #999999;
 }
 
 .selection-toolbar button {
@@ -134,7 +147,7 @@ nav button img {
 
 .selection-toolbar .button-group {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   flex-grow: 1;
 }

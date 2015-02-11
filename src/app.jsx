@@ -10,6 +10,7 @@ define(function(require) {
   var SelectionToolbar = require('jsx!./selection-toolbar');
   var Canvas = require('jsx!./canvas');
   var KeypressMixin = require('./keypress-mixin');
+  var BaseSelectionActions = require('jsx!./base-selection-actions');
 
   var App = React.createClass({
     mixins: [KeypressMixin],
@@ -32,7 +33,7 @@ define(function(require) {
       var selectedItem = this.getSelectedItem();
 
       if (code == this.KEY_BACKSPACE) {
-        this.refs.selectionToolbar.refs.baseSelectionActions
+        this.refs.globalSelectionToolbar.refs.baseSelectionActions
           .handleRemove();
       } else if (code == this.KEY_ARROW_UP) {
         selectedItem.nudgeUp();
@@ -146,7 +147,13 @@ define(function(require) {
                <SelectionFrame
                 getSelectedItem={this.getSelectedItem}
                 getClippingFrame={this.getClippingFrame}/>
-               <SelectionToolbar ref="selectionToolbar"
+               <SelectionToolbar
+                selectedItem={this.state.selectedItem}
+                items={this.state.items}
+                firebaseRef={this.props.firebaseRef}/>
+               <SelectionToolbar ref="globalSelectionToolbar"
+                className="global-selection-toolbar"
+                actionClasses={[BaseSelectionActions]}
                 selectedItem={this.state.selectedItem}
                 items={this.state.items}
                 firebaseRef={this.props.firebaseRef}/>
