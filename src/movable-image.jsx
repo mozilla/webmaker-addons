@@ -54,7 +54,9 @@ define(function(require) {
     },
     render: function() {
       return (
-        <button onClick={this.handleClick}>
+        <button onClick={this.handleClick} style={{
+          display: window.EMBEDDED_MODE ? 'none' : undefined
+        }}>
           <i className="fa fa-image"></i>
         </button>
       );

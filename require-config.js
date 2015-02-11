@@ -1,6 +1,7 @@
 var BASE_FIREBASE_URL = "https://sticker-fun.firebaseio.com/";
 var BASE_HTMLSHOT_URL = "http://cupcakes.hivelearningnetworks.org:3000/";
 
+var EMBEDDED_MODE = window.parent !== window;
 var SIMPLE_MODE = /[&?]simple=on/.test(location.search);
 
 // Set this to null to make *all* fonts available.
