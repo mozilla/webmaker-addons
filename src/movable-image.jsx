@@ -95,7 +95,8 @@ define(function(require) {
     DEFAULT_PROPS: DEFAULT_PROPS,
     AddButton: AddImageButton,
     ContentItem: MovableImage,
-    SelectionActions: [
+    SelectionActions: window.SIMPLE_MODE ? [
+    ] : [
       ChangeScaleField
     ]
   };

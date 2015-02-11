@@ -114,7 +114,10 @@ define(function(require) {
     DEFAULT_PROPS: DEFAULT_PROPS,
     AddButton: AddTextButton,
     ContentItem: MovableText,
-    SelectionActions: [
+    SelectionActions: window.SIMPLE_MODE ? [
+      ChangeFontFamilyField,
+      ChangeColorField
+    ] : [
       ChangeTextField,
       ChangeFontFamilyField,
       ChangeFontSizeField,
