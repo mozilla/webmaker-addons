@@ -5,7 +5,7 @@ define(function(require) {
 
   var BaseSelectionActions = React.createClass({
     statics: {
-      refName: 'baseSelectionActions'
+      refName: 'globalSelectionActions'
     },
     handleRemove: function() {
       this.props.firebaseRef.parent().remove();
