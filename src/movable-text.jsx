@@ -7,8 +7,8 @@ define(function(require) {
 
   var DEFAULT_PROPS = {
     fontFamily: window.DEFAULT_FONT,
-    fontSize: 18,
-    color: 'black'
+    fontSize: 32,
+    color: 'white'
   };
 
   var AddTextButton = React.createClass({
