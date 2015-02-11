@@ -90,11 +90,19 @@ function processCssBackgroundImage(target) {
   showIcon(target, unquote(match[1]));
 }
 
+function processSvgImage(target) {
+  var a = document.createElement('a');
+  a.setAttribute('href', target.getAttribute('xlink:href'));
+  showIcon(target, a.href);
+}
+
 window.addEventListener('mouseover', function(e) {
   var target = e.target;
 
   if (target === icon || target === iconTarget) return;
   if (target.nodeName == 'IMG')
     return showIcon(target, target.src);
+  if (target.nodeName == 'image' && target.hasAttribute('xlink:href'))
+    return processSvgImage(target);
   return processCssBackgroundImage(target);
 }, true);
