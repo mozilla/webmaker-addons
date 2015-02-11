@@ -16,7 +16,7 @@ define(function(require) {
       var newRef = this.props.firebaseRef.push({
         type: 'text',
         props: _.extend({
-          text: "Change me!",
+          text: "",
           x: 0,
           y: 0
         }, DEFAULT_PROPS)
@@ -126,6 +126,8 @@ define(function(require) {
     },
     handleCancel: function(e) {
       e.preventDefault();
+      if (!this.state.initialText)
+        return this.props.firebaseRef.parent().remove();
       this.props.firebaseRef.update({
         text: this.state.initialText
       });
