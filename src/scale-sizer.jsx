@@ -77,9 +77,9 @@ define(function() {
             height: '100%',
             overflow: 'hidden'
           }}>
-          <div ref="transform" style={scaleTransform}>
-            {this.props.children}
-          </div>
+            <div ref="transform" style={scaleTransform}>
+              {this.props.children}
+            </div>
           </div>
         </div>
       );

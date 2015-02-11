@@ -44,7 +44,7 @@ define(function(require) {
           height: this.props.canvasHeight,
           overflow: 'hidden'
         }} onClick={this.handleClick} onTouchStart={this.handleClick}>
-        {orderedKeys.map(this.createItem)}
+          {orderedKeys.map(this.createItem)}
         </div>
       );
     }

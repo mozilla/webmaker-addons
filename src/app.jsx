@@ -124,21 +124,21 @@ define(function(require) {
           </header>
           <div style={{paddingTop: 32, paddingBottom: 32}}
            data-clear-selection-on-click>
-          <div style={{backgroundColor: '#333333'}}>
-          <ScaleSizer ref="scaleSizer"
-           width={this.props.canvasWidth}
-           height={this.props.canvasHeight}>
-            <Canvas ref="canvas" isEditable
-             items={this.state.items}
-             selectedItem={this.state.selectedItem}
-             canvasWidth={this.props.canvasWidth}
-             canvasHeight={this.props.canvasHeight}
-             firebaseRef={this.props.firebaseRef}
-             onClearSelection={this.clearSelection}
-             onItemSelect={this.handleItemSelect}
-             getPointerScale={this.getPointerScale}/>
-          </ScaleSizer>
-          </div>
+            <div style={{backgroundColor: '#333333'}}>
+              <ScaleSizer ref="scaleSizer"
+               width={this.props.canvasWidth}
+               height={this.props.canvasHeight}>
+                <Canvas ref="canvas" isEditable
+                 items={this.state.items}
+                 selectedItem={this.state.selectedItem}
+                 canvasWidth={this.props.canvasWidth}
+                 canvasHeight={this.props.canvasHeight}
+                 firebaseRef={this.props.firebaseRef}
+                 onClearSelection={this.clearSelection}
+                 onItemSelect={this.handleItemSelect}
+                 getPointerScale={this.getPointerScale}/>
+              </ScaleSizer>
+            </div>
           </div>
           <Fonts fonts={itemUtils.getFontList(this.state.items)}/>
           {this.state.selectedItem
