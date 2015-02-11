@@ -131,6 +131,10 @@ define(function(require) {
       });
       this.props.dismissModal();
     },
+    handleKeypress: function(e) {
+      if (e.keyCode == 27)
+        return this.handleCancel(e);
+    },
     render: function() {
       return (
         <div className="text-modal">
@@ -139,7 +143,8 @@ define(function(require) {
               <i className="fa fa-check-circle"/>
             </button>
             <input style={{order: 2}} type="text" ref="text"
-             value={this.props.text} onChange={this.handleChange}/>
+             value={this.props.text} onChange={this.handleChange}
+             onKeyDown={this.handleKeypress}/>
             <button style={{order: 1}} onClick={this.handleCancel}>
               <i className="fa fa-times-circle"/>
             </button>
