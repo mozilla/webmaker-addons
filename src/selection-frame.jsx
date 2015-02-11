@@ -7,12 +7,21 @@ define(function(require) {
     },
     handleAnimationFrame: function() {
       var selectedNode = this.props.getSelectedItem().getDOMNode();
-      var rect = selectedNode.getBoundingClientRect();
+      var clippingNode = this.props.getClippingFrame().getDOMNode();
+      var clippingRect = clippingNode.getBoundingClientRect();
+      var selectedRect = selectedNode.getBoundingClientRect();
+      var rect = {
+        top: Math.max(selectedRect.top, clippingRect.top),
+        left: Math.max(selectedRect.left, clippingRect.left),
+        right: Math.min(selectedRect.right, clippingRect.right),
+        bottom: Math.min(selectedRect.bottom, clippingRect.bottom)
+      };
+
       this.setState({
         top: rect.top + window.scrollY,
         left: rect.left + window.scrollX,
-        width: rect.width,
-        height: rect.height
+        width: rect.right - rect.left,
+        height: rect.bottom - rect.top
       });
       this.requestID = window.requestAnimationFrame(
         this.handleAnimationFrame

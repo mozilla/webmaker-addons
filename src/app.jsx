@@ -99,6 +99,9 @@ define(function(require) {
     getSelectedItem: function() {
       return this.refs.canvas.refs.selectedItem;
     },
+    getClippingFrame: function() {
+      return this.refs.canvas;
+    },
     getPointerScale: function() {
       return this.refs.scaleSizer.getPointerScale();
     },
@@ -134,7 +137,9 @@ define(function(require) {
           <Fonts fonts={itemUtils.getFontList(this.state.items)}/>
           {this.state.selectedItem
            ? <div>
-               <SelectionFrame getSelectedItem={this.getSelectedItem}/>
+               <SelectionFrame
+                getSelectedItem={this.getSelectedItem}
+                getClippingFrame={this.getClippingFrame}/>
                <SelectionToolbar ref="selectionToolbar"
                 selectedItem={this.state.selectedItem}
                 items={this.state.items}
