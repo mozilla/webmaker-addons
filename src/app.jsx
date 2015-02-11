@@ -76,6 +76,10 @@ define(function(require) {
         </html>
       );
     },
+    handleClick: function(e) {
+      if (e.target.hasAttribute('data-clear-selection-on-click'))
+        this.clearSelection();
+    },
     handleItemSelect: function(key, e) {
       var newOrder = itemUtils.getBringToFrontOrder(this.state.items, key);
       if (newOrder !== null)
@@ -107,7 +111,8 @@ define(function(require) {
     },
     render: function() {
       return (
-        <div className="app-content" style={{backgroundColor: '#666666'}}>
+        <div className="app-content" style={{backgroundColor: '#666666'}}
+         onClick={this.handleClick} data-clear-selection-on-click>
           <header>
             <nav style={{height: 64, background: 'black'}}>
               <PrimaryToolbar ref="primaryToolbar"
@@ -117,7 +122,8 @@ define(function(require) {
                onExport={this.toggleExportModal}/>
             </nav>
           </header>
-          <div style={{paddingTop: 32, paddingBottom: 32}}>
+          <div style={{paddingTop: 32, paddingBottom: 32}}
+           data-clear-selection-on-click>
           <div style={{backgroundColor: '#333333'}}>
           <ScaleSizer ref="scaleSizer"
            width={this.props.canvasWidth}
