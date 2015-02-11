@@ -81,6 +81,11 @@ define(function(require) {
       if (typeof(options) == 'string')
         options = {key: options};
       var key = options.key;
+
+      if (this.state.selectedItem == key &&
+          !('modalClass' in options))
+        return;
+
       var newOrder = itemUtils.getBringToFrontOrder(this.state.items, key);
       if (newOrder !== null)
         this.props.firebaseRef.child(key).update({
