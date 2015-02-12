@@ -10,7 +10,7 @@ define(function(require) {
         getImagePlacement: function(width, height) {
           var scale = addImageButton.scaleToFit(width, height);
           var pointerScale = app.getPointerScale();
-          var canvasRect = app.refs.scaleSizer.getDOMNode()
+          var canvasRect = app.refs.canvas.getDOMNode()
             .getBoundingClientRect();
 
           scale = (scale / 100) * (1 / pointerScale);
