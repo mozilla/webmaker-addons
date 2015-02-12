@@ -4,15 +4,6 @@ var BASE_HTMLSHOT_URL = "http://cupcakes.hivelearningnetworks.org:3000/";
 var EMBEDDED_MODE = window.parent !== window;
 var SIMPLE_MODE = !/[&?]simple=off/.test(location.search);
 
-// Set this to null to make *all* fonts available.
-var FONT_WHITELIST = SIMPLE_MODE ? [
-  "Knewave",
-  "Londrina Sketch",
-  "Open Sans",
-  "Pacifico",
-  "Prociono"
-] : null;
-
 var DEFAULT_FONT = 'Open Sans';
 var CANVAS_WIDTH = 640;
 var CANVAS_HEIGHT = 480;
