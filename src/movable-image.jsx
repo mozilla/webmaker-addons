@@ -11,13 +11,19 @@ define(function(require) {
     handleClick: function() {
       this.addImage(window.prompt("Gimme an image URL."));
     },
-    addImage: function(url) {
+    addImage: function(url, cb) {
       if (!url) return;
       if (!/^https?:\/\//.test(url))
         return window.alert("Invalid URL!");
       var img = document.createElement('img');
-      img.onload = this.handleImageLoad;
-      img.onerror = this.handleImageError;
+
+      cb = cb || function(err, ref, img) {
+        if (err)
+          window.alert("Sorry, an error occurred loading the image.");
+      };
+
+      img.onload = this.handleImageLoad.bind(this, cb);
+      img.onerror = cb;
       img.setAttribute('src', url);
       // TODO: Show some kind of throbber, etc.
     },
@@ -33,11 +39,10 @@ define(function(require) {
         return Math.floor(maxHeight / height * 100);
       }
     },
-    handleImageLoad: function(e) {
+    handleImageLoad: function(cb, e) {
       var img = e.target;
       var scale = this.scaleToFit(img.naturalWidth, img.naturalHeight);
-
-      this.props.firebaseRef.push({
+      var newRef = this.props.firebaseRef.push({
         type: 'image',
         props: _.extend({}, DEFAULT_PROPS, {
           url: img.src,
@@ -48,9 +53,8 @@ define(function(require) {
           y: 0
         })
       });
-    },
-    handleImageError: function() {
-      window.alert("Sorry, an error occurred loading the image.");
+
+      cb(null, newRef, img);
     },
     render: function() {
       return (
