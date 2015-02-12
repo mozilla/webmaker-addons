@@ -17,14 +17,16 @@ define(function(require) {
         return window.alert("Invalid URL!");
       var img = document.createElement('img');
 
-      cb = cb || function(err, ref, img) {
+      cb = cb || function(err, newRef, img) {
         if (err)
           window.alert("Sorry, an error occurred loading the image.");
-      };
+        this.props.selectItem(newRef.key());
+      }.bind(this);
 
       img.onload = this.handleImageLoad.bind(this, cb);
       img.onerror = cb;
       img.setAttribute('src', url);
+      this.getDOMNode().blur();
       // TODO: Show some kind of throbber, etc.
     },
     scaleToFit: function(width, height) {
