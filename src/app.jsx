@@ -4,6 +4,7 @@ define(function(require) {
   var SelectionFrame = require('jsx!./selection-frame');
   var Fonts = require('jsx!./fonts');
   var ExportModal = require('jsx!./export-modal');
+  var SelectionModal = require('jsx!./selection-modal');
   var itemUtils = require('./item-utils');
   var ScaleSizer = require('jsx!./scale-sizer');
   var PrimaryToolbar = require('jsx!./primary-toolbar');
@@ -17,9 +18,18 @@ define(function(require) {
     getInitialState: function() {
       return {
         selectedItem: null,
+        selectionModalClass: null,
         showExportModal: window.DEBUG_AUTOSHOW_EXPORT_MODAL,
         items: null
       };
+    },
+    componentDidUpdate: function(prevProps, prevState) {
+      var queuedItemSelection = this.queuedItemSelection;
+
+      if ((prevState.items !== this.state.items) && queuedItemSelection) {
+        this.queuedItemSelection = null;
+        this.handleItemSelect(queuedItemSelection);
+      }
     },
     componentWillMount: function() {
       this.props.firebaseRef.on("value", this.handleFirebaseRefValue);
@@ -53,12 +63,6 @@ define(function(require) {
         this.clearSelection();
 
       this.setState({items: items});
-
-      if (window.DEBUG_AUTOSELECT_FIRST_ITEM) {
-        var keys = Object.keys(items);
-        if (keys.length && !this.state.selectedItem)
-          this.handleItemSelect(keys[0]);
-      }
     },
     toggleExportModal: function() {
       this.setState({showExportModal: !this.state.showExportModal});
@@ -81,14 +85,31 @@ define(function(require) {
       if (e.target.hasAttribute('data-clear-selection-on-click'))
         this.clearSelection();
     },
-    handleItemSelect: function(key, e) {
+    handleItemSelect: function(options, e) {
+      if (typeof(options) == 'string')
+        options = {key: options};
+      var key = options.key;
+
+      if (this.state.selectedItem == key &&
+          !('modalClass' in options))
+        return;
+
+      if (!(this.state.items && (key in this.state.items))) {
+        // Well, this is awkward. It's possible that the key was just
+        // added but our Firebase listener hasn't been notified yet,
+        // so queue this call for the next update.
+        this.queuedItemSelection = options;
+        return;
+      }
+
       var newOrder = itemUtils.getBringToFrontOrder(this.state.items, key);
       if (newOrder !== null)
         this.props.firebaseRef.child(key).update({
           order: newOrder
         });
       this.setState({
-        selectedItem: key
+        selectedItem: key,
+        selectionModalClass: options.modalClass || null
       });
       if (document.activeElement)
         document.activeElement.blur();
@@ -96,9 +117,20 @@ define(function(require) {
       // This is useful if we're in an iframe.
       window.focus();
     },
+    handleShowModal: function(modalClass) {
+      this.setState({
+        selectionModalClass: modalClass
+      });
+    },
+    handleDismissModal: function() {
+      this.setState({
+        selectionModalClass: null
+      });
+    },
     clearSelection: function() {
       this.setState({
-        selectedItem: null
+        selectedItem: null,
+        selectionModalClass: null
       });
     },
     getSelectedItem: function() {
@@ -119,12 +151,16 @@ define(function(require) {
               <PrimaryToolbar ref="primaryToolbar"
                canvasWidth={this.props.canvasWidth}
                canvasHeight={this.props.canvasHeight}
+               selectItem={this.handleItemSelect}
                firebaseRef={this.props.firebaseRef}
                onExport={this.toggleExportModal}/>
             </nav>
           </header>
-          <div style={{paddingTop: 32, paddingBottom: 32}}
-           data-clear-selection-on-click>
+          <div style={{
+            paddingTop: 32,
+            paddingBottom: 32,
+            position: 'relative'
+          }} data-clear-selection-on-click>
             <div style={{backgroundColor: '#333333'}}>
               <ScaleSizer ref="scaleSizer"
                width={this.props.canvasWidth}
@@ -140,6 +176,14 @@ define(function(require) {
                  getPointerScale={this.getPointerScale}/>
               </ScaleSizer>
             </div>
+            {this.state.selectionModalClass
+             ? <SelectionModal
+                modalClass={this.state.selectionModalClass}
+                dismissModal={this.handleDismissModal}
+                selectedItem={this.state.selectedItem}
+                items={this.state.items}
+                firebaseRef={this.props.firebaseRef}/>
+             : null}
           </div>
           <Fonts fonts={itemUtils.getFontList(this.state.items)}/>
           {this.state.selectedItem
@@ -150,7 +194,8 @@ define(function(require) {
                <SelectionToolbar
                 selectedItem={this.state.selectedItem}
                 items={this.state.items}
-                firebaseRef={this.props.firebaseRef}/>
+                firebaseRef={this.props.firebaseRef}
+                showModal={this.handleShowModal}/>
                <SelectionToolbar ref="globalSelectionToolbar"
                 className="global-selection-toolbar"
                 actionClasses={[GlobalSelectionActions]}

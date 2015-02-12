@@ -11,14 +11,22 @@ define(function(require) {
     handleClick: function() {
       this.addImage(window.prompt("Gimme an image URL."));
     },
-    addImage: function(url) {
+    addImage: function(url, cb) {
       if (!url) return;
       if (!/^https?:\/\//.test(url))
         return window.alert("Invalid URL!");
       var img = document.createElement('img');
-      img.onload = this.handleImageLoad;
-      img.onerror = this.handleImageError;
+
+      cb = cb || function(err, newRef, img) {
+        if (err)
+          window.alert("Sorry, an error occurred loading the image.");
+        this.props.selectItem(newRef.key());
+      }.bind(this);
+
+      img.onload = this.handleImageLoad.bind(this, cb);
+      img.onerror = cb;
       img.setAttribute('src', url);
+      this.getDOMNode().blur();
       // TODO: Show some kind of throbber, etc.
     },
     scaleToFit: function(width, height) {
@@ -33,11 +41,10 @@ define(function(require) {
         return Math.floor(maxHeight / height * 100);
       }
     },
-    handleImageLoad: function(e) {
+    handleImageLoad: function(cb, e) {
       var img = e.target;
       var scale = this.scaleToFit(img.naturalWidth, img.naturalHeight);
-
-      this.props.firebaseRef.push({
+      var newRef = this.props.firebaseRef.push({
         type: 'image',
         props: _.extend({}, DEFAULT_PROPS, {
           url: img.src,
@@ -48,9 +55,8 @@ define(function(require) {
           y: 0
         })
       });
-    },
-    handleImageError: function() {
-      window.alert("Sorry, an error occurred loading the image.");
+
+      cb(null, newRef, img);
     },
     render: function() {
       return (
@@ -95,7 +101,10 @@ define(function(require) {
     DEFAULT_PROPS: DEFAULT_PROPS,
     AddButton: AddImageButton,
     ContentItem: MovableImage,
-    SelectionActions: [
+    SelectionActions: window.SIMPLE_MODE ? [
+      // TODO: Remove this once we have resize handles working.
+      ChangeScaleField
+    ] : [
       ChangeScaleField
     ]
   };

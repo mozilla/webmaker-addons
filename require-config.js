@@ -2,25 +2,19 @@ var BASE_FIREBASE_URL = "https://sticker-fun.firebaseio.com/";
 var BASE_HTMLSHOT_URL = "http://cupcakes.hivelearningnetworks.org:3000/";
 
 var EMBEDDED_MODE = window.parent !== window;
-var SIMPLE_MODE = /[&?]simple=on/.test(location.search);
-
-// Set this to null to make *all* fonts available.
-var FONT_WHITELIST = SIMPLE_MODE ? [
-  "Knewave",
-  "Londrina Sketch",
-  "Open Sans",
-  "Pacifico",
-  "Prociono"
-] : null;
+var SIMPLE_MODE = !/[&?]simple=off/.test(location.search);
 
 var DEFAULT_FONT = 'Open Sans';
 var CANVAS_WIDTH = 640;
 var CANVAS_HEIGHT = 480;
 
-// Changing this to true will auto-select the first item in the
-// canvas on page load, which is useful for debugging anything
-// related to selections.
-var DEBUG_AUTOSELECT_FIRST_ITEM = false;
+// Set this to "offline" to force the app into offline
+// mode with a blank canvas.
+var DEBUG_FORCE_BIN_NAME = '';
+
+// Changing this to a function will call it when the app
+// is initialized, with the App instance as its first arg.
+var DEBUG_ONREADY_HOOK = null;
 
 // Changing this to true will automatically show the export
 // modal on page load, which is useful for debugging it.
@@ -51,6 +45,9 @@ var require = {
     {
       name: "src/fonts",
       main: "index"
+    },
+    {
+      name: "src/movable-text"
     }
   ],
   // Grrr. http://stackoverflow.com/a/8479953

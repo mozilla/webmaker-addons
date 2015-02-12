@@ -22,8 +22,8 @@ define(function(require) {
             height: height * scale
           };
         },
-        addImage: function(url) {
-          addImageButton.addImage(url);
+        addImage: function(url, cb) {
+          addImageButton.addImage(url, cb);
         }
       };
 

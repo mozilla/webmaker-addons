@@ -1,28 +1,37 @@
 define(function(require) {
   var _ = require('underscore');
   var React = require('react');
-  var Movable = require('./movable');
-  var Fonts = require('./fonts');
-  var ColorWidget = require('jsx!./colors/widget');
+  var TextModal = require('jsx!./text-modal');
+  var FontModal = require('jsx!./font-modal');
+  var ColorModal = require('jsx!./color-modal');
+  var Movable = require('../movable');
+  var Fonts = require('../fonts');
+  var ColorWidget = require('jsx!../colors/widget');
 
   var DEFAULT_PROPS = {
     fontFamily: window.DEFAULT_FONT,
-    fontSize: 32,
+    fontSize: 48,
     color: 'white'
   };
 
   var AddTextButton = React.createClass({
-    handleClick: function() {
-      var text = window.prompt("Gimme some text.");
-      if (!text) return;
-      this.props.firebaseRef.push({
+    addText: function(initialText) {
+      return this.props.firebaseRef.push({
         type: 'text',
         props: _.extend({
-          text: text,
+          text: initialText || "",
           x: 0,
           y: 0
         }, DEFAULT_PROPS)
-      });      
+      });
+    },
+    handleClick: function() {
+      var newRef = this.addText();
+      this.props.selectItem({
+        key: newRef.key(),
+        modalClass: TextModal
+      });
+      this.getDOMNode().blur();
     },
     render: function() {
       return (
@@ -82,6 +91,45 @@ define(function(require) {
     }
   });
 
+  var SimpleChangeFontFamilyField = React.createClass({
+    handleClick: function(e) {
+      return this.props.showModal(FontModal);
+    },
+    render: function() {
+      return (
+        <button onClick={this.handleClick}>
+          <img src="src/icons/FontIcon.svg"/>
+        </button>
+      );
+    }
+  });
+
+  var SimpleChangeColorField = React.createClass({
+    handleClick: function(e) {
+      return this.props.showModal(ColorModal);
+    },
+    render: function() {
+      return (
+        <button onClick={this.handleClick}>
+          <img src="src/icons/ColorIcon.svg"/>
+        </button>
+      );
+    }
+  });
+
+  var SimpleChangeTextField = React.createClass({
+    handleClick: function(e) {
+      return this.props.showModal(TextModal);
+    },
+    render: function() {
+      return (
+        <button onClick={this.handleClick}>
+          <img src="src/icons/TextIcon.svg"/>
+        </button>
+      );
+    }
+  });
+
   var ChangeFontSizeField = React.createClass({
     handleChange: function(e) {
       this.props.firebaseRef.update({
@@ -114,7 +162,12 @@ define(function(require) {
     DEFAULT_PROPS: DEFAULT_PROPS,
     AddButton: AddTextButton,
     ContentItem: MovableText,
-    SelectionActions: [
+    SelectionActions: window.SIMPLE_MODE ? [
+      SimpleChangeColorField,
+      SimpleChangeFontFamilyField,
+      SimpleChangeTextField,
+      ChangeFontSizeField
+    ] : [
       ChangeTextField,
       ChangeFontFamilyField,
       ChangeFontSizeField,

@@ -8,6 +8,9 @@ require([
 
   bin = bin ? bin[1] : "default";
 
+  if (window.DEBUG_FORCE_BIN_NAME)
+    bin = window.DEBUG_FORCE_BIN_NAME;
+
   var firebin = new Firebase(window.BASE_FIREBASE_URL + bin);
 
   var app = React.render(
@@ -33,4 +36,7 @@ require([
   }
 
   EmbedAPI.init(app);
+
+  if (typeof(window.DEBUG_ONREADY_HOOK) == 'function')
+    window.DEBUG_ONREADY_HOOK(app);
 });

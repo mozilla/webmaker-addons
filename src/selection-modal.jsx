@@ -3,17 +3,15 @@ define(function(require) {
   var React = require('react');
   var TypeMap = require('./type-map');
 
-  var SelectionToolbar = React.createClass({
-    createAction: function(actionClass, key) {
+  var SelectionModal = React.createClass({
+    createModal: function(modalClass) {
       var selectedItem = this.getSelectedItem();
       var selectedItemFirebaseRef = this.props.firebaseRef
         .child(this.props.selectedItem).child('props');
       return React.createElement(
-        actionClass,
+        modalClass,
         _.extend({
-          key: key,
-          ref: actionClass.refName,
-          showModal: this.props.showModal,
+          dismissModal: this.props.dismissModal,
           itemType: selectedItem.type
         }, TypeMap[selectedItem.type].DEFAULT_PROPS, selectedItem.props, {
           allItems: this.props.items,
@@ -25,18 +23,22 @@ define(function(require) {
       return this.props.items[this.props.selectedItem];
     },
     render: function() {
-      var actionClasses = this.props.actionClasses ||
-        TypeMap[this.getSelectedItem().type].SelectionActions || [];
-
       return (
-        <div className={"selection-toolbar " + (this.props.className || '')}>
-          {actionClasses.map(function(actionClass, i) {
-             return this.createAction(actionClass, i);
-          }, this)}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          pointerEvents: 'none',
+          width: '100%',
+          height: '100%'
+        }}>
+          <div style={{pointerEvents: 'auto'}}>
+            {this.createModal(this.props.modalClass)}
+          </div>
         </div>
       );
     }
   });
 
-  return SelectionToolbar;
+  return SelectionModal;
 });
