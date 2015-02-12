@@ -13,6 +13,8 @@ define(function(require) {
   var KeypressMixin = require('./keypress-mixin');
   var GlobalSelectionActions = require('jsx!./global-selection-actions');
 
+  var CANVAS_BG = '#333333';
+
   var App = React.createClass({
     mixins: [KeypressMixin],
     getInitialState: function() {
@@ -76,7 +78,11 @@ define(function(require) {
                                       'https:')}
           </head>
           <body>
-            <Canvas items={this.state.items} canvasWidth={this.props.canvasWidth} canvasHeight={this.props.canvasHeight}/>
+            <Canvas
+             background={CANVAS_BG}
+             items={this.state.items}
+             canvasWidth={this.props.canvasWidth}
+             canvasHeight={this.props.canvasHeight}/>
           </body>
         </html>
       );
@@ -161,11 +167,12 @@ define(function(require) {
             paddingBottom: 32,
             position: 'relative'
           }} data-clear-selection-on-click>
-            <div style={{backgroundColor: '#333333'}}>
+            <div style={{backgroundColor: CANVAS_BG}}>
               <ScaleSizer ref="scaleSizer"
                width={this.props.canvasWidth}
                height={this.props.canvasHeight}>
                 <Canvas ref="canvas" isEditable
+                 background={CANVAS_BG}
                  items={this.state.items}
                  selectedItem={this.state.selectedItem}
                  canvasWidth={this.props.canvasWidth}
