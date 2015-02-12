@@ -87,13 +87,72 @@ function showIcon(target, imageURL) {
 }
 
 function handleIconClick(e) {
-  if (self.port)
-    self.port.emit('image', {
-      operation: 'addImage',
-      args: [iconImageURL]
+  var img = document.createElement('img');
+  var target = iconTarget;
+  var src = iconImageURL;
+
+  img.onload = function() {
+    var srcRect = target.getBoundingClientRect();
+    var duration = 1000;
+    var destRect = {
+      top: -srcRect.height,
+      left: 0,
+      width: srcRect.width,
+      height: srcRect.height
+    };
+
+    document.documentElement.appendChild(img);
+    img.style.position = 'absolute';
+
+    img.style.background = target.style.background;
+    img.style.top = (window.scrollY + srcRect.top) + 'px';
+    img.style.left = (window.scrollX + srcRect.left) + 'px';
+    img.style.width = srcRect.width + 'px';
+    img.style.height = srcRect.height + 'px';
+
+    ['transition',
+     'mozTransition',
+     'webkitTransition'].forEach(function(prop) {
+      if (prop in img.style)
+        img.style[prop] = 'all ' + (duration / 1000) + 's';
     });
-  else
-    window.alert('Send URL to canvas: ' + iconImageURL);
+
+    /* Force reflow, so the browser knows bust a CSS transition.
+     * For more information, see http://stackoverflow.com/a/21665117. */
+    img.offsetHeight;
+
+    img.style.top = destRect.top + 'px';
+    img.style.left = destRect.left + 'px';
+    img.style.width = destRect.width + 'px';
+    img.style.height = destRect.height + 'px';
+
+    setTimeout(function() {
+      var sidebarMessage = {
+        operation: 'animateImageIntoCanvas',
+        args: [{
+          operation: 'animateImageIntoCanvas',
+          duration: 1000,
+          src: src,
+          naturalWidth: img.naturalWidth,
+          naturalHeight: img.naturalHeight,
+          top: -srcRect.height,
+          left: 'innerWidth',
+          width: img.naturalWidth,
+          height: img.naturalHeight
+        }]
+      };
+
+      if (!self.port)
+        return window.alert('Send message to sidebar: ' +
+                            JSON.stringify(sidebarMessage));
+
+      self.port.emit('image', sidebarMessage);
+    }, duration);
+  };
+  img.onerror = function() {
+    alert("Alas, an error occurred.");
+  };
+  img.src = src;
 }
 
 function handleIconMouseOut(e) {

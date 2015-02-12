@@ -21,7 +21,8 @@ define(function(require) {
           });
           img.style.top = options.top + 'px';
           img.style.left = options.left + 'px';
-          img.style.width = options.width + 'px';
+          img.style.width = ((options.width == 'innerWidth')
+                             ? window.innerWidth : options.width) + 'px';
           img.style.height = options.height + 'px';
           document.body.appendChild(img);
 
