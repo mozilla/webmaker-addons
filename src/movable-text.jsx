@@ -12,15 +12,18 @@ define(function(require) {
   };
 
   var AddTextButton = React.createClass({
-    handleClick: function() {
-      var newRef = this.props.firebaseRef.push({
+    addText: function(initialText) {
+      return this.props.firebaseRef.push({
         type: 'text',
         props: _.extend({
-          text: "",
+          text: initialText || "",
           x: 0,
           y: 0
         }, DEFAULT_PROPS)
       });
+    },
+    handleClick: function() {
+      var newRef = this.addText();
       this.props.selectItem({
         key: newRef.key(),
         modalClass: TextModal
