@@ -2,6 +2,7 @@ var self = require('sdk/self');
 var PageMod = require('sdk/page-mod').PageMod;
 var Sidebar = require('sdk/ui/sidebar').Sidebar;
 var prefs = require('sdk/preferences/service');
+var windowUtils = require('sdk/window/utils');
 
 var env = require('./env');
 var uuid = require('./uuid');
@@ -12,7 +13,7 @@ var DEFAULT_IFRAME_URL = 'https://xmatthewx.github.io/webmaker-addons/';
 var DEBUG_IFRAME_URL = env.get("WEBMAKER_ADDON_IFRAME_URL");
 var DEBUG = !!DEBUG_IFRAME_URL;
 
-var sidebarWorkerArray = [];
+var sidebarArray = [];
 var sidebarMessageQueue = [];
 
 var sidebar = Sidebar({
@@ -20,7 +21,10 @@ var sidebar = Sidebar({
   title: 'Image Maker',
   url: self.data.url('sidebar.html'),
   onReady: function(worker) {
-    sidebarWorkerArray.push(worker);
+    sidebarArray.push({
+      browserWindow: windowUtils.getMostRecentBrowserWindow(),
+      worker: worker
+    });
     worker.port.emit("init", {
       url: getIframeURL()
     });
@@ -29,9 +33,12 @@ var sidebar = Sidebar({
     });
   },
   onDetach: function(worker) {
-    var index = sidebarWorkerArray.indexOf(worker);
-    if (index != -1)
-      sidebarWorkerArray.splice(index, 1);
+    for (var i = 0; i < sidebarArray.length; i++) {
+      if (sidebarArray[i].worker === worker) {
+        sidebarArray.splice(i, 1);
+        return;
+      }
+    }
   }
 });
 
@@ -53,9 +60,20 @@ function getIframeURL() {
 }
 
 function emitMessageToSidebar(message, data) {
-  if (sidebarWorkerArray.length == 0)
+  var preferredWindow = windowUtils.getMostRecentBrowserWindow();
+
+  if (sidebarArray.length == 0)
     return sidebarMessageQueue.push([message, data]);
-  sidebarWorkerArray[0].port.emit(message, data);
+
+  for (var i = 0; i < sidebarArray.length; i++) {
+    if (sidebarArray[i].browserWindow === preferredWindow)
+      break;
+  }
+
+  if (i == sidebarArray.length)
+    i = 0;
+
+  sidebarArray[i].worker.port.emit(message, data);
 }
 
 PageMod({
