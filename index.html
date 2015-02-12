@@ -168,6 +168,7 @@ nav button img {
   bottom: 0;
   left: 0;
   width: 100%;
+  z-index: 2;
 }
 
 .text-modal form {
@@ -208,6 +209,7 @@ nav button img {
   pointer-events: auto;
   background: rgba(0, 0, 0, 0.5);
   color: white;
+  z-index: 2;
 }
 
 .font-modal ul {
@@ -225,6 +227,14 @@ nav button img {
 
 .font-modal li:hover {
   background: rgba(255, 255, 255, 0.25);
+}
+
+.selection-frame {
+  pointer-events: none;
+  position: absolute;
+  border: 1px dashed yellow;
+  box-shadow: 0px 0px 20px rgba(255, 255, 0, 0.5);
+  z-index: 1;
 }
 </style>
 <title>Image Maker</title>

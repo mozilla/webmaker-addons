@@ -37,12 +37,7 @@ define(function(require) {
       var state = this.state;
       if (state.width == 0 && state.height == 0)
         return null;
-      return <div style={{
-        pointerEvents: 'none',
-        position: 'absolute',
-        border: '1px dashed yellow',
-        boxShadow: '0px 0px 20px rgba(255, 255, 0, 0.5)',
-        zIndex: 1000,
+      return <div className="selection-frame" style={{
         top: state.top,
         left: state.left,
         width: state.width,
