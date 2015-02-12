@@ -69,5 +69,7 @@ PageMod({
   }
 });
 
-if (DEBUG)
+if (DEBUG) {
   require('sdk/tabs').open('https://webmaker.org/en-US/');
+  sidebar.show();
+}
