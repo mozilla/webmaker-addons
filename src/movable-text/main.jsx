@@ -1,9 +1,9 @@
 define(function(require) {
   var _ = require('underscore');
   var React = require('react');
-  var Movable = require('./movable');
-  var Fonts = require('./fonts');
-  var ColorWidget = require('jsx!./colors/widget');
+  var Movable = require('../movable');
+  var Fonts = require('../fonts');
+  var ColorWidget = require('jsx!../colors/widget');
 
   var DEFAULT_PROPS = {
     fontFamily: window.DEFAULT_FONT,

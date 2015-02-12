@@ -54,6 +54,9 @@ var require = {
     {
       name: "src/fonts",
       main: "index"
+    },
+    {
+      name: "src/movable-text"
     }
   ],
   // Grrr. http://stackoverflow.com/a/8479953
