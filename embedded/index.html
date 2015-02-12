@@ -24,6 +24,7 @@ html, body {
   padding: 0 20px;
   font-size: 14pt;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 #widget {
@@ -73,6 +74,10 @@ html, body {
 <div id="content">
   <h1>Page With Embedded Image Maker</h1>
   <p>Click the little &ldquo;+&rdquo; icon on any of the images below to add them to the image maker in the sidebar on the right.</p>
+  <p>
+    <input type="checkbox" id="isTwoSided"> Animate transition from both
+    sides
+  </p>
   <img class="importable" src="http://guycodeblog.mtv.com//wp-content/uploads/clutch/2012/09/tumblr_m8qtfucGiD1r31dt0o4_400.gif">
   <img class="importable" src="https://media.giphy.com/media/vm1H76ewlicLK/giphy.gif">
   <img class="importable" src="http://cdn.wonderfulengineering.com/wp-content/uploads/2014/10/firefox-wallpaper-2.png" width="500">
@@ -86,6 +91,9 @@ function onEmbedAPIReady(embedAPI) {
 }
 
 function importImage(e) {
+  var isTwoSided = document.querySelector('#isTwoSided').checked;
+  var container = isTwoSided ? document.querySelector('#content')
+                             : document.body;
   var img = e.target.parentNode.querySelector('img');
   var srcRect = img.getBoundingClientRect();
   var baseDestRect = iframe.getBoundingClientRect();
@@ -98,7 +106,7 @@ function importImage(e) {
   img.style.width = srcRect.width + 'px';
   img.style.height = srcRect.height + 'px';
   img.classList.add('importing');
-  document.body.appendChild(img);
+  container.appendChild(img);
 
   /* Force reflow, so the browser knows bust a CSS transition.
    * For more information, see http://stackoverflow.com/a/21665117. */
@@ -109,13 +117,29 @@ function importImage(e) {
   img.style.width = destRect.width + 'px';
   img.style.height = destRect.height + 'px';
 
+  if (isTwoSided) {
+    var containerRect = container.getBoundingClientRect();
+
+    embedAPI.animateImageIntoCanvas({
+      src: img.src,
+      duration: 1000,
+      naturalWidth: img.naturalWidth,
+      naturalHeight: img.naturalHeight,
+      top: img.top,
+      left: -containerRect.width + containerRect.left,
+      width: srcRect.width,
+      height: srcRect.height
+    });
+  }
+
   /* Wait for the CSS transition to end. */
   setTimeout(function() {
-    embedAPI.addImage(img.src);
+    if (!isTwoSided)
+      embedAPI.addImage(img.src);
 
     /* Give the editor img time to load, preventing flicker. */
     setTimeout(function() {
-      document.body.removeChild(img);
+      container.removeChild(img);
     }, 250);
   }, 1000);
 }
