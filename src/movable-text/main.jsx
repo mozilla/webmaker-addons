@@ -9,7 +9,7 @@ define(function(require) {
 
   var DEFAULT_PROPS = {
     fontFamily: window.DEFAULT_FONT,
-    fontSize: 32,
+    fontSize: 48,
     color: 'white'
   };
 
