@@ -3,6 +3,7 @@ define(function(require) {
   var React = require('react');
   var TextModal = require('jsx!./text-modal');
   var FontModal = require('jsx!./font-modal');
+  var ColorModal = require('jsx!./color-modal');
   var Movable = require('../movable');
   var Fonts = require('../fonts');
   var ColorWidget = require('jsx!../colors/widget');
@@ -104,9 +105,12 @@ define(function(require) {
   });
 
   var SimpleChangeColorField = React.createClass({
+    handleClick: function(e) {
+      return this.props.showModal(ColorModal);
+    },
     render: function() {
       return (
-        <button>
+        <button onClick={this.handleClick}>
           <img src="src/icons/ColorIcon.svg"/>
         </button>
       );
