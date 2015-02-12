@@ -80,8 +80,8 @@ PageMod({
   include: '*',
   contentScriptFile: self.data.url('content-script.js'),
   onAttach: function(worker) {
-    worker.port.on('image', function(url) {
-      emitMessageToSidebar('image', url);
+    worker.port.on('image', function(options) {
+      emitMessageToSidebar('image', options);
       sidebar.show();
     });
   }

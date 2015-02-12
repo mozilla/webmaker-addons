@@ -88,7 +88,10 @@ function showIcon(target, imageURL) {
 
 function handleIconClick(e) {
   if (self.port)
-    self.port.emit('image', iconImageURL);
+    self.port.emit('image', {
+      operation: 'addImage',
+      args: [iconImageURL]
+    });
   else
     window.alert('Send URL to canvas: ' + iconImageURL);
 }

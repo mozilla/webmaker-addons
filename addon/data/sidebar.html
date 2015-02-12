@@ -45,8 +45,8 @@ if (typeof(addon) == 'undefined') {
   });
 } else {
   addon.port.on('init', init);
-  addon.port.on('image', function(url) {
-    emitMessageToIframe({type: 'image', url: url});
+  addon.port.on('image', function(options) {
+    emitMessageToIframe({type: 'image', options: options});
   });
 }
 </script>

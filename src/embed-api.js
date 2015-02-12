@@ -60,6 +60,17 @@ define(function(require) {
         }
       };
 
+      var applyImageOperation = function(op, args) {
+        var METHOD_WHITELIST = ['addImage', 'animateImageIntoCanvas'];
+        var processed = METHOD_WHITELIST.some(function(methodName) {
+          if (op == methodName)
+            embedAPI[methodName].apply(embedAPI, args);
+        });
+
+        if (!processed)
+          console.log("unknown image operation: " + op);
+      }
+
       window.embedAPI = embedAPI;
 
       if (!window.EMBEDDED_MODE) return;
@@ -71,8 +82,14 @@ define(function(require) {
         var data = JSON.parse(e.data);
         if (data.type == 'log')
           console.log('log message from parent: ' + data.message);
-        else if (data.type == 'image')
-          embedAPI.addImage(data.url);
+        else if (data.type == 'image') {
+          if (typeof(data.url) == 'string') {
+            // Deprecated, only old versions of the addon send us this.
+            embedAPI.addImage(data.url);
+          } else if (typeof(data.options) == 'object') {
+            applyImageOperation(data.options.operation, data.options.args);
+          }
+        }
       });
       window.parent.postMessage('ready', '*');
     }
