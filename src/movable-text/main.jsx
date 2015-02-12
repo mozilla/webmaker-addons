@@ -161,7 +161,8 @@ define(function(require) {
     SelectionActions: window.SIMPLE_MODE ? [
       SimpleChangeColorField,
       SimpleChangeFontFamilyField,
-      SimpleChangeTextField
+      SimpleChangeTextField,
+      ChangeFontSizeField
     ] : [
       ChangeTextField,
       ChangeFontFamilyField,

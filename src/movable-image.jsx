@@ -102,6 +102,8 @@ define(function(require) {
     AddButton: AddImageButton,
     ContentItem: MovableImage,
     SelectionActions: window.SIMPLE_MODE ? [
+      // TODO: Remove this once we have resize handles working.
+      ChangeScaleField
     ] : [
       ChangeScaleField
     ]
