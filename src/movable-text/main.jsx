@@ -2,6 +2,7 @@ define(function(require) {
   var _ = require('underscore');
   var React = require('react');
   var TextModal = require('jsx!./text-modal');
+  var FontModal = require('jsx!./font-modal');
   var Movable = require('../movable');
   var Fonts = require('../fonts');
   var ColorWidget = require('jsx!../colors/widget');
@@ -90,9 +91,12 @@ define(function(require) {
   });
 
   var SimpleChangeFontFamilyField = React.createClass({
+    handleClick: function(e) {
+      return this.props.showModal(FontModal);
+    },
     render: function() {
       return (
-        <button>
+        <button onClick={this.handleClick}>
           <img src="src/icons/FontIcon.svg"/>
         </button>
       );
