@@ -23,6 +23,14 @@ define(function(require) {
         items: null
       };
     },
+    componentDidUpdate: function(prevProps, prevState) {
+      var queuedItemSelection = this.queuedItemSelection;
+
+      if ((prevState.items !== this.state.items) && queuedItemSelection) {
+        this.queuedItemSelection = null;
+        this.handleItemSelect(queuedItemSelection);
+      }
+    },
     componentWillMount: function() {
       this.props.firebaseRef.on("value", this.handleFirebaseRefValue);
     },
@@ -85,6 +93,14 @@ define(function(require) {
       if (this.state.selectedItem == key &&
           !('modalClass' in options))
         return;
+
+      if (!(this.state.items && (key in this.state.items))) {
+        // Well, this is awkward. It's possible that the key was just
+        // added but our Firebase listener hasn't been notified yet,
+        // so queue this call for the next update.
+        this.queuedItemSelection = options;
+        return;
+      }
 
       var newOrder = itemUtils.getBringToFrontOrder(this.state.items, key);
       if (newOrder !== null)

@@ -7,11 +7,6 @@ define(function(require) {
     // to the front.
     getBringToFrontOrder: function(items, itemKey) {
       var max = 0;
-      if (!items[itemKey])
-        // It's possible that the key was just added but
-        // the state hasn't been updated yet; just
-        // ignore this case.
-        return null;
       Object.keys(items).forEach(function(key) {
         if (key == itemKey) return;
         if (items[key].type != items[itemKey].type) return;
