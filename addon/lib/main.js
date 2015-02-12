@@ -17,7 +17,7 @@ var sidebarMessageQueue = [];
 
 var sidebar = Sidebar({
   id: 'webmaker-sidebar',
-  title: 'Webmaker',
+  title: 'Image Maker',
   url: self.data.url('sidebar.html'),
   onReady: function(worker) {
     sidebarWorkerArray.push(worker);

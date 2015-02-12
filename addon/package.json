@@ -1,8 +1,8 @@
 {
   "name": "webmaker-addon",
-  "title": "webmaker-addon",
+  "title": "Image Maker",
   "id": "jid1-sBAV5Al09sjk9w",
-  "description": "Make stuff on the Web!",
+  "description": "Make images on the Web!",
   "author": "",
   "license": "MPL 2.0",
   "version": "0.6"
