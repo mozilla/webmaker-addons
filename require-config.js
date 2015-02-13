@@ -27,6 +27,7 @@ var require = {
     "firebase": "vendor/firebase",
     "text": "vendor/require.text",
     "jsx": "vendor/require.jsx",
+    "png-baker": "vendor/png-baker",
     "JSXTransformer": "vendor/react/build/JSXTransformer",
     "react": "vendor/react/build/react-with-addons"
   },
@@ -36,6 +37,9 @@ var require = {
   shim: {
     "underscore": {
       exports: "_"
+    },
+    "png-baker": {
+      exports: "PNGBaker"
     },
     "firebase": {
       exports: "Firebase"
