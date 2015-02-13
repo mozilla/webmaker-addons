@@ -27,7 +27,6 @@ define(function(require) {
       img.onload = this.handleImageLoad.bind(this, cb);
       img.onerror = cb;
       img.setAttribute('src', url);
-      this.getDOMNode().blur();
       // TODO: Show some kind of throbber, etc.
     },
     scaleToFit: function(width, height) {

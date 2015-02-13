@@ -25,7 +25,6 @@ define(function(require) {
         this.props.dismissModal();
     },
     handleClick: function(color, e) {
-      e.target.blur();
       this.props.firebaseRef.update({
         color: color
       });

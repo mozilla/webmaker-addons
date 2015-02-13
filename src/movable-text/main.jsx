@@ -31,7 +31,6 @@ define(function(require) {
         key: newRef.key(),
         modalClass: TextModal
       });
-      this.getDOMNode().blur();
     },
     render: function() {
       return (
@@ -93,7 +92,6 @@ define(function(require) {
 
   var SimpleChangeFontFamilyField = React.createClass({
     handleClick: function(e) {
-      this.getDOMNode().blur();
       return this.props.showModal(FontModal);
     },
     render: function() {
@@ -107,7 +105,6 @@ define(function(require) {
 
   var SimpleChangeColorField = React.createClass({
     handleClick: function(e) {
-      this.getDOMNode().blur();
       return this.props.showModal(ColorModal);
     },
     render: function() {

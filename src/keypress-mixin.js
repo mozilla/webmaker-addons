@@ -7,10 +7,9 @@ define(function() {
     KEY_ARROW_RIGHT: 39,
     KEY_ARROW_DOWN: 40,
     // http://stackoverflow.com/a/2768256
-    preventBrowserFromNavigatingBack: function(event) {
-      var doPrevent = false;
-
+    isTextField: function(event) {
       var d = event.srcElement || event.target;
+
       if ((d.tagName.toUpperCase() === 'INPUT' && (
            d.type.toUpperCase() === 'TEXT' ||
            d.type.toUpperCase() === 'PASSWORD' ||
@@ -19,6 +18,15 @@ define(function() {
            d.type.toUpperCase() === 'SEARCH' ||
            d.type.toUpperCase() === 'DATE' )) ||
           d.tagName.toUpperCase() === 'TEXTAREA') {
+        return true;
+      }
+      return false;
+    },
+    preventBrowserFromNavigatingBack: function(event) {
+      var doPrevent = false;
+
+      var d = event.srcElement || event.target;
+      if (this.isTextField(event)) {
         doPrevent = d.readOnly || d.disabled;
       } else {
         doPrevent = true;
@@ -31,6 +39,17 @@ define(function() {
     handleRawKeypress: function(e) {
       if (e.keyCode == this.KEY_BACKSPACE)
         this.preventBrowserFromNavigatingBack(e);
+      if (e.keyCode == this.KEY_ESC)
+        return this.handleKeypress(e.keyCode, e);
+      if (!this.isTextField(e)) {
+        if (e.keyCode == this.KEY_BACKSPACE ||
+            e.keyCode == this.KEY_ARROW_LEFT ||
+            e.keyCode == this.KEY_ARROW_UP ||
+            e.keyCode == this.KEY_ARROW_RIGHT ||
+            e.keyCode == this.KEY_ARROW_DOWN) {
+          return this.handleKeypress(e.keyCode, e);
+        }
+      }
 
       if (e.target !== document.body) return;
 
