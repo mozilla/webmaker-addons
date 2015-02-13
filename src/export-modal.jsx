@@ -3,9 +3,10 @@ define(function(require) {
   var Modal = require('jsx!./modal');
   var PNGExport = require('./png-export');
   var DownloadableBlobImage = require('jsx!./downloadable-blob-image');
+  var KeypressMixin = require('./keypress-mixin');
 
   var Export = React.createClass({
-    mixins: [React.addons.PureRenderMixin],
+    mixins: [React.addons.PureRenderMixin, KeypressMixin],
     getInitialState: function() {
       return {
         show: 'choices',
@@ -28,6 +29,10 @@ define(function(require) {
       // this field not having an onChange handler. We don't want to set
       // the textarea to readonly (which would also prevent the warning)
       // because that would prevent the text from being selectable.
+    },
+    handleKeypress: function(keyCode) {
+      if (keyCode == this.KEY_ESC)
+        this.props.onClose();
     },
     handleExportToPNG: function(e) {
       e.preventDefault();
