@@ -87,9 +87,9 @@ define(function(require) {
         content = (
           <div>
             <p><strong>Here is the PNG of your awesome thing.</strong></p>
-            <p>Drag the image to your desktop to save it.</p>
+            <p>Click the image to save it.</p>
             <p>Drag it back here anytime to remix your creation.</p>
-            <img style={{width: '100%'}} src={this.state.pngURL}/>
+            <a href={this.state.pngURL} download="my-awesome-thing.png"><img style={{width: '100%'}} src={this.state.pngURL}/></a>
           </div>
         );
       } else if (show == "html") {
