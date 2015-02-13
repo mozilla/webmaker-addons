@@ -19,7 +19,7 @@ define(function(require) {
         parts.push(html[i]);
         if (html[i] == '>') parts.push('\n');
       }
-      return parts.join('');
+      return parts.join('').slice(0, -1);
     },
     handleChange: function() {
       // Do nothing. This just prevents React from raising a warning about
