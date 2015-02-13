@@ -9,7 +9,8 @@ define(function(require) {
 
   var AddImageButton = React.createClass({
     handleClick: function() {
-      this.addImage(window.prompt("Gimme an image URL."));
+      this.addImage(window.prompt("Gimme an image URL.",
+                                  "http://placekitten.com/g/320/240"));
     },
     addImage: function(url, cb) {
       if (!url) return;
