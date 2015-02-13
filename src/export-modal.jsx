@@ -41,6 +41,7 @@ define(function(require) {
         items: this.props.items,
         html: this.props.html
       }, function(err, pngBlob) {
+        if (!this.isMounted()) return;
         if (err) {
           window.alert("Sorry, an error occurred while exporting " +
                        "to PNG. Please try again later.");
