@@ -47,9 +47,6 @@ define(function(require) {
         });
       }.bind(this));
     },
-    createDataURL: function(html) {
-      return PNGExport.htmlToDataURL(html);
-    },
     showHandlerFor: function(showValue) {
       return function() {
         this.setState({show: showValue});
@@ -97,7 +94,10 @@ define(function(require) {
         content = (
           <div>
             <p><strong>Here is the HTML for your awesome thing.</strong></p>
-            <p>You can copy and paste it into an editor like <a href="https://thimble.webmaker.org" target="_blank">Thimble</a>, or open it in a <a href={this.createDataURL(html)} target="_blank">new tab</a>.</p>
+            <p>You can copy and paste it into an editor like <a
+              href="https://thimble.webmaker.org" target="_blank">Thimble</a>
+            , or open it in a <a
+              href={PNGExport.htmlToDataURL(html)} target="_blank">new tab</a>.</p>
             <textarea rows="10" spellCheck="false" value={html} onChange={this.handleChange}></textarea>
           </div>
         );
