@@ -9,7 +9,7 @@ var uuid = require('./uuid');
 var md5 = require('./md5');
 
 var BIN_PREF = 'extensions.webmakerAddon.bin';
-var DEFAULT_IFRAME_URL = 'https://xmatthewx.github.io/webmaker-addons/';
+var DEFAULT_IFRAME_URL = 'http://xmatthewx.github.io/webmaker-addons/';
 var DEBUG_IFRAME_URL = env.get("WEBMAKER_ADDON_IFRAME_URL");
 var DEBUG = !!DEBUG_IFRAME_URL;
 
