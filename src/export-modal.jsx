@@ -2,18 +2,15 @@ define(function(require) {
   var React = require('react');
   var Modal = require('jsx!./modal');
   var PNGExport = require('./png-export');
+  var DownloadableBlobImage = require('jsx!./downloadable-blob-image');
 
   var Export = React.createClass({
     mixins: [React.addons.PureRenderMixin],
     getInitialState: function() {
       return {
-        show: 'choices'
+        show: 'choices',
+        pngBlob: null
       };
-    },
-    componentWillUnmount: function() {
-      if (this.state.pngURL) {
-        URL.revokeObjectURL(this.state.pngURL);
-      }
     },
     // Extremely primitive "pretty printer" that just adds line breaks
     // after every HTML tag.
@@ -46,7 +43,7 @@ define(function(require) {
         }
         this.setState({
           show: 'exportedToPNG',
-          pngURL: URL.createObjectURL(pngBlob)
+          pngBlob: pngBlob
         });
       }.bind(this));
     },
@@ -89,7 +86,10 @@ define(function(require) {
             <p><strong>Here is the PNG of your awesome thing.</strong></p>
             <p>Click the image to save it.</p>
             <p>Drag it back here anytime to remix your creation.</p>
-            <a href={this.state.pngURL} download="my-awesome-thing.png"><img style={{width: '100%'}} src={this.state.pngURL}/></a>
+            <DownloadableBlobImage
+             className="exported-image"
+             downloadFilename="my-awesome-thing.png"
+             blob={this.state.pngBlob}/>
           </div>
         );
       } else if (show == "html") {
