@@ -10,6 +10,11 @@ define(function(require) {
         show: 'choices'
       };
     },
+    componentWillUnmount: function() {
+      if (this.state.pngURL) {
+        URL.revokeObjectURL(this.state.pngURL);
+      }
+    },
     // Extremely primitive "pretty printer" that just adds line breaks
     // after every HTML tag.
     prettifyHtml: function(html) {
@@ -33,7 +38,7 @@ define(function(require) {
       PNGExport.export({
         items: this.props.items,
         html: this.props.html
-      }, function(err, pngURL) {
+      }, function(err, pngBlob) {
         if (err) {
           window.alert("Sorry, an error occurred while exporting " +
                        "to PNG. Please try again later.");
@@ -41,7 +46,7 @@ define(function(require) {
         }
         this.setState({
           show: 'exportedToPNG',
-          pngURL: pngURL
+          pngURL: URL.createObjectURL(pngBlob)
         });
       }.bind(this));
     },

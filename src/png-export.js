@@ -55,7 +55,7 @@ define(function(require) {
         var baker = new PNGBaker(req.response);
         baker.textChunks['webmaker-addon:items-url'] = itemsURL;
         baker.textChunks['webmaker-addon:html-url'] = htmlURL;
-        cb(null, URL.createObjectURL(baker.toBlob()));
+        cb(null, baker.toBlob());
       };
       req.onerror = function() {
         cb(new Error("XMLHttpRequest failed"));
