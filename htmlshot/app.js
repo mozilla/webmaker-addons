@@ -16,6 +16,7 @@ app.get('/', function(req, res, next) {
 app.post('/shot', bodyParser.urlencoded({
   extended: false
 }), function(req, res, next) {
+  res.set('Access-Control-Allow-Origin', '*');
   var html = (req.body.html || '').trim();
   if (!html) return res.sendStatus(204);
   res.type('image/png');
