@@ -69,7 +69,7 @@ define(function(require) {
         html = this.prettifyHtml(this.props.html);
         content = (
           <div>
-            <p>Here is the HTML for your awesome thing.</p>
+            <p><strong>Here is the HTML for your awesome thing.</strong></p>
             <p>You can copy and paste it into an editor like <a href="https://thimble.webmaker.org" target="_blank">Thimble</a>, or open it in a <a href={this.createDataURL(html)} target="_blank">new tab</a>.</p>
             <textarea rows="10" spellCheck="false" value={html} onChange={this.handleChange}></textarea>
           </div>
