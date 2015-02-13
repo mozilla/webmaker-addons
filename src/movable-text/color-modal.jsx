@@ -1,5 +1,6 @@
 define(function(require) {
   var React = require('react');
+  var KeypressMixin = require('../keypress-mixin');
 
   var DEFAULT_COLORS = [
     '#fff',
@@ -13,12 +14,18 @@ define(function(require) {
   ];
 
   var ColorModal = React.createClass({
+    mixins: [KeypressMixin],
     getDefaultProps: function() {
       return {
         colors: DEFAULT_COLORS
       };
     },
-    handleClick: function(color) {
+    handleKeypress: function(keyCode) {
+      if (keyCode == this.KEY_ESC)
+        this.props.dismissModal();
+    },
+    handleClick: function(color, e) {
+      e.target.blur();
       this.props.firebaseRef.update({
         color: color
       });

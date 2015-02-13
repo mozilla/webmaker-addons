@@ -107,6 +107,7 @@ define(function(require) {
 
   var SimpleChangeColorField = React.createClass({
     handleClick: function(e) {
+      this.getDOMNode().blur();
       return this.props.showModal(ColorModal);
     },
     render: function() {
