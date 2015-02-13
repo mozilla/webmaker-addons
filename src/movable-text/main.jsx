@@ -90,42 +90,49 @@ define(function(require) {
     }
   });
 
-  var SimpleChangeFontFamilyField = React.createClass({
+  var SimpleModalToggler = React.createClass({
     handleClick: function(e) {
-      return this.props.showModal(FontModal);
+      var newModal = this.props.modalClass;
+      if (this.props.currentModal === this.props.modalClass)
+        newModal = null;
+      this.props.showModal(newModal);
     },
     render: function() {
       return (
-        <button onClick={this.handleClick}>
-          <img src="src/icons/FontIcon.svg"/>
+        <button onClick={this.handleClick}
+           className={this.props.currentModal === this.props.modalClass
+                      ? "modal-button-enabled"
+                      : null}>
+          <img src={this.props.imgSrc}/>
         </button>
       );
+    }
+  });
+
+  var SimpleChangeFontFamilyField = React.createClass({
+    render: function() {
+      return <SimpleModalToggler showModal={this.props.showModal}
+                                 currentModal={this.props.currentModal}
+                                 modalClass={FontModal}
+                                 imgSrc="src/icons/FontIcon.svg"/>;
     }
   });
 
   var SimpleChangeColorField = React.createClass({
-    handleClick: function(e) {
-      return this.props.showModal(ColorModal);
-    },
     render: function() {
-      return (
-        <button onClick={this.handleClick}>
-          <img src="src/icons/ColorIcon.svg"/>
-        </button>
-      );
+      return <SimpleModalToggler showModal={this.props.showModal}
+                                 currentModal={this.props.currentModal}
+                                 modalClass={ColorModal}
+                                 imgSrc="src/icons/ColorIcon.svg"/>;
     }
   });
 
   var SimpleChangeTextField = React.createClass({
-    handleClick: function(e) {
-      return this.props.showModal(TextModal);
-    },
     render: function() {
-      return (
-        <button onClick={this.handleClick}>
-          <img src="src/icons/TextIcon.svg"/>
-        </button>
-      );
+      return <SimpleModalToggler showModal={this.props.showModal}
+                                 currentModal={this.props.currentModal}
+                                 modalClass={TextModal}
+                                 imgSrc="src/icons/TextIcon.svg"/>;
     }
   });
 

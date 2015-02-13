@@ -206,6 +206,7 @@ define(function(require) {
                 selectedItem={this.state.selectedItem}
                 items={this.state.items}
                 firebaseRef={this.props.firebaseRef}
+                currentModal={this.state.selectionModalClass}
                 showModal={this.handleShowModal}/>
                <SelectionToolbar ref="globalSelectionToolbar"
                 className="global-selection-toolbar"

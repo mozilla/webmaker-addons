@@ -14,6 +14,7 @@ define(function(require) {
           key: key,
           ref: actionClass.refName,
           showModal: this.props.showModal,
+          currentModal: this.props.currentModal,
           itemType: selectedItem.type
         }, TypeMap[selectedItem.type].DEFAULT_PROPS, selectedItem.props, {
           allItems: this.props.items,
