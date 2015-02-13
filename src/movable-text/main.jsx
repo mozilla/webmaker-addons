@@ -93,6 +93,7 @@ define(function(require) {
 
   var SimpleChangeFontFamilyField = React.createClass({
     handleClick: function(e) {
+      this.getDOMNode().blur();
       return this.props.showModal(FontModal);
     },
     render: function() {

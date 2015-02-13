@@ -1,6 +1,7 @@
 define(function(require) {
   var React = require('react');
   var Fonts = require('jsx!../fonts');
+  var KeypressMixin = require('../keypress-mixin');
 
   var DEFAULT_AVAILABLE_FONTS = [
     "Knewave",
@@ -11,6 +12,7 @@ define(function(require) {
   ];
 
   var FontModal = React.createClass({
+    mixins: [KeypressMixin],
     getDefaultProps: function() {
       return {
         availableFonts: DEFAULT_AVAILABLE_FONTS
@@ -20,6 +22,10 @@ define(function(require) {
       this.props.firebaseRef.update({
         fontFamily: font
       });
+    },
+    handleKeypress: function(keyCode) {
+      if (keyCode == this.KEY_ESC)
+        this.props.dismissModal();
     },
     render: function() {
       return (
