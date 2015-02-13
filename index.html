@@ -52,7 +52,6 @@ nav button img {
 .modal-backdrop {
   z-index: 10000;
   position: fixed;
-  background-color: rgba(0, 0, 0, 0.75);
   top: 0;
   left: 0;
   right: 0;
@@ -73,26 +72,47 @@ nav button img {
 }
 
 .modal-dialog {
-  background: white;
-  border: 1px solid black;
-}
-
-.modal-header {
-  background: black;
-  padding: 10px;
-}
-
-.modal-header .close {
-  float: right;
-}
-
-.modal-title {
+  background-color: rgba(0, 0, 0, 0.8);
   color: white;
-  margin: 0;
 }
 
 .modal-body {
   margin: 10px;
+}
+
+.modal-body.share-modal {
+  text-align: center;
+}
+
+.modal-body.share-modal h2 {
+  padding: 16px;
+  margin: 0;
+  font-size: 20px;
+}
+
+.modal-body.share-modal button {
+  font-size: 32px;
+  padding: 12px;
+}
+
+.modal-body.share-modal button img {
+  height: 32px;
+  width: 32px;
+}
+
+.modal-body.share-modal a {
+  color: inherit;
+}
+
+.modal-body.share-modal textarea {
+  padding: 8px;
+  background: transparent;
+  border: 1px solid gray;
+  color: #dddddd;
+  width: 100%;
+  font-size: 16px;
+  line-height: 24px;
+  font-family: monospace;
 }
 
 .selection-toolbar.global-selection-toolbar {

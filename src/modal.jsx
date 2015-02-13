@@ -20,10 +20,6 @@ define(function(require) {
       return (
         <div className="modal" onClick={this.handleClick}>
           <div className="modal-dialog">
-            <div className="modal-header">
-              <button onClick={this.props.onClose} type="button" className="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 className="modal-title">{this.props.title}</h4>
-            </div>
             {this.props.children}
           </div>
         </div>
