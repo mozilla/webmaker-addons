@@ -1,7 +1,7 @@
 define(function(require) {
   var React = require('react');
   var Modal = require('jsx!./modal');
-  var base64 = require('./base64');
+  var PNGExport = require('./png-export');
 
   var Export = React.createClass({
     mixins: [React.addons.PureRenderMixin],
@@ -29,12 +29,24 @@ define(function(require) {
     },
     handleExportToPNG: function(e) {
       e.preventDefault();
-      this.refs.exportToPNG.getDOMNode().submit();
+      this.setState({show: 'exportingToPNG'});
+      PNGExport.export({
+        items: this.props.items,
+        html: this.props.html
+      }, function(err, pngURL) {
+        if (err) {
+          window.alert("Sorry, an error occurred while exporting " +
+                       "to PNG. Please try again later.");
+          return this.props.onClose();
+        }
+        this.setState({
+          show: 'exportedToPNG',
+          pngURL: pngURL
+        });
+      }.bind(this));
     },
     createDataURL: function(html) {
-      var utf8 = base64.strToUTF8Arr(html);
-      return 'data:text/html;charset=utf-8;base64,' +
-             base64.base64EncArr(utf8);
+      return PNGExport.htmlToDataURL(html);
     },
     showHandlerFor: function(showValue) {
       return function() {
@@ -60,9 +72,19 @@ define(function(require) {
             <div>
               <button onClick={this.showHandlerFor('html')}><img src="src/icons/WebmakerIcon.svg"/></button>
             </div>
-            <form style={{display: 'none'}} ref="exportToPNG" method="POST" action={window.BASE_HTMLSHOT_URL + 'shot'} target="_blank">
-              <textarea name="html" value={this.props.html} readOnly></textarea>
-            </form>
+          </div>
+        );
+      } else if (show == "exportingToPNG") {
+        content = <i style={{
+          fontSize: 64, padding: 16
+        }} className="fa fa-spin fa-circle-o-notch"/>
+      } else if (show == "exportedToPNG") {
+        content = (
+          <div>
+            <p><strong>Here is the PNG of your awesome thing.</strong></p>
+            <p>Drag the image to your desktop to save it.</p>
+            <p>Drag it back here anytime to remix your creation.</p>
+            <img style={{width: '100%'}} src={this.state.pngURL}/>
           </div>
         );
       } else if (show == "html") {

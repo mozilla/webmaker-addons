@@ -87,6 +87,9 @@ define(function(require) {
         </html>
       );
     },
+    importItems: function(newItems) {
+      this.props.firebaseRef.update(newItems);
+    },
     handleClick: function(e) {
       if (e.target.hasAttribute('data-clear-selection-on-click'))
         this.clearSelection();
@@ -213,6 +216,7 @@ define(function(require) {
            : null}
           {this.state.showExportModal
            ? <ExportModal
+              items={this.state.items}
               html={this.getExportHtml()}
               onClose={this.toggleExportModal}/>
            : null}

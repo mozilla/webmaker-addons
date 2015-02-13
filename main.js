@@ -1,9 +1,10 @@
 require([
   "firebase",
   "react",
+  "src/png-export",
   "src/embed-api",
   "jsx!src/app"
-], function(Firebase, React, EmbedAPI, App) {
+], function(Firebase, React, PNGExport, EmbedAPI, App) {
   var bin = window.location.search.match(/[&?]bin=([A-Za-z0-9\-]+)/);
 
   bin = bin ? bin[1] : "default";
@@ -39,4 +40,31 @@ require([
 
   if (typeof(window.DEBUG_ONREADY_HOOK) == 'function')
     window.DEBUG_ONREADY_HOOK(app);
+
+  document.body.addEventListener('dragover', function(e) {
+    for (var i = 0; i < e.dataTransfer.types.length; i++) {
+      if (e.dataTransfer.types[i] == 'Files') {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'copy';
+        return;
+      }
+    }
+  });
+
+  document.body.addEventListener('drop', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    var file = e.dataTransfer.files[0];
+    var reader = new FileReader();
+
+    if (file.type != 'image/png') return;
+
+    reader.onload = function(e) {
+      var items = PNGExport.extractItemsFromPNG(e.target.result);
+      if (!items) return;
+      app.importItems(items);
+    };
+    reader.readAsArrayBuffer(file);
+  });
 });
