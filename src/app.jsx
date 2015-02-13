@@ -11,12 +11,13 @@ define(function(require) {
   var SelectionToolbar = require('jsx!./selection-toolbar');
   var Canvas = require('jsx!./canvas');
   var KeypressMixin = require('./keypress-mixin');
+  var PNGDropImporterMixin = require('./png-drop-importer-mixin');
   var GlobalSelectionActions = require('jsx!./global-selection-actions');
 
   var CANVAS_BG = '#333333';
 
   var App = React.createClass({
-    mixins: [KeypressMixin],
+    mixins: [KeypressMixin, PNGDropImporterMixin],
     getInitialState: function() {
       return {
         selectedItem: null,
@@ -87,7 +88,7 @@ define(function(require) {
         </html>
       );
     },
-    importItems: function(newItems) {
+    handleImportItemsFromPNG: function(newItems) {
       this.props.firebaseRef.update(newItems);
     },
     handleClick: function(e) {
