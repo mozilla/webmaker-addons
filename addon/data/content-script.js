@@ -102,11 +102,12 @@ function handleIconClick(e) {
     };
 
     document.documentElement.appendChild(img);
-    img.style.position = 'absolute';
+    img.style.position = 'fixed';
+    img.style.zIndex = '1000000000';
 
     img.style.background = target.style.background;
-    img.style.top = (window.scrollY + srcRect.top) + 'px';
-    img.style.left = (window.scrollX + srcRect.left) + 'px';
+    img.style.top = srcRect.top + 'px';
+    img.style.left = srcRect.left + 'px';
     img.style.width = srcRect.width + 'px';
     img.style.height = srcRect.height + 'px';
 
