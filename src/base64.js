@@ -174,6 +174,8 @@ define(function() {
 
   return {
     strToUTF8Arr: strToUTF8Arr,
+    UTF8ArrToStr: UTF8ArrToStr,
+    base64DecToArr: base64DecToArr,
     base64EncArr: base64EncArr
   };
 });
