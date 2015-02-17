@@ -11,6 +11,8 @@ require([
   if (window.DEBUG_FORCE_BIN_NAME)
     bin = window.DEBUG_FORCE_BIN_NAME;
 
+  document.body.classList.remove('loading');
+
   var firebin = new Firebase(window.BASE_FIREBASE_URL + bin);
 
   var app = React.render(
