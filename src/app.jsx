@@ -154,7 +154,7 @@ define(function(require) {
     },
     render: function() {
       return (
-        <div className="app-content" style={{backgroundColor: '#666666'}}
+        <div className="app-content"
          onClick={this.handleClick} data-clear-selection-on-click>
           <header>
             <nav style={{height: 64, background: 'black'}}>
