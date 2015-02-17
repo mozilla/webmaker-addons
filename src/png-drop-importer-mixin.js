@@ -27,16 +27,6 @@ define(function(require) {
       var items = PNGExport.extractItemsFromPNG(e.target.result);
       if (!items) return;
       this.handleImportItemsFromPNG(items);
-    },
-    componentDidMount: function() {
-      var node = this.getDOMNode();
-      node.addEventListener('dragover', this.handleDragOver);
-      node.addEventListener('drop', this.handleDrop);
-    },
-    componentWillUnmount: function() {
-      var node = this.getDOMNode();
-      node.removeEventListener('dragover', this.handleDragOver);
-      node.removeEventListener('drop', this.handleDrop);
     }
   };
 });
