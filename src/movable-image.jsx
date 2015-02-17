@@ -2,7 +2,6 @@ define(function(require) {
   var _ = require('underscore');
   var React = require('react');
   var Movable = require('./movable');
-  var Hammer = require('hammer');
 
   var DEFAULT_PROPS = {
     scale: 100
@@ -70,31 +69,32 @@ define(function(require) {
     }
   });
 
-  // TODO: This shares a decent amount of code with
-  // the Movable mixin, consider refactoring.
   var ResizeHandle = React.createClass({
-    componentDidMount: function() {
-      var node = this.getDOMNode();
-      var hammer = this.hammer = new Hammer(node);
-      hammer.on('panmove', this.handlePanMove);
-      node.addEventListener('mousedown', function(e) {
-        // Don't let text be selected, don't invoke
-        // Firefox's default image dragging behavior, etc.
-        e.preventDefault();
-      });
-      node.addEventListener('touchstart', function(e) {
-        // Don't let the page scroll.
-        e.preventDefault();
-      });
+    handleMouseDown: function(e) {
+      e.preventDefault();
+      window.addEventListener('mousemove', this.handleMouseMove, true);
+      window.addEventListener('mouseup', this.handleMouseUp, true);
+      this.lastScreenX = e.screenX;
+      this.lastScreenY = e.screenY;
     },
-    handlePanMove: function(e) {
-      var x = e.srcEvent.movementX;
-      var y = e.srcEvent.movementY;
-      this.props.onResize(x, y);
+    handleMouseMove: function(e) {
+      var movementX = e.screenX - this.lastScreenX;
+      var movementY = e.screenY - this.lastScreenY;
+      this.lastScreenX = e.screenX;
+      this.lastScreenY = e.screenY;
+      this.props.onResize(movementX, movementY);
+    },
+    handleMouseUp: function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      this.removeDragListeners();
+    },
+    removeDragListeners: function() {
+      window.removeEventListener('mousemove', this.handleMouseMove, true);
+      window.removeEventListener('mouseup', this.handleMouseUp, true);
     },
     componentWillUnmount: function() {
-      this.hammer.destroy();
-      this.hammer = null;
+      this.removeDragListeners();
     },
     render: function() {
       return <i className="fa fa-expand fa-flip-horizontal" style={{
@@ -105,7 +105,7 @@ define(function(require) {
         padding: 4,
         right: 0,
         bottom: 0
-      }}/>;
+      }} onMouseDown={this.handleMouseDown}/>;
     }
   });
 
