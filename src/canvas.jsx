@@ -16,6 +16,8 @@ define(function(require) {
             ref: isSelected ? 'selectedItem' : undefined,
             isEditable: true,
             isSelected: isSelected,
+            canvasWidth: this.props.canvasWidth,
+            canvasHeight: this.props.canvasHeight,
             getPointerScale: this.props.getPointerScale,
             onSelect: this.props.onItemSelect.bind(null, key),
             firebaseRef: this.props.firebaseRef.child(key).child('props')
