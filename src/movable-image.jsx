@@ -2,6 +2,7 @@ define(function(require) {
   var _ = require('underscore');
   var React = require('react');
   var Movable = require('./movable');
+  var Hammer = require('hammer');
 
   var DEFAULT_PROPS = {
     scale: 100
@@ -69,18 +70,82 @@ define(function(require) {
     }
   });
 
-  var ChangeScaleField = React.createClass({
-    handleChange: function(e) {
+  // TODO: This shares a decent amount of code with
+  // the Movable mixin, consider refactoring.
+  var ResizeHandle = React.createClass({
+    componentDidMount: function() {
+      var node = this.getDOMNode();
+      var hammer = this.hammer = new Hammer(node);
+      hammer.on('panmove', this.handlePanMove);
+      node.addEventListener('mousedown', function(e) {
+        // Don't let text be selected, don't invoke
+        // Firefox's default image dragging behavior, etc.
+        e.preventDefault();
+      });
+      node.addEventListener('touchstart', function(e) {
+        // Don't let the page scroll.
+        e.preventDefault();
+      });
+    },
+    handlePanMove: function(e) {
+      var x = e.srcEvent.movementX;
+      var y = e.srcEvent.movementY;
+      this.props.onResize(x, y);
+    },
+    componentWillUnmount: function() {
+      this.hammer.destroy();
+      this.hammer = null;
+    },
+    render: function() {
+      return <i className="fa fa-expand fa-flip-horizontal" style={{
+        position: 'absolute',
+        backgroundColor: 'yellow',
+        color: 'black',
+        cursor: 'nwse-resize',
+        padding: 4,
+        right: 0,
+        bottom: 0
+      }}/>;
+    }
+  });
+
+  var MovableImageHolder = React.createClass({
+    MINIMUM_SCALED_WIDTH: 32,
+    handleResize: function(deltaX, deltaY) {
+      var delta = deltaX + deltaY;
+      var scaledDelta = delta * this.props.getPointerScale();
+      var scale = this.props.scale / 100;
+      var currWidth = Math.floor(this.props.width * scale);
+      var newWidth = currWidth + scaledDelta;
+      var newScale = newWidth / this.props.width;
+
+      if (newWidth < this.MINIMUM_SCALED_WIDTH) return;
+
       this.props.firebaseRef.update({
-        scale: parseInt(e.target.value)
+        scale: newScale * 100
       });
     },
     render: function() {
+      var scale = this.props.scale / 100;
+      var width = Math.floor(this.props.width * scale);
+      var height = Math.floor(this.props.height * scale);
+      var image = React.createElement(MovableImage, this.props);
+
+      if (!this.props.isEditable)
+        return image;
+
       return (
-        <div className="input-group">
-          <label>Scale</label>
-          <input title={"Image scale: " + this.props.scale + "%"} type="range" min="1" max="100" step="1" value={this.props.scale} onChange={this.handleChange}/>
-          <span className="text">{this.props.scale + "%"}</span>
+        <div style={{
+          position: 'absolute',
+          top: this.props.y,
+          left: this.props.x,
+          width: width,
+          height: height
+        }}>
+          {image}
+          {this.props.isSelected
+           ? <ResizeHandle onResize={this.handleResize} />
+           : null}
         </div>
       );
     }
@@ -92,20 +157,22 @@ define(function(require) {
       var scale = this.props.scale / 100;
       var width = Math.floor(this.props.width * scale);
       var height = Math.floor(this.props.height * scale);
+      var style = this.getMovingStyle();
 
-      return <img style={this.getMovingStyle()} src={this.props.url} width={width} height={height}/>;
+      if (this.props.isEditable)
+        style = _.pick(style, 'cursor');
+
+      return <img style={style}
+                  src={this.props.url}
+                  width={width}
+                  height={height}/>;
     }
   });
 
   return {
     DEFAULT_PROPS: DEFAULT_PROPS,
     AddButton: AddImageButton,
-    ContentItem: MovableImage,
-    SelectionActions: window.SIMPLE_MODE ? [
-      // TODO: Remove this once we have resize handles working.
-      ChangeScaleField
-    ] : [
-      ChangeScaleField
-    ]
+    ContentItem: MovableImageHolder,
+    SelectionActions: []
   };
 });
