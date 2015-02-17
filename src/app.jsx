@@ -155,7 +155,10 @@ define(function(require) {
     render: function() {
       return (
         <div className="app-content"
-         onClick={this.handleClick} data-clear-selection-on-click>
+         onClick={this.handleClick}
+         onDragOver={this.handleDragOver}
+         onDrop={this.handleDrop}
+         data-clear-selection-on-click>
           <header>
             <nav style={{height: 64, background: 'black'}}>
               <PrimaryToolbar ref="primaryToolbar"
