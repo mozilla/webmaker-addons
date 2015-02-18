@@ -70,14 +70,32 @@ define(function(require) {
   });
 
   var ResizeHandle = React.createClass({
+    CURSOR: 'nwse-resize',
     handleMouseDown: function(e) {
+      var curtain = document.createElement('div');
+
       e.preventDefault();
-      window.addEventListener('mousemove', this.handleMouseMove, true);
-      window.addEventListener('mouseup', this.handleMouseUp, true);
+      document.documentElement.appendChild(curtain);
+
+      curtain.onmousemove = this.handleMouseMove;
+      curtain.onmouseup = this.handleMouseUp;
+      _.extend(curtain.style, {
+        position: 'absolute',
+        top: '0px',
+        left: '0px',
+        zIndex: '1000000',
+        height: '100%',
+        width: '100%',
+        cursor: this.CURSOR
+      });
+
+      this.curtain = curtain;
       this.lastScreenX = e.screenX;
       this.lastScreenY = e.screenY;
     },
     handleMouseMove: function(e) {
+      // Would prefer to use e.movementX, but it's not supported
+      // by many browsers yet.
       var movementX = e.screenX - this.lastScreenX;
       var movementY = e.screenY - this.lastScreenY;
       this.lastScreenX = e.screenX;
@@ -86,22 +104,22 @@ define(function(require) {
     },
     handleMouseUp: function(e) {
       e.preventDefault();
-      e.stopPropagation();
-      this.removeDragListeners();
+      this.removeCurtain();
     },
-    removeDragListeners: function() {
-      window.removeEventListener('mousemove', this.handleMouseMove, true);
-      window.removeEventListener('mouseup', this.handleMouseUp, true);
+    removeCurtain: function() {
+      if (!this.curtain) return;
+      this.curtain.parentNode.removeChild(this.curtain);
+      this.curtain = null;
     },
     componentWillUnmount: function() {
-      this.removeDragListeners();
+      this.removeCurtain();
     },
     render: function() {
       return <i className="fa fa-expand fa-flip-horizontal" style={{
         position: 'absolute',
         backgroundColor: 'yellow',
         color: 'black',
-        cursor: 'nwse-resize',
+        cursor: this.CURSOR,
         padding: 4,
         right: 0,
         bottom: 0
