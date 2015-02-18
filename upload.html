@@ -18,9 +18,19 @@ html, body, #status {
   align-items: center;
   transition: background 1s;
 }
+
+#iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
 </style>
 <title>Upload To Cloud</title>
 <div id="status"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+<iframe id="iframe"></iframe>
 <script src="vendor/underscore.js"></script>
 <script src="//api.filepicker.io/v1/filepicker.js"></script>
 <script src="//api.filepicker.io/v1/filepicker_debug.js"></script>
@@ -35,6 +45,9 @@ function done(err) {
     setStatus("An error occurred :(<br><code>" +
               _.escape(err.message) + "</code>");
   }
+
+  var iframe = document.getElementById('iframe');
+  iframe.parentNode.removeChild(iframe);
 }
 
 function setStatus(html) {
@@ -53,6 +66,7 @@ function uploadDataURLToCloud(dataURL) {
   }, function(blob) {
     setStatus("");
     filepicker.export(blob, {
+      container: 'iframe',
       mimetype: 'image/png'        
     }, function(blob) {
       done();
