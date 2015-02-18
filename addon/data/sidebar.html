@@ -34,6 +34,14 @@ function init(options) {
       iframeMessageQueue.splice(0).forEach(function(message) {
         iframe.contentWindow.postMessage(message, '*');
       });
+    } else {
+      var msg;
+      try {
+        msg = JSON.parse(e.data);
+      } catch(e) {
+        return;
+      }
+      addon.port.emit('iframeMessage', msg);
     }
   });
   document.body.appendChild(iframe);

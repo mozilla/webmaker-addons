@@ -6,12 +6,14 @@ html, body, #status {
   background: #666666;
   height: 100%;
   margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 #status {
   font-size: 64px;
   color: rgba(255, 255, 255, 0.5);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   transition: background 1s;
@@ -19,13 +21,20 @@ html, body, #status {
 </style>
 <title>Upload To Cloud</title>
 <div id="status"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+<script src="vendor/underscore.js"></script>
 <script src="//api.filepicker.io/v1/filepicker.js"></script>
 <script src="//api.filepicker.io/v1/filepicker_debug.js"></script>
 <script>
 filepicker.setKey("APFZcbNpVQl6LRI5dqsCGz");
 
-function done() {
-  window.close();
+function done(err) {
+  if (!err) {
+    setStatus("You can close this window now.");
+    window.close();
+  } else {
+    setStatus("An error occurred :(<br><code>" +
+              _.escape(err.message) + "</code>");
+  }
 }
 
 function setStatus(html) {
@@ -39,9 +48,9 @@ function uploadDataURLToCloud(dataURL) {
 
   filepicker.store(base64data, {
     base64decode: true,
+    filename: 'my-awesome-thing.png',
     mimetype: 'image/png'
   }, function(blob) {
-    console.log("uhh");
     setStatus("");
     filepicker.export(blob, {
       mimetype: 'image/png'        
@@ -52,20 +61,50 @@ function uploadDataURLToCloud(dataURL) {
         // The user closed the dialog without exporting a file.
         return done();
       }
-      alert("Alas, an error occurred: " + err.message);
-      done();
+      done(err);
     });
   }, function(err) {
-    alert("Alas, an error occurred: " + err);
-    done();
+    done(err);
   });
 }
 
-if (window.location.search == '?test')
-  window.onload = function() {
+function uploadBlobURLToCloud(blobURL) {
+  var blobError = done.bind(null, new Error("Error reading blob"));
+  var req = new XMLHttpRequest();
+  try {
+    req.open('GET', blobURL);
+  } catch (e) {
+    return blobError();
+  }
+  req.responseType = 'blob';
+  req.onload = function() {
+    var reader = new FileReader();
+    reader.onload = function() {
+      uploadDataURLToCloud(reader.result);
+    };
+    reader.onerror = blobError;
+    if (!(req.response && req.response.size > 0))
+      return blobError();
+    reader.readAsDataURL(req.response);
+  };
+  req.onerror = blobError;
+  req.send(null);
+}
+
+window.onload = function() {
+  if (window.location.search == '?test') {
     var dot = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCA" +
               "YAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9T" +
               "XL0Y4OHwAAAABJRU5ErkJggg==";
     uploadDataURLToCloud(dot);
-  };
+    return;
+  }
+
+  var match = window.location.search.match(/^\?blob=(.+)$/);
+
+  if (!match)
+    return setStatus("blob needed.");
+
+  uploadBlobURLToCloud(decodeURIComponent(match[1]));
+};
 </script>

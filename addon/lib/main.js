@@ -3,6 +3,7 @@ var PageMod = require('sdk/page-mod').PageMod;
 var Sidebar = require('sdk/ui/sidebar').Sidebar;
 var prefs = require('sdk/preferences/service');
 var windowUtils = require('sdk/window/utils');
+var tabs = require('sdk/tabs');
 
 var env = require('./env');
 var uuid = require('./uuid');
@@ -24,6 +25,13 @@ var sidebar = Sidebar({
     sidebarArray.push({
       browserWindow: windowUtils.getMostRecentBrowserWindow(),
       worker: worker
+    });
+    worker.port.on("iframeMessage", function(msg) {
+      if (msg.type == 'openURL') {
+        tabs.open(msg.url);
+      } else {
+        console.log("Unknown iframe message", msg);
+      }
     });
     worker.port.emit("init", {
       url: getIframeURL()
@@ -88,6 +96,6 @@ PageMod({
 });
 
 if (DEBUG) {
-  require('sdk/tabs').open('https://webmaker.org/en-US/');
+  tabs.open('https://webmaker.org/en-US/');
   sidebar.show();
 }

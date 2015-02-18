@@ -66,17 +66,28 @@ define(function(require) {
     handleUploadToCloud: function() {
       this.setState({show: 'uploadingToCloud'});
       this.exportToPNG(function(pngBlob) {
-        var reader = new FileReader();
-        reader.onload = function() {
-          var dataURL = reader.result;
-          var child = window.open('upload.html');
+        this.props.onClose();
 
-          this.props.onClose();
-          child.addEventListener("load", function() {
-            child.uploadDataURLToCloud(dataURL);
-          });
-        }.bind(this);
-        reader.readAsDataURL(pngBlob);
+        // We only need to keep the blob URL around long enough
+        // for the upload page to read its data.
+        var BLOB_URL_EXPIRY_MS = 300 * 1000;
+
+        var blobURL = URL.createObjectURL(pngBlob);
+        var a = document.createElement('a');
+        a.setAttribute('href',
+                       'upload.html?blob=' + encodeURIComponent(blobURL));
+        window.setTimeout(function() {
+          URL.revokeObjectURL(blobURL);
+        }, BLOB_URL_EXPIRY_MS);
+        if (window.parent !== window) {
+          // We might be in an add-on sidebar, so tell it to open the
+          // URL in a new tab.
+          window.parent.postMessage(JSON.stringify({
+            type: 'openURL',
+            url: a.href
+          }), '*');
+        }
+        window.open(a.href);
       });
     },
     render: function() {
