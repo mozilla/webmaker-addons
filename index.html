@@ -30,6 +30,11 @@ body.loading #app {
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: background 1s;
+}
+
+#loading.error-occurred {
+  background: red;
 }
 
 /* TODO: Remember to define focus styles!
@@ -315,6 +320,12 @@ nav button img {
 <body class="loading">
 <div id="loading"><i class="fa fa-circle-o-notch fa-spin"></i></div>
 <div id="app"></div>
+<script>
+onerror = function(e) {
+  document.querySelector('#loading')
+    .classList.add("error-occurred");
+};
+</script>
 <script src="require-config.js"></script>
 <script src="require-config.local.js"></script>
 <script data-main="main" src="vendor/require.js"></script>
