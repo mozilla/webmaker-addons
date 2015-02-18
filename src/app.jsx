@@ -177,7 +177,8 @@ define(function(require) {
             <div style={{backgroundColor: CANVAS_BG}}>
               <ScaleSizer ref="scaleSizer"
                width={this.props.canvasWidth}
-               height={this.props.canvasHeight}>
+               height={this.props.canvasHeight}
+               data-clear-selection-on-click>
                 <Canvas ref="canvas" isEditable
                  background={CANVAS_BG}
                  items={this.state.items}

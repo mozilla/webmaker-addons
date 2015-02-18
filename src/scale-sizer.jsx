@@ -71,7 +71,9 @@ define(function() {
           // scaling.
           display: this.state.scale == 1 ? 'flex' : 'block',
           justifyContent: 'center'
-        }}>
+        }} data-clear-selection-on-click={
+          this.props['data-clear-selection-on-click']
+        }>
           <div style={{
             border: '1px dashed white',
             height: '100%',
