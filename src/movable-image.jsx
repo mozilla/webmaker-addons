@@ -129,6 +129,7 @@ define(function(require) {
 
   var MovableImageHolder = React.createClass({
     MINIMUM_SCALED_WIDTH: 32,
+    mixins: [Movable.Nudging],
     handleResize: function(deltaX, deltaY) {
       var delta = deltaX + deltaY;
       var scaledDelta = delta * this.props.getPointerScale();

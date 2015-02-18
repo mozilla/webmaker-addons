@@ -2,11 +2,7 @@ define(function(require) {
   var React = require('react');
   var Hammer = require('hammer');
 
-  var Movable = {
-    propTypes: {
-      x: React.PropTypes.number.isRequired,
-      y: React.PropTypes.number.isRequired,
-    },
+  var Nudging = {
     nudgeUp: function() {
       this.props.firebaseRef.update({y: this.props.y - 1});
     },
@@ -18,6 +14,14 @@ define(function(require) {
     },
     nudgeRight: function() {
       this.props.firebaseRef.update({x: this.props.x + 1});
+    }
+  };
+
+  var Movable = _.extend({}, Nudging, {
+    Nudging: Nudging,
+    propTypes: {
+      x: React.PropTypes.number.isRequired,
+      y: React.PropTypes.number.isRequired,
     },
     componentDidMount: function() {
       var node = this.getDOMNode();
@@ -94,7 +98,7 @@ define(function(require) {
         cursor: cursor
       };
     }
-  };
+  });
 
   return Movable;
 });
