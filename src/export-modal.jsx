@@ -36,6 +36,14 @@ define(function(require) {
     },
     handleExportToPNG: function(e) {
       e.preventDefault();
+      this.exportToPNG(function(pngBlob) {
+        this.setState({
+          show: 'exportedToPNG',
+          pngBlob: pngBlob
+        });
+      });
+    },
+    exportToPNG: function(cb) {
       this.setState({show: 'exportingToPNG'});
       PNGExport.export({
         items: this.props.items,
@@ -47,10 +55,7 @@ define(function(require) {
                        "to PNG. Please try again later.");
           return this.props.onClose();
         }
-        this.setState({
-          show: 'exportedToPNG',
-          pngBlob: pngBlob
-        });
+        cb.call(this, pngBlob);
       }.bind(this));
     },
     showHandlerFor: function(showValue) {
@@ -58,8 +63,21 @@ define(function(require) {
         this.setState({show: showValue});
       }.bind(this);
     },
-    handleNotImplemented: function() {
-      window.alert("Sorry, this feature hasn't been implemented yet.");
+    handleUploadToCloud: function() {
+      this.setState({show: 'uploadingToCloud'});
+      this.exportToPNG(function(pngBlob) {
+        var reader = new FileReader();
+        reader.onload = function() {
+          var dataURL = reader.result;
+          var child = window.open('upload.html');
+
+          this.props.onClose();
+          child.addEventListener("load", function() {
+            child.uploadDataURLToCloud(dataURL);
+          });
+        }.bind(this);
+        reader.readAsDataURL(pngBlob);
+      });
     },
     render: function() {
       var show = this.state.show;
@@ -70,7 +88,7 @@ define(function(require) {
           <div>
             <h2>Share as Image</h2>
             <div>
-              <button onClick={this.handleNotImplemented}><i className="fa fa-facebook-square"/></button>
+              <button onClick={this.handleUploadToCloud}><i className="fa fa-cloud-upload"/></button>
               <button onClick={this.handleExportToPNG}><i className="fa fa-download"/></button>
             </div>
             <h2>Share as Page</h2>

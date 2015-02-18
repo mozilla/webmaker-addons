@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.css">
+<style>
+html, body, #status {
+  background: #666666;
+  height: 100%;
+  margin: 0;
+}
+
+#status {
+  font-size: 64px;
+  color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 1s;
+}
+</style>
+<title>Upload To Cloud</title>
+<div id="status"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+<script src="//api.filepicker.io/v1/filepicker.js"></script>
+<script src="//api.filepicker.io/v1/filepicker_debug.js"></script>
+<script>
+filepicker.setKey("APFZcbNpVQl6LRI5dqsCGz");
+
+function done() {
+  window.close();
+}
+
+function setStatus(html) {
+  var status = document.getElementById('status');
+
+  status.innerHTML = html;
+}
+
+function uploadDataURLToCloud(dataURL) {
+  var base64data = dataURL.split(',', 2)[1];
+
+  filepicker.store(base64data, {
+    base64decode: true,
+    mimetype: 'image/png'
+  }, function(blob) {
+    console.log("uhh");
+    setStatus("");
+    filepicker.export(blob, {
+      mimetype: 'image/png'        
+    }, function(blob) {
+      done();
+    }, function(err) {
+      if (err.code == 131) {
+        // The user closed the dialog without exporting a file.
+        return done();
+      }
+      alert("Alas, an error occurred: " + err.message);
+      done();
+    });
+  }, function(err) {
+    alert("Alas, an error occurred: " + err);
+    done();
+  });
+}
+
+if (window.location.search == '?test')
+  window.onload = function() {
+    var dot = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCA" +
+              "YAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9T" +
+              "XL0Y4OHwAAAABJRU5ErkJggg==";
+    uploadDataURLToCloud(dot);
+  };
+</script>
