@@ -1,5 +1,5 @@
 {
-  "name": "sticker-fun",
+  "name": "image-maker",
   "version": "0.0.1",
   "description": "",
   "dependencies": {
@@ -14,9 +14,9 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git://github.com/xmatthewx/webmaker-addons.git"
+    "url": "git://github.com/mozilla/webmaker-addons.git"
   },
   "bugs": {
-    "url": "https://github.com/xmatthewx/webmaker-addons/issues"
+    "url": "https://github.com/mozilla/webmaker-addons/issues"
   }
 }
