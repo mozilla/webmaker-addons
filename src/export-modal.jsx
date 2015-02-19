@@ -90,6 +90,10 @@ define(function(require) {
         window.open(a.href);
       });
     },
+    componentWillMount: function() {
+      if (window.DISABLE_WEBMAKER)
+        this.handleUploadToCloud();
+    },
     render: function() {
       var show = this.state.show;
       var html, content;

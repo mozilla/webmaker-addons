@@ -10,7 +10,8 @@ var uuid = require('./uuid');
 var md5 = require('./md5');
 
 var BIN_PREF = 'extensions.webmakerAddon.bin';
-var DEFAULT_IFRAME_URL = 'http://xmatthewx.github.io/webmaker-addons/';
+var DEFAULT_IFRAME_URL = 'http://xmatthewx.github.io/webmaker-addons/' +
+                         '?webmaker=off';
 var DEBUG_IFRAME_URL = env.get("WEBMAKER_ADDON_IFRAME_URL");
 var DEBUG = !!DEBUG_IFRAME_URL;
 
@@ -55,6 +56,7 @@ function getIframeURL() {
 
   var bin;
   var email = prefs.get('services.sync.account');
+  var search;
 
   if (email) {
     bin = md5(email);
@@ -64,7 +66,11 @@ function getIframeURL() {
     bin = prefs.get(BIN_PREF);
   }
 
-  return DEFAULT_IFRAME_URL + '?bin=' + bin + '&bust=' + Date.now();
+  search = 'bin=' + bin + '&bust=' + Date.now();
+
+  return DEFAULT_IFRAME_URL + (DEFAULT_IFRAME_URL.indexOf('?') == -1
+                               ? '?'
+                               : '&') + search;
 }
 
 function emitMessageToSidebar(message, data) {
