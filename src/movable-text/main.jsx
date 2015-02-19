@@ -144,10 +144,12 @@ define(function(require) {
     },
     render: function() {
       return (
-        <div className="input-group">
-          <label>Font Size</label>
+        <div className="input-group input-row" style={{
+          backgroundColor: '#666666'
+        }}>
+          <label>Small</label>
           <input title={"Font size: " + this.props.fontSize + "px"} type="range" min="8" max="100" step="1" value={this.props.fontSize} onChange={this.handleChange}/>
-          <span className="text">{this.props.fontSize + "px"}</span>
+          <span className="text">Large</span>
         </div>
       );
     }
