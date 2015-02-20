@@ -23,7 +23,7 @@ define(function(require) {
         selectedItem: null,
         selectionModalClass: null,
         showExportModal: window.DEBUG_AUTOSHOW_EXPORT_MODAL,
-        items: null
+        items: this.props.initialItems || {}
       };
     },
     componentDidUpdate: function(prevProps, prevState) {
