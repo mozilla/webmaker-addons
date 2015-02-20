@@ -200,12 +200,36 @@ nav button img {
 }
 
 .selection-toolbar .input-group {
-  height: 48px;
-  padding: 0 8px;
+  height: 64px;
+  padding: 8px 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-grow: 1;
+}
+
+@media (min-width: 300px) {
+  .selection-toolbar .input-row {
+    min-width: 300px;
+  }
+}
+
+@media (min-width: 480px) {
+  .selection-toolbar .input-row {
+    min-width: 480px;
+  }
+}
+
+@media (min-width: 640px) {
+  .selection-toolbar .input-row {
+    min-width: 640px;
+  }
+}
+
+@media (min-width: 800px) {
+  .selection-toolbar .input-row {
+    min-width: 800px;
+  }
 }
 
 .text-modal {

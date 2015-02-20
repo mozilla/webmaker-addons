@@ -15,30 +15,33 @@ require([
 
   var firebin = new Firebase(window.BASE_FIREBASE_URL + bin);
 
-  var app = React.render(
-    React.createElement(App, {
-      firebaseRef: firebin,
-      canvasWidth: window.CANVAS_WIDTH,
-      canvasHeight: window.CANVAS_HEIGHT
-    }),
-    document.getElementById('app')
-  );
+  firebin.once("value", function(snapshot) {
+    var app = React.render(
+      React.createElement(App, {
+        firebaseRef: firebin,
+        initialItems: snapshot.val(),
+        canvasWidth: window.CANVAS_WIDTH,
+        canvasHeight: window.CANVAS_HEIGHT
+      }),
+      document.getElementById('app')
+    );
 
-  document.documentElement.onclick = function(e) {
-    if (e.target === document.documentElement)
-      app.clearSelection();
-  };
+    document.documentElement.onclick = function(e) {
+      if (e.target === document.documentElement)
+        app.clearSelection();
+    };
 
-  // For debugging purposes only!
-  window.app = app;
+    // For debugging purposes only!
+    window.app = app;
+
+    EmbedAPI.init(app);
+
+    if (typeof(window.DEBUG_ONREADY_HOOK) == 'function')
+      window.DEBUG_ONREADY_HOOK(app);
+  });
 
   if (bin == "offline") {
     Firebase.goOffline();
     firebin.set({});
   }
-
-  EmbedAPI.init(app);
-
-  if (typeof(window.DEBUG_ONREADY_HOOK) == 'function')
-    window.DEBUG_ONREADY_HOOK(app);
 });

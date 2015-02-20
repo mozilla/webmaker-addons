@@ -50,5 +50,5 @@ You can also run the add-on's test suite with `cfx test`.
 
   [http-server]: https://www.npmjs.org/package/http-server
   [Add-on SDK]: https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Installation
-  [htmlshot/README.md]: https://github.com/xmatthewx/webmaker-addons/tree/gh-pages/htmlshot#readme
-  [Firefox add-on]: https://xmatthewx.github.io/webmaker-addons/addon/webmaker-addon.xpi
+  [htmlshot/README.md]: https://github.com/mozilla/webmaker-addons/tree/gh-pages/htmlshot#readme
+  [Firefox add-on]: https://mozilla.github.io/webmaker-addons/addon/webmaker-addon.xpi

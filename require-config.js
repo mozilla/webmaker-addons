@@ -3,6 +3,7 @@ var BASE_HTMLSHOT_URL = "http://cupcakes.hivelearningnetworks.org:3000/";
 
 var EMBEDDED_MODE = window.parent !== window;
 var SIMPLE_MODE = !/[&?]simple=off/.test(location.search);
+var DISABLE_WEBMAKER = /[&?]webmaker=off/.test(location.search);
 
 var DEFAULT_FONT = 'Open Sans';
 var CANVAS_WIDTH = 640;

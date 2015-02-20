@@ -21,7 +21,6 @@ define(function(require) {
       cb = cb || function(err, newRef, img) {
         if (err)
           window.alert("Sorry, an error occurred loading the image.");
-        this.props.selectItem(newRef.key());
       }.bind(this);
 
       img.onload = this.handleImageLoad.bind(this, cb);
@@ -56,6 +55,7 @@ define(function(require) {
         })
       });
 
+      this.props.selectItem(newRef.key());
       cb(null, newRef, img);
     },
     render: function() {
