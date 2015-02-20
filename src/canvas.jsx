@@ -46,7 +46,8 @@ define(function(require) {
           height: this.props.canvasHeight,
           background: this.props.background,
           overflow: 'hidden'
-        }} onClick={this.handleClick} onTouchStart={this.handleClick}>
+        }} onClick={this.handleClick} onTouchStart={this.handleClick}
+          data-scale-to-parent={this.props['data-scale-to-parent']}>
           {orderedKeys.map(this.createItem)}
         </div>
       );

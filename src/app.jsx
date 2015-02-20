@@ -72,6 +72,10 @@ define(function(require) {
       this.setState({showExportModal: !this.state.showExportModal});
     },
     getExportHtml: function() {
+      var a = document.createElement('a');
+      a.setAttribute('href', 'src/scale-to-parent.js');
+      var scaleToParentURL = a.href;
+
       return React.renderToStaticMarkup(
         <html>
           <head>
@@ -81,10 +85,12 @@ define(function(require) {
           </head>
           <body>
             <Canvas
+             data-scale-to-parent
              background={CANVAS_BG}
              items={this.state.items}
              canvasWidth={this.props.canvasWidth}
              canvasHeight={this.props.canvasHeight}/>
+            <script src={scaleToParentURL} async></script>
           </body>
         </html>
       );
