@@ -13,6 +13,7 @@ define(function(require) {
   var Canvas = require('jsx!./canvas');
   var KeypressMixin = require('./keypress-mixin');
   var GlobalSelectionActions = require('jsx!./global-selection-actions');
+  var extractImgSrc = require('./extract-img-src');
 
   var CANVAS_BG = '#333333';
 
@@ -178,6 +179,10 @@ define(function(require) {
         return this.handleDroppedPNG(file);
 
       var url = dt.getData('application/x-moz-file-promise-url');
+
+      if (!url)
+        url = extractImgSrc(dt.getData('text/html'));
+
       if (url) {
         this.refs.primaryToolbar
           .refs['add-image-button'].addImage(url);
