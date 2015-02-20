@@ -3,6 +3,7 @@ define(function(require) {
   var React = require('react');
   var SelectionFrame = require('jsx!./selection-frame');
   var Fonts = require('jsx!./fonts');
+  var PNGExport = require('./png-export');
   var ExportModal = require('jsx!./export-modal');
   var SelectionModal = require('jsx!./selection-modal');
   var itemUtils = require('./item-utils');
@@ -11,14 +12,12 @@ define(function(require) {
   var SelectionToolbar = require('jsx!./selection-toolbar');
   var Canvas = require('jsx!./canvas');
   var KeypressMixin = require('./keypress-mixin');
-  var PNGDropImporterMixin = require('./png-drop-importer-mixin');
-  var ImageUrlDropImporterMixin = require('./image-url-drop-importer-mixin');
   var GlobalSelectionActions = require('jsx!./global-selection-actions');
 
   var CANVAS_BG = '#333333';
 
   var App = React.createClass({
-    mixins: [KeypressMixin, PNGDropImporterMixin, ImageUrlDropImporterMixin],
+    mixins: [KeypressMixin],
     getInitialState: function() {
       return {
         selectedItem: null,
@@ -89,9 +88,6 @@ define(function(require) {
         </html>
       );
     },
-    handleImportItemsFromPNG: function(newItems) {
-      this.props.firebaseRef.update(newItems);
-    },
     handleClick: function(e) {
       if (e.target.hasAttribute('data-clear-selection-on-click'))
         this.clearSelection();
@@ -154,16 +150,38 @@ define(function(require) {
       return this.refs.scaleSizer.getPointerScale();
     },
     handleDragOver: function(e) {
-      this.handlePngDragOver(e);
-      this.handleImageUrlDragOver(e);
+      // Tell the browser that we'll handle a drop, no
+      // matter what it is.
+      e.preventDefault();
+    },
+    handleDroppedPNG: function(file) {
+      var reader = new FileReader();
+
+      reader.onload = function() {
+        var items = PNGExport.extractItemsFromPNG(reader.result);
+        if (!items) return;
+        this.props.firebaseRef.update(items);
+      }.bind(this);
+      reader.readAsArrayBuffer(file);
     },
     handleDrop: function(e) {
-      this.handlePngDrop(e);
-      this.handleImageUrlDrop(e);
-    },
-    handleLoadDroppedImageUrl: function(url) {
-      this.refs.primaryToolbar
-        .refs['add-image-button'].addImage(url);
+      // It seems like the default drop behavior of any
+      // browser is to navigate away from this page, so
+      // don't let that happen.
+      e.stopPropagation();
+      e.preventDefault();
+
+      var dt = e.dataTransfer;
+      var file = dt.files[0];
+
+      if (file && file.type == 'image/png')
+        return this.handleDroppedPNG(file);
+
+      var url = dt.getData('application/x-moz-file-promise-url');
+      if (url) {
+        this.refs.primaryToolbar
+          .refs['add-image-button'].addImage(url);
+      }
     },
     render: function() {
       return (
