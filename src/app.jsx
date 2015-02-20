@@ -181,6 +181,13 @@ define(function(require) {
       if (url) {
         this.refs.primaryToolbar
           .refs['add-image-button'].addImage(url);
+        return;
+      }
+
+      var text = dt.getData('text/plain');
+      if (text) {
+        this.refs.primaryToolbar
+          .refs['add-text-button'].addText(text);
       }
     },
     render: function() {
