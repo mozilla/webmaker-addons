@@ -12,12 +12,13 @@ define(function(require) {
   var Canvas = require('jsx!./canvas');
   var KeypressMixin = require('./keypress-mixin');
   var PNGDropImporterMixin = require('./png-drop-importer-mixin');
+  var ImageUrlDropImporterMixin = require('./image-url-drop-importer-mixin');
   var GlobalSelectionActions = require('jsx!./global-selection-actions');
 
   var CANVAS_BG = '#333333';
 
   var App = React.createClass({
-    mixins: [KeypressMixin, PNGDropImporterMixin],
+    mixins: [KeypressMixin, PNGDropImporterMixin, ImageUrlDropImporterMixin],
     getInitialState: function() {
       return {
         selectedItem: null,
@@ -151,6 +152,18 @@ define(function(require) {
     },
     getPointerScale: function() {
       return this.refs.scaleSizer.getPointerScale();
+    },
+    handleDragOver: function(e) {
+      this.handlePngDragOver(e);
+      this.handleImageUrlDragOver(e);
+    },
+    handleDrop: function(e) {
+      this.handlePngDrop(e);
+      this.handleImageUrlDrop(e);
+    },
+    handleLoadDroppedImageUrl: function(url) {
+      this.refs.primaryToolbar
+        .refs['add-image-button'].addImage(url);
     },
     render: function() {
       return (

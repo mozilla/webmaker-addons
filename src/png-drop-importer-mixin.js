@@ -2,7 +2,7 @@ define(function(require) {
   var PNGExport = require("src/png-export");
 
   return {
-    handleDragOver: function(e) {
+    handlePngDragOver: function(e) {
       for (var i = 0; i < e.dataTransfer.types.length; i++) {
         if (e.dataTransfer.types[i] == 'Files') {
           e.preventDefault();
@@ -11,15 +11,14 @@ define(function(require) {
         }
       }
     },
-    handleDrop: function(e) {
-      e.stopPropagation();
-      e.preventDefault();
-
+    handlePngDrop: function(e) {
       var file = e.dataTransfer.files[0];
       var reader = new FileReader();
 
-      if (file.type != 'image/png') return;
+      if (!(file && file.type == 'image/png')) return;
 
+      e.stopPropagation();
+      e.preventDefault();
       reader.onload = this.handleLoadDroppedPNG;
       reader.readAsArrayBuffer(file);
     },
