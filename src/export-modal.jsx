@@ -108,7 +108,7 @@ define(function(require) {
             </div>
             <h2>Share as Page</h2>
             <div>
-              <button onClick={this.showHandlerFor('html')}><img src="src/icons/WebmakerIcon.svg"/></button>
+              <button onClick={this.showHandlerFor('html')}><i className="fa fa-code"/></button>
             </div>
           </div>
         );
