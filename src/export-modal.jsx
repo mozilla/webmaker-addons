@@ -91,7 +91,7 @@ define(function(require) {
       });
     },
     componentWillMount: function() {
-      if (window.DISABLE_WEBMAKER)
+      if (this.props.disableWebmaker)
         this.handleUploadToCloud();
     },
     render: function() {

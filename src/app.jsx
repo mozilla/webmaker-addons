@@ -24,6 +24,7 @@ define(function(require) {
         selectedItem: null,
         selectionModalClass: null,
         showExportModal: window.DEBUG_AUTOSHOW_EXPORT_MODAL,
+        disableWebmakerInExport: window.DISABLE_WEBMAKER,
         items: this.props.initialItems || {}
       };
     },
@@ -68,8 +69,16 @@ define(function(require) {
 
       this.setState({items: items});
     },
-    toggleExportModal: function() {
-      this.setState({showExportModal: !this.state.showExportModal});
+    toggleExportModal: function(e) {
+      var disableWebmaker = window.DISABLE_WEBMAKER;
+
+      if (e && e.ctrlKey)
+        disableWebmaker = !disableWebmaker;
+
+      this.setState({
+        showExportModal: !this.state.showExportModal,
+        disableWebmakerInExport: disableWebmaker
+      });
     },
     getExportHtml: function() {
       var a = document.createElement('a');
@@ -273,6 +282,7 @@ define(function(require) {
            ? <ExportModal
               items={this.state.items}
               html={this.getExportHtml()}
+              disableWebmaker={this.state.disableWebmakerInExport}
               onClose={this.toggleExportModal}/>
            : null}
         </div>
